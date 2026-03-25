@@ -1,0 +1,29 @@
+# Env
+.env
+.env.local
+.env.production
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Build
+.next/
+dist/
+build/
+out/
+
+# Prisma
+backend/prisma/migrations/
+
+# Expo / React Native
+mobile/.expo/
+mobile/ios/
+mobile/android/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Netlify
+.netlify/

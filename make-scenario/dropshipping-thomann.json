@@ -1,0 +1,101 @@
+{
+  "name": "Lyra Music — Dropshipping Thomann Auto",
+  "description": "Reçoit une commande Lyra Music et la transmet automatiquement à Thomann",
+  "version": 2,
+  "metadata": {
+    "instant": true,
+    "designer": { "orphans": [] }
+  },
+  "modules": [
+    {
+      "id": 1,
+      "module": "gateway:CustomWebHook",
+      "version": 1,
+      "parameters": {
+        "hook": "REMPLACER_PAR_TON_WEBHOOK_ID",
+        "maxResults": 1
+      },
+      "metadata": {
+        "designer": { "x": 0, "y": 0 },
+        "restore": { "parameters": { "hook": { "label": "Lyra Music Orders Webhook" } } }
+      },
+      "outputs": {
+        "orderId": "{{1.orderId}}",
+        "thomann_ref": "{{1.thomann_ref}}",
+        "product_name": "{{1.product_name}}",
+        "shipping": "{{1.shipping}}",
+        "customer_email": "{{1.customer_email}}",
+        "amount_to_supplier": "{{1.amount_to_supplier}}"
+      }
+    },
+    {
+      "id": 2,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "parameters": { "handleErrors": true },
+      "mapper": {
+        "url": "https://www.thomann.de/gb/checkout/",
+        "method": "POST",
+        "headers": [
+          { "name": "Content-Type", "value": "application/x-www-form-urlencoded" },
+          { "name": "User-Agent",   "value": "Lyra Music-Bot/1.0" }
+        ],
+        "bodyType": "url_encoded_string",
+        "body": "article={{1.thomann_ref}}&qty=1&delivery_first={{1.shipping.firstName}}&delivery_last={{1.shipping.lastName}}&delivery_address={{1.shipping.address}}&delivery_zip={{1.shipping.zip}}&delivery_city={{1.shipping.city}}&delivery_country={{1.shipping.country}}&delivery_email={{1.customer_email}}"
+      },
+      "metadata": {
+        "designer": { "x": 300, "y": 0 },
+        "notes": "Commande Thomann — adapter selon leur process réel ou utiliser API revendeur"
+      }
+    },
+    {
+      "id": 3,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "parameters": { "handleErrors": true },
+      "mapper": {
+        "url": "{{env.LYRA_MUSIC_API_URL}}/webhooks/order-forwarded",
+        "method": "POST",
+        "headers": [
+          { "name": "Content-Type",   "value": "application/json" },
+          { "name": "Authorization",  "value": "Bearer {{env.LYRA_MUSIC_WEBHOOK_SECRET}}" }
+        ],
+        "bodyType": "json",
+        "body": {
+          "orderId": "{{1.orderId}}",
+          "status": "forwarded",
+          "forwardedAt": "{{now}}"
+        }
+      },
+      "metadata": {
+        "designer": { "x": 600, "y": 0 },
+        "notes": "Callback vers Lyra Music API pour mettre à jour le statut commande"
+      }
+    },
+    {
+      "id": 4,
+      "module": "email:ActionSendEmail",
+      "version": 1,
+      "mapper": {
+        "to": "levitiquepianoschool@gmail.com",
+        "subject": "✅ Commande transmise #{{1.orderId}}",
+        "html": "<h3>Nouvelle commande transmise à Thomann</h3><p><b>Produit :</b> {{1.product_name}}<br><b>Réf Thomann :</b> {{1.thomann_ref}}<br><b>Client :</b> {{1.customer_email}}<br><b>Livraison :</b> {{1.shipping.address}}, {{1.shipping.zip}} {{1.shipping.city}}</p>"
+      },
+      "metadata": {
+        "designer": { "x": 900, "y": 0 },
+        "notes": "Email récap admin à chaque commande"
+      }
+    }
+  ],
+  "setup_instructions": [
+    "1. Importer ce JSON dans Make.com via Scénarios > Importer",
+    "2. Activer le module Webhook (module 1) et copier l'URL générée",
+    "3. Coller l'URL dans MAKE_WEBHOOK_URL de ton .env backend",
+    "4. Configurer les variables d'env Make : LYRA_MUSIC_API_URL et LYRA_MUSIC_WEBHOOK_SECRET",
+    "5. IMPORTANT : Le module 2 (Thomann) doit être adapté selon l'accord revendeur obtenu",
+    "   - Option A : API revendeur Thomann (si partenariat obtenu) → remplacer par appel API",
+    "   - Option B : Soumission formulaire web automatisée (solution intermédiaire)",
+    "   - Option C : Email automatique à commandes@thomann.de avec format standardisé",
+    "6. Tester en mode draft avec une commande test Stripe"
+  ]
+}

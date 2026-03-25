@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lyra Music — La Marketplace des Musiciens Chrétiens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C96A;
+    --dark: #0D0D0D;
+    --dark-2: #151515;
+    --dark-3: #1E1E1E;
+    --text: #F0EDE6;
+    --muted: #8A8478;
+    --border: rgba(201,168,76,0.18);
+    --radius: 12px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: var(--text); overflow-x: hidden; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 40px;
+    background: rgba(13,13,13,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: var(--gold); letter-spacing: 0.05em; }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 400; transition: color .2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta { background: var(--gold); color: var(--dark); padding: 9px 22px; border-radius: 6px; font-size: 13px; font-weight: 500; text-decoration: none; transition: background .2s; }
+  .nav-cta:hover { background: var(--gold-light); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 120px 24px 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(201,168,76,0.06) 0%, transparent 70%);
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(201,168,76,0.1); border: 1px solid var(--border);
+    padding: 6px 16px; border-radius: 100px; font-size: 12px; color: var(--gold);
+    margin-bottom: 32px; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(48px, 7vw, 96px); font-weight: 300; line-height: 1.05;
+    color: var(--text); margin-bottom: 24px; position: relative;
+  }
+  .hero h1 em { font-style: normal; color: var(--gold); }
+  .hero p { font-size: 17px; color: var(--muted); max-width: 520px; line-height: 1.7; margin-bottom: 44px; }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .btn-primary { background: var(--gold); color: var(--dark); padding: 14px 32px; border-radius: 8px; font-size: 15px; font-weight: 500; text-decoration: none; transition: all .2s; border: none; cursor: pointer; }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .btn-outline { background: transparent; color: var(--text); padding: 14px 32px; border-radius: 8px; font-size: 15px; text-decoration: none; border: 1px solid rgba(240,237,230,0.2); transition: all .2s; }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+  .hero-stats { display: flex; gap: 48px; margin-top: 64px; position: relative; }
+  .hero-stat { text-align: center; }
+  .hero-stat .num { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 600; color: var(--gold); }
+  .hero-stat .lbl { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  /* ── SECTION ── */
+  section { padding: 100px 40px; max-width: 1200px; margin: 0 auto; }
+  .section-label { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 4vw, 54px); font-weight: 300; line-height: 1.15; margin-bottom: 16px; }
+  .section-sub { color: var(--muted); font-size: 16px; line-height: 1.7; max-width: 560px; margin-bottom: 56px; }
+
+  /* ── FILTERS ── */
+  .filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 40px; }
+  .filter-btn {
+    padding: 8px 18px; border-radius: 100px; font-size: 13px; cursor: pointer; transition: all .2s;
+    background: var(--dark-3); border: 1px solid var(--border); color: var(--muted);
+  }
+  .filter-btn.active, .filter-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--dark); font-weight: 500; }
+
+  /* ── FEED MASONRY ── */
+  .feed {
+    columns: 3; column-gap: 20px;
+  }
+  @media(max-width:900px){ .feed { columns: 2; } }
+  @media(max-width:600px){ .feed { columns: 1; } }
+
+  .card {
+    break-inside: avoid; background: var(--dark-2); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden; margin-bottom: 20px;
+    transition: border-color .25s, transform .25s; cursor: pointer;
+  }
+  .card:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-3px); }
+  .card-video {
+    width: 100%; aspect-ratio: 16/9; background: var(--dark-3);
+    position: relative; overflow: hidden;
+  }
+  .card-video iframe { width: 100%; height: 100%; border: none; }
+  .card-video .play-placeholder {
+    width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--dark-3), #222);
+    font-size: 40px;
+  }
+  .card-body { padding: 18px; }
+  .card-name { font-size: 16px; font-weight: 500; margin-bottom: 4px; }
+  .card-meta { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .tag { background: rgba(201,168,76,0.1); color: var(--gold); border: 1px solid var(--border); padding: 3px 10px; border-radius: 100px; font-size: 11px; letter-spacing: 0.05em; }
+  .tag.sos { background: rgba(220,60,60,0.12); color: #e05555; border-color: rgba(220,60,60,0.3); }
+  .tag.verified { background: rgba(40,180,100,0.12); color: #4caf7d; border-color: rgba(40,180,100,0.3); }
+  .tag.boosted { background: rgba(201,168,76,0.2); color: var(--gold-light); }
+  .card-footer { display: flex; align-items: center; justify-content: space-between; }
+  .card-like { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); background: none; border: none; cursor: pointer; color: var(--muted); transition: color .2s; }
+  .card-like:hover { color: #e05555; }
+  .card-like.liked { color: #e05555; }
+  .card-contact { background: var(--gold); color: var(--dark); border: none; padding: 7px 16px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background .2s; text-decoration: none; }
+  .card-contact:hover { background: var(--gold-light); }
+
+  /* ── BOUTIQUE ── */
+  .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+  .shop-card {
+    background: var(--dark-2); border: 1px solid var(--border); border-radius: var(--radius);
+    overflow: hidden; transition: all .25s; cursor: pointer;
+  }
+  .shop-card:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-2px); }
+  .shop-img { width: 100%; aspect-ratio: 1; background: var(--dark-3); display: flex; align-items: center; justify-content: center; font-size: 56px; }
+  .shop-body { padding: 16px; }
+  .shop-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+  .shop-brand { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+  .shop-price { display: flex; align-items: baseline; gap: 8px; }
+  .shop-price .our { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold); font-weight: 600; }
+  .shop-price .src { font-size: 12px; color: var(--muted); text-decoration: line-through; }
+  .shop-price .cat { font-size: 11px; background: rgba(201,168,76,0.1); color: var(--gold); padding: 2px 8px; border-radius: 4px; margin-left: auto; }
+
+  /* ── MODAL ── */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200; align-items: center; justify-content: center; padding: 24px; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--dark-2); border: 1px solid var(--border); border-radius: 16px; max-width: 480px; width: 100%; padding: 32px; position: relative; }
+  .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; }
+  .modal h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; margin-bottom: 8px; }
+  .modal p { color: var(--muted); font-size: 14px; margin-bottom: 20px; line-height: 1.6; }
+  .modal-actions { display: flex; flex-direction: column; gap: 10px; }
+  .modal-actions a { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500; transition: all .2s; }
+  .modal-wa { background: rgba(37,211,102,0.12); border: 1px solid rgba(37,211,102,0.3); color: #25d366; }
+  .modal-wa:hover { background: rgba(37,211,102,0.2); }
+  .modal-pp { background: rgba(0,112,186,0.12); border: 1px solid rgba(0,112,186,0.3); color: #4da6e0; }
+  .modal-pp:hover { background: rgba(0,112,186,0.2); }
+
+  /* ── TARIFS ── */
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .plan-card { background: var(--dark-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; transition: all .2s; }
+  .plan-card.featured { border-color: var(--gold); position: relative; }
+  .plan-card.featured::before { content: 'Populaire'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--dark); font-size: 11px; font-weight: 500; padding: 4px 14px; border-radius: 100px; }
+  .plan-name { font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  .plan-price { font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 300; margin-bottom: 4px; }
+  .plan-price span { font-size: 16px; font-family: 'DM Sans', sans-serif; color: var(--muted); }
+  .plan-desc { color: var(--muted); font-size: 13px; margin-bottom: 24px; line-height: 1.6; }
+  .plan-features { list-style: none; margin-bottom: 28px; }
+  .plan-features li { font-size: 14px; color: var(--muted); padding: 7px 0; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-start; }
+  .plan-features li::before { content: '✓'; color: var(--gold); font-weight: 700; flex-shrink: 0; }
+
+  /* ── FOOTER ── */
+  footer { background: var(--dark-2); border-top: 1px solid var(--border); padding: 48px 40px; text-align: center; }
+  footer .logo { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold); margin-bottom: 12px; }
+  footer p { color: var(--muted); font-size: 13px; line-height: 1.8; }
+  footer .links { display: flex; gap: 24px; justify-content: center; margin-top: 20px; }
+  footer .links a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .2s; }
+  footer .links a:hover { color: var(--gold); }
+
+  /* ── PAYWALL ── */
+  .paywall-banner { background: rgba(201,168,76,0.08); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; text-align: center; margin-top: 40px; }
+  .paywall-banner h3 { font-family: 'Cormorant Garamond', serif; font-size: 28px; margin-bottom: 8px; }
+  .paywall-banner p { color: var(--muted); font-size: 15px; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Lyra Music</div>
+  <div class="nav-links">
+    <a href="#talents">Talents</a>
+    <a href="#annonces">Annonces</a>
+    <a href="#boutique">Boutique</a>
+    <a href="#tarifs">Tarifs</a>
+  </div>
+  <a href="#tarifs" class="nav-cta">Créer mon profil</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-badge">🎹 La marketplace du gospel francophone</div>
+  <h1>Trouve ton <em>talent</em><br>pour l'événement<br>parfait</h1>
+  <p>Musiciens, danseurs, sonorisateurs — tous vérifiés, tous disponibles, réservation sécurisée avec séquestre.</p>
+  <div class="hero-actions">
+    <a href="#talents" class="btn-primary">Découvrir les talents</a>
+    <a href="#annonces" class="btn-outline">Publier une annonce</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num" id="stat-talents">0</div><div class="lbl">Talents inscrits</div></div>
+    <div class="hero-stat"><div class="num" id="stat-annonces">0</div><div class="lbl">Annonces actives</div></div>
+    <div class="hero-stat"><div class="num" id="stat-villes">0</div><div class="lbl">Villes</div></div>
+  </div>
+</div>
+
+<!-- TALENTS -->
+<section id="talents" style="max-width:1200px">
+  <div class="section-label">Musiciens & Artistes</div>
+  <h2 class="section-title">Les talents de la<br>communauté</h2>
+  <p class="section-sub">Piano, guitare, chant, violon, saxophone, trompette, DJ, danse — filtrez par instrument et zone.</p>
+
+  <div class="filters" id="talent-filters">
+    <button class="filter-btn active" onclick="filterTalents('all', this)">Tous</button>
+    <button class="filter-btn" onclick="filterTalents('piano', this)">Piano</button>
+    <button class="filter-btn" onclick="filterTalents('guitare', this)">Guitare</button>
+    <button class="filter-btn" onclick="filterTalents('chant', this)">Chant</button>
+    <button class="filter-btn" onclick="filterTalents('violon', this)">Violon</button>
+    <button class="filter-btn" onclick="filterTalents('saxophone', this)">Saxophone</button>
+    <button class="filter-btn" onclick="filterTalents('trompette', this)">Trompette</button>
+    <button class="filter-btn" onclick="filterTalents('dj', this)">DJ</button>
+    <button class="filter-btn" onclick="filterTalents('danseur', this)">Danse</button>
+  </div>
+
+  <div class="feed" id="talent-feed"></div>
+
+  <div class="paywall-banner" id="paywall" style="display:none">
+    <h3>Voir plus de profils</h3>
+    <p>3 profils gratuits. Inscrivez-vous pour accéder à tous les talents.</p>
+    <a href="#tarifs" class="btn-primary">Choisir un plan</a>
+  </div>
+</section>
+
+<!-- ANNONCES -->
+<section id="annonces" style="max-width:1200px">
+  <div class="section-label">Événements</div>
+  <h2 class="section-title">Missions disponibles</h2>
+  <p class="section-sub">Mariages, cultes, galas, concerts — publiez votre besoin, les talents postulent.</p>
+  <div class="feed" id="annonce-feed"></div>
+</section>
+
+<!-- BOUTIQUE -->
+<section id="boutique" style="max-width:1200px">
+  <div class="section-label">Équipement</div>
+  <h2 class="section-title">La boutique<br><em>du musicien</em></h2>
+  <p class="section-sub">Instruments et accessoires sélectionnés. Livraison directe depuis notre partenaire.</p>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterShop('all', this)">Tout</button>
+    <button class="filter-btn" onclick="filterShop('PIANO', this)">Piano</button>
+    <button class="filter-btn" onclick="filterShop('GUITARE', this)">Guitare</button>
+    <button class="filter-btn" onclick="filterShop('SAXOPHONE', this)">Saxophone</button>
+    <button class="filter-btn" onclick="filterShop('IN_EAR', this)">In-ear</button>
+    <button class="filter-btn" onclick="filterShop('PEDALE_EFFET', this)">Pédales</button>
+    <button class="filter-btn" onclick="filterShop('ACCESSOIRE_CABLE', this)">Câbles</button>
+  </div>
+
+  <div class="shop-grid" id="shop-grid"></div>
+</section>
+
+<!-- TARIFS -->
+<section id="tarifs" style="max-width:900px">
+  <div class="section-label">Plans</div>
+  <h2 class="section-title">Rejoignez la communauté</h2>
+  <p class="section-sub">Annonceurs toujours gratuits. Musiciens : choisissez votre visibilité.</p>
+  <div class="pricing-grid">
+    <div class="plan-card">
+      <div class="plan-name">Annonceur</div>
+      <div class="plan-price">0€ <span>/ toujours</span></div>
+      <p class="plan-desc">Pour les organisateurs d'événements.</p>
+      <ul class="plan-features">
+        <li>Publier des annonces illimitées</li>
+        <li>Contacter les talents</li>
+        <li>Paiement sécurisé (escrow)</li>
+        <li>Accès à la boutique</li>
+      </ul>
+      <a href="#" class="btn-outline" style="display:block;text-align:center">Créer un compte</a>
+    </div>
+    <div class="plan-card featured">
+      <div class="plan-name">Musicien Basique</div>
+      <div class="plan-price">5€ <span>/ mois</span></div>
+      <p class="plan-desc">Pour commencer à recevoir des missions.</p>
+      <ul class="plan-features">
+        <li>Profil complet + vidéos</li>
+        <li>Postuler aux annonces</li>
+        <li>Messagerie interne</li>
+        <li>Setlist partagée</li>
+      </ul>
+      <a href="#" class="btn-primary" style="display:block;text-align:center">Commencer</a>
+    </div>
+    <div class="plan-card">
+      <div class="plan-name">Musicien Pro</div>
+      <div class="plan-price">15€ <span>/ mois</span></div>
+      <p class="plan-desc">Pour maximiser votre visibilité.</p>
+      <ul class="plan-features">
+        <li>Tout le plan Basique</li>
+        <li>Profil mis en avant</li>
+        <li>Badge Vérifié</li>
+        <li>Alertes SOS en priorité</li>
+        <li>Stats de profil</li>
+      </ul>
+      <a href="#" class="btn-outline" style="display:block;text-align:center">Passer Pro</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">Lyra Music</div>
+  <p>La marketplace des musiciens chrétiens francophones.<br>
+  Talents · Événements · Équipement</p>
+  <div class="links">
+    <a href="mailto:levitiquepianoschool@gmail.com">Contact</a>
+    <a href="https://instagram.com/levitique_piano_school">Instagram</a>
+    <a href="https://wa.me/33651426961">WhatsApp</a>
+    <a href="#">Mentions légales</a>
+  </div>
+  <p style="margin-top:24px;font-size:11px;opacity:.4">© 2025 Lyra Music — Levitique Piano School</p>
+</footer>
+
+<!-- MODAL COMMANDE -->
+<div class="modal-overlay" id="shop-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3 id="modal-product-name">Produit</h3>
+    <p id="modal-product-desc">Description</p>
+    <div class="modal-actions">
+      <a href="#" id="modal-wa" class="modal-wa" target="_blank">
+        <span>💬</span> Commander via WhatsApp
+      </a>
+      <a href="https://paypal.me/LevitiquePianoSchool" class="modal-pp" target="_blank">
+        <span>💳</span> Payer via PayPal
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Données ──
+const TALENTS = [
+  { id:1, name:'Samuel K.', category:'piano', zone:'Paris 75', youtube:'https://www.youtube.com/embed/dQw4w9WgXcQ', bio:'Pianiste gospel 10 ans', verified:true, boosted:true, likes:47, tags:['Gospel','Worship','Mariage'] },
+  { id:2, name:'Grace M.', category:'chant', zone:'Lyon', youtube:null, bio:'Soprano — worship & mariage', verified:true, boosted:false, likes:32, tags:['Soprano','Gospel','Gala'] },
+  { id:3, name:'David A.', category:'guitare', zone:'Paris 93', youtube:null, bio:'Guitare électrique & acoustique', verified:false, boosted:false, likes:18, tags:['Électrique','Acoustique'] },
+  { id:4, name:'Esther N.', category:'violon', zone:'Versailles', youtube:null, bio:'Violoniste classique & gospel', verified:true, boosted:false, likes:29, tags:['Classique','Gospel','Mariage'] },
+  { id:5, name:'Nathan B.', category:'saxophone', zone:'Bordeaux', youtube:null, bio:'Saxophoniste alto & ténor', verified:false, boosted:false, likes:21, tags:['Alto','Ténor','Jazz Gospel'] },
+  { id:6, name:'Miriam T.', category:'danseur', zone:'Paris 75', youtube:null, bio:'Danse prophétique & liturgique', verified:true, boosted:true, likes:55, tags:['Prophétique','Liturgique'] },
+];
+
+const ANNONCES = [
+  { id:1, title:'Pianiste pour mariage', type:'MARIAGE', date:'15 juin 2025', lieu:'Paris 16e', budget:150, sos:true, instruments:['Piano'] },
+  { id:2, title:'Groupe de louange — culte dimanche', type:'EGLISE', date:'Tous les dimanches', lieu:'Versailles', budget:80, sos:false, instruments:['Piano','Guitare','Batterie'] },
+  { id:3, title:'DJ Gospel — Gala annuel', type:'GALA', date:'28 nov. 2025', lieu:'Lyon', budget:300, sos:false, instruments:['DJ'] },
+];
+
+const MARGIN_RATES = {
+  PIANO:0.08, GUITARE:0.12, BASSE:0.12, TROMPETTE:0.10, SAXOPHONE:0.10,
+  VIOLON:0.10, ACCESSOIRE_CABLE:0.25, PEDALE_EFFET:0.18,
+  PEDALE_SUSTAIN:0.20, MEDIATOR:0.30, IN_EAR:0.15
+};
+const MIN_MARGINS = { PIANO:30, GUITARE:15, BASSE:15, TROMPETTE:12, SAXOPHONE:18, VIOLON:12, ACCESSOIRE_CABLE:2, PEDALE_EFFET:8, PEDALE_SUSTAIN:5, MEDIATOR:0.5, IN_EAR:10 };
+
+function calcPrice(src, cat) {
+  const r = MARGIN_RATES[cat]||0.15, m = MIN_MARGINS[cat]||5;
+  const margin = Math.max(src*r, m);
+  return { src, our: parseFloat((src+margin).toFixed(2)) };
+}
+
+const PRODUCTS = [
+  { id:1, name:'Casio CT-S300', brand:'Casio', cat:'PIANO', src:89, emoji:'🎹' },
+  { id:2, name:'Yamaha PSR-E373', brand:'Yamaha', cat:'PIANO', src:179, emoji:'🎹' },
+  { id:3, name:'Fender CD-60S', brand:'Fender', cat:'GUITARE', src:219, emoji:'🎸' },
+  { id:4, name:'Yamaha Alto YAS-280', brand:'Yamaha', cat:'SAXOPHONE', src:680, emoji:'🎷' },
+  { id:5, name:'Roland FP-30X', brand:'Roland', cat:'PIANO', src:649, emoji:'🎹' },
+  { id:6, name:'Shure SE215', brand:'Shure', cat:'IN_EAR', src:99, emoji:'🎧' },
+  { id:7, name:'Boss DS-1', brand:'Boss', cat:'PEDALE_EFFET', src:55, emoji:'🎛' },
+  { id:8, name:'Câble Jack 6m', brand:'Cordial', cat:'ACCESSOIRE_CABLE', src:12, emoji:'🔌' },
+];
+
+// ── Counters animés ──
+function animateCount(el, target) {
+  let count = 0, step = Math.ceil(target/40);
+  const timer = setInterval(() => {
+    count = Math.min(count + step, target);
+    el.textContent = count;
+    if (count >= target) clearInterval(timer);
+  }, 40);
+}
+animateCount(document.getElementById('stat-talents'), 124);
+animateCount(document.getElementById('stat-annonces'), 38);
+animateCount(document.getElementById('stat-villes'), 22);
+
+// ── Render talents ──
+let shownCount = 0, activeFilter = 'all';
+function renderTalents(filter) {
+  const feed = document.getElementById('talent-feed');
+  const filtered = filter === 'all' ? TALENTS : TALENTS.filter(t => t.category === filter);
+  feed.innerHTML = '';
+  shownCount = 0;
+  filtered.forEach((t, i) => {
+    if (i >= 3) return; // Paywall après 3
+    feed.innerHTML += talentCard(t, i);
+    shownCount++;
+  });
+  document.getElementById('paywall').style.display = filtered.length > 3 ? 'block' : 'none';
+}
+
+function talentCard(t) {
+  const videoHtml = t.youtube
+    ? `<iframe src="${t.youtube}" allow="accelerometer; autoplay; encrypted-media" allowfullscreen></iframe>`
+    : `<div class="play-placeholder">🎵</div>`;
+  const boostedTag = t.boosted ? '<span class="tag boosted">⭐ Mis en avant</span>' : '';
+  const verifiedTag = t.verified ? '<span class="tag verified">✓ Vérifié</span>' : '';
+  const extraTags = t.tags.map(g => `<span class="tag">${g}</span>`).join('');
+  return `
+    <div class="card" data-cat="${t.category}">
+      <div class="card-video">${videoHtml}</div>
+      <div class="card-body">
+        <div class="card-name">${t.name}</div>
+        <div class="card-meta">${t.category.charAt(0).toUpperCase()+t.category.slice(1)} · ${t.zone}</div>
+        <div class="card-tags">${boostedTag}${verifiedTag}${extraTags}</div>
+        <div class="card-footer">
+          <button class="card-like" id="like-${t.id}" onclick="toggleLike(${t.id}, ${t.likes})">
+            ♡ <span>${t.likes}</span>
+          </button>
+          <a class="card-contact" href="https://wa.me/33651426961?text=Bonjour, je souhaite contacter ${encodeURIComponent(t.name)}" target="_blank">Contacter</a>
+        </div>
+      </div>
+    </div>`;
+}
+
+function filterTalents(cat, btn) {
+  document.querySelectorAll('#talent-filters .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTalents(cat);
+}
+
+function toggleLike(id, base) {
+  const btn = document.getElementById(`like-${id}`);
+  if (!btn) return;
+  btn.classList.toggle('liked');
+  const liked = btn.classList.contains('liked');
+  btn.innerHTML = `${liked ? '♥' : '♡'} <span>${liked ? base+1 : base}</span>`;
+}
+
+// ── Render annonces ──
+function renderAnnonces() {
+  const feed = document.getElementById('annonce-feed');
+  feed.innerHTML = ANNONCES.map(a => `
+    <div class="card">
+      <div class="card-body">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+          <div class="card-name">${a.title}</div>
+          ${a.sos ? '<span class="tag sos">🚨 SOS Urgence</span>' : ''}
+        </div>
+        <div class="card-meta">${a.type} · ${a.date} · ${a.lieu}</div>
+        <div class="card-tags">${a.instruments.map(i=>`<span class="tag">${i}</span>`).join('')}</div>
+        <div class="card-footer">
+          <span style="font-size:13px;color:var(--gold)">~${a.budget}€/musicien</span>
+          <a class="card-contact" href="https://wa.me/33651426961?text=Je suis intéressé par : ${encodeURIComponent(a.title)}" target="_blank">Postuler</a>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ── Render boutique ──
+function renderShop(filter) {
+  const grid = document.getElementById('shop-grid');
+  const items = filter === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.cat === filter);
+  const catLabels = { PIANO:'Piano', GUITARE:'Guitare', SAXOPHONE:'Sax.', IN_EAR:'In-ear', PEDALE_EFFET:'Pédale', ACCESSOIRE_CABLE:'Câble' };
+  grid.innerHTML = items.map(p => {
+    const price = calcPrice(p.src, p.cat);
+    return `
+      <div class="shop-card" onclick="openShopModal(${JSON.stringify(p).replace(/"/g,"'")})">
+        <div class="shop-img">${p.emoji}</div>
+        <div class="shop-body">
+          <div class="shop-name">${p.name}</div>
+          <div class="shop-brand">${p.brand}</div>
+          <div class="shop-price">
+            <span class="our">${price.our}€</span>
+            <span class="src">${price.src}€</span>
+            <span class="cat">${catLabels[p.cat]||p.cat}</span>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function filterShop(cat, btn) {
+  document.querySelectorAll('#boutique .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderShop(cat);
+}
+
+// ── Modal boutique ──
+function openShopModal(p) {
+  const price = calcPrice(p.src, p.cat);
+  document.getElementById('modal-product-name').textContent = p.name;
+  document.getElementById('modal-product-desc').textContent =
+    `${p.brand} · ${price.our}€ (port inclus)\nVotre commande sera traitée sous 24h.`;
+  const waMsg = `Bonjour, je souhaite commander : ${p.name} (${price.our}€)`;
+  document.getElementById('modal-wa').href =
+    `https://wa.me/33651426961?text=${encodeURIComponent(waMsg)}`;
+  document.getElementById('shop-modal').classList.add('open');
+}
+function closeModal() { document.getElementById('shop-modal').classList.remove('open'); }
+document.getElementById('shop-modal').addEventListener('click', e => { if(e.target === e.currentTarget) closeModal(); });
+
+// ── Init ──
+renderTalents('all');
+renderAnnonces();
+renderShop('all');
+</script>
+</body>
+</html>

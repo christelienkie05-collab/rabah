@@ -1,0 +1,50 @@
+{
+  "expo": {
+    "name": "Lyra Music",
+    "slug": "lyra-music",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0D0D0D"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.levitique.lyramusic",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Pour prendre des photos de profil",
+        "NSMicrophoneUsageDescription": "Pour les messages vocaux"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0D0D0D"
+      },
+      "package": "com.levitique.lyramusic",
+      "permissions": [
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#C9A84C",
+          "sounds": [],
+          "androidMode": "default",
+          "androidCollapsedTitle": "Lyra Music"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": { "projectId": "REMPLACER_PAR_TON_PROJECT_ID" }
+    }
+  }
+}

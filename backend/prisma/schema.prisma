@@ -1,0 +1,241 @@
+// backend/prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ANNONCEUR
+  MUSICIEN
+  ADMIN
+}
+
+enum UserPlan {
+  FREE
+  BASIC
+  PRO
+}
+
+enum TalentCategory {
+  PIANO
+  GUITARE
+  BASSE
+  BATTERIE
+  CHANT
+  VIOLON
+  SAXOPHONE
+  TROMPETTE
+  DJ
+  DANSEUR
+}
+
+enum ServiceType {
+  SONORISATION
+  DECORATION
+  RESTAURATION
+}
+
+enum EventType {
+  MARIAGE
+  EGLISE
+  GALA
+  CONCERT
+  ANNIVERSAIRE
+  PERSONNALISE
+}
+
+enum BookingStatus {
+  PENDING
+  ESCROW
+  COMPLETED
+  DISPUTED
+  CANCELLED
+}
+
+enum OrderStatus {
+  PAID
+  FORWARDED
+  SHIPPED
+  DELIVERED
+  REFUNDED
+}
+
+enum ProductCategory {
+  PIANO
+  GUITARE
+  BASSE
+  TROMPETTE
+  SAXOPHONE
+  VIOLON
+  ACCESSOIRE_CABLE
+  PEDALE_EFFET
+  PEDALE_SUSTAIN
+  MEDIATOR
+  IN_EAR
+}
+
+model User {
+  id               String           @id @default(uuid())
+  email            String           @unique
+  name             String
+  passwordHash     String
+  role             UserRole         @default(ANNONCEUR)
+  plan             UserPlan         @default(FREE)
+  stripeCustomerId String?
+  fcmToken         String?          // Firebase push token
+  avatarUrl        String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  talentProfile    TalentProfile?
+  serviceProvider  ServiceProvider?
+  announcements    Announcement[]
+  orders           Order[]
+  sentMessages     Message[]        @relation("SentMessages")
+  receivedMessages Message[]        @relation("ReceivedMessages")
+}
+
+model TalentProfile {
+  id              String         @id @default(uuid())
+  userId          String         @unique
+  user            User           @relation(fields: [userId], references: [id])
+  category        TalentCategory
+  bio             String?
+  zoneGeo         String
+  youtubeUrl      String?
+  isVerified      Boolean        @default(false)
+  isBoosted       Boolean        @default(false)
+  boostExpiresAt  DateTime?
+  instruments     String[]
+  likesCount      Int            @default(0)
+  stripeAccountId String?        // Pour les virements Stripe Connect
+  createdAt       DateTime       @default(now())
+
+  bookings        Booking[]
+  setlists        Setlist[]
+  boosts          Boost[]
+}
+
+model ServiceProvider {
+  id             String      @id @default(uuid())
+  userId         String      @unique
+  user           User        @relation(fields: [userId], references: [id])
+  type           ServiceType
+  companyName    String
+  description    String?
+  certifications String[]
+  commissionRate Float       @default(0.10)
+  isActive       Boolean     @default(true)
+  zone           String?
+  portfolioUrls  String[]
+  createdAt      DateTime    @default(now())
+}
+
+model Announcement {
+  id                 String    @id @default(uuid())
+  userId             String
+  user               User      @relation(fields: [userId], references: [id])
+  title              String
+  eventType          EventType
+  eventDate          DateTime
+  location           String
+  budgetPerMusician  Float?
+  instrumentsNeeded  String[]
+  description        String?
+  isSosUrgent        Boolean   @default(false)
+  status             String    @default("open")
+  createdAt          DateTime  @default(now())
+
+  bookings           Booking[]
+  setlist            Setlist?
+}
+
+model Booking {
+  id               String        @id @default(uuid())
+  announcementId   String
+  announcement     Announcement  @relation(fields: [announcementId], references: [id])
+  talentId         String
+  talent           TalentProfile @relation(fields: [talentId], references: [id])
+  amount           Float
+  platformFee      Float         // 10% de amount
+  talentPayout     Float         // 90% de amount
+  status           BookingStatus @default(PENDING)
+  stripeIntentId   String?
+  escrowReleasedAt DateTime?
+  disputeReason    String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+}
+
+model Product {
+  id           String          @id @default(uuid())
+  name         String
+  brand        String?
+  category     ProductCategory
+  sourcePrice  Float           // Prix Thomann
+  ourPrice     Float           // Prix affiché (source + marge variable)
+  marginRate   Float           // ex: 0.15 pour 15%
+  thomannRef   String?
+  affiliateUrl String?
+  imageUrl     String?
+  description  String?
+  inStock      Boolean         @default(true)
+  createdAt    DateTime        @default(now())
+
+  orders       Order[]
+}
+
+model Order {
+  id              String      @id @default(uuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id])
+  productId       String
+  product         Product     @relation(fields: [productId], references: [id])
+  totalPaid       Float       // Ce que le client a payé
+  supplierCost    Float       // Ce qu'on paie à Thomann
+  ourMargin       Float       // totalPaid - supplierCost
+  status          OrderStatus @default(PAID)
+  shippingAddress Json
+  trackingNumber  String?
+  forwardedAt     DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model Setlist {
+  id             String        @id @default(uuid())
+  talentId       String
+  talent         TalentProfile @relation(fields: [talentId], references: [id])
+  announcementId String?       @unique
+  announcement   Announcement? @relation(fields: [announcementId], references: [id])
+  songTitles     String[]
+  partitionUrls  String[]
+  isShared       Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+}
+
+model Boost {
+  id        String        @id @default(uuid())
+  talentId  String
+  talent    TalentProfile @relation(fields: [talentId], references: [id])
+  amountPaid Float
+  startsAt  DateTime      @default(now())
+  expiresAt DateTime
+  createdAt DateTime      @default(now())
+}
+
+model Message {
+  id         String   @id @default(uuid())
+  senderId   String
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+  receiverId String
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  content    String
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
