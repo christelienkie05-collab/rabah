@@ -177,6 +177,14 @@ FRONTEND_URL=http://localhost:3000
 
 ## Commandes de Développement
 
+### Setup initial (Windows)
+```powershell
+# Clic droit sur setup-dev.ps1 → "Exécuter avec PowerShell"
+# OU dans PowerShell :
+.\setup-dev.ps1
+```
+Voir aussi `GUIDE_DEV_WINDOWS.md` pour le tutoriel complet.
+
 ### Backend
 ```bash
 cd backend
@@ -184,7 +192,7 @@ npm install
 npm run db:generate    # génère le client Prisma
 npm run db:migrate     # applique les migrations
 npm run db:studio      # ouvre Prisma Studio (UI DB)
-npm run dev            # démarrage avec nodemon
+npm run dev            # démarrage avec nodemon (port 3001)
 npm start              # production
 ```
 
@@ -192,7 +200,7 @@ npm start              # production
 ```bash
 cd mobile
 npm install
-npm start              # Expo dev server
+npm start              # Expo dev server + QR code
 npm run android        # émulateur Android
 npm run ios            # simulateur iOS
 npm run build:android  # EAS build Android
