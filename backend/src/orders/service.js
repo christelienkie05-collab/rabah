@@ -36,7 +36,7 @@ async function processOrder(orderId) {
     amount_to_supplier: order.supplierCost,
 
     // Référence interne
-    lyra-music_order_id: order.id,
+    "lyra-music_order_id": order.id,
     customer_email: order.user.email,
   };
 
@@ -88,9 +88,9 @@ async function processOrder(orderId) {
 /**
  * Mise à jour du numéro de suivi (appelé par webhook Thomann/Make.com retour)
  */
-async function updateTracking(lyra-musicOrderId, trackingNumber) {
+async function updateTracking(lyraOrderId, trackingNumber) {
   const order = await prisma.order.update({
-    where: { id: lyra-musicOrderId },
+    where: { id: lyraOrderId },
     data: { status: 'SHIPPED', trackingNumber },
     include: { user: true, product: true },
   });
