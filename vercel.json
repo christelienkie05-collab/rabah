@@ -14,11 +14,11 @@
   "crons": [
     {
       "path": "/api/cron/release-escrow",
-      "schedule": "0 * * * *"
+      "schedule": "0 6 * * *"
     },
     {
       "path": "/api/cron/expire-boosts",
-      "schedule": "0 0 * * *"
+      "schedule": "0 7 * * *"
     }
   ]
 }
