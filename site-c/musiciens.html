@@ -128,6 +128,7 @@ footer .links a:hover{color:var(--gold)}
   <button class="filter-btn" onclick="setFilter('batterie',this)">🥁 Batterie</button>
   <button class="filter-btn" onclick="setFilter('dj',this)">🎧 DJ</button>
   <button class="filter-btn" onclick="setFilter('danseur',this)">💃 Danse</button>
+  <button class="filter-btn" onclick="setFilter('autres',this)">✨ Autres</button>
 </div>
 
 <div class="feed-wrap">
@@ -209,7 +210,9 @@ function distLabel(km){
 
 function applyFilters(){
   const q=document.getElementById('search').value.toLowerCase();
+  const MAIN_CATS=['piano','guitare','chant','violon','saxophone','trompette','batterie','dj','danseur'];
   let list=TALENTS.filter(t=>{
+    if(activeFilter==='autres')return !MAIN_CATS.includes(t.cat);
     if(activeFilter!=='all'&&t.cat!==activeFilter)return false;
     if(q&&!t.name.toLowerCase().includes(q)&&!t.zone.toLowerCase().includes(q)&&!t.bio.toLowerCase().includes(q)&&!t.tags.join(' ').toLowerCase().includes(q))return false;
     return true;
