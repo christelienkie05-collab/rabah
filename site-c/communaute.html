@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Communauté — Lyra Music</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A84C;--gold-light:#E8C96A;--dark:#0D0D0D;--dark-2:#151515;--dark-3:#1E1E1E;--text:#F0EDE6;--muted:#8A8478;--border:rgba(201,168,76,0.18);--radius:12px;--danger:#e05555;--success:#4caf7d}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:rgba(13,13,13,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--gold);text-decoration:none;letter-spacing:.05em}
+.nav-links{display:flex;gap:28px}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-links a.active{color:var(--gold)}
+.nav-cta{background:var(--gold);color:var(--dark);padding:8px 20px;border-radius:6px;font-size:13px;font-weight:500;text-decoration:none;transition:background .2s;border:none;cursor:pointer}
+.nav-cta:hover{background:var(--gold-light)}
+@media(max-width:700px){.nav-links{display:none}.layout{grid-template-columns:1fr!important}}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:280px 1fr 260px;gap:28px;max-width:1160px;margin:0 auto;padding:90px 24px 80px}
+@media(max-width:1100px){.layout{grid-template-columns:1fr minmax(0,640px);}.sidebar-right{display:none}}
+@media(max-width:720px){.layout{grid-template-columns:1fr;padding:80px 16px 60px}}
+
+/* SIDEBAR GAUCHE */
+.sidebar-left{padding-top:12px}
+.profile-card{background:var(--dark-2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center;margin-bottom:16px}
+.avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8B5E28);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 12px}
+.profile-name{font-size:15px;font-weight:500;margin-bottom:4px}
+.profile-role{font-size:12px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase}
+.profile-stats{display:flex;justify-content:space-around;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.pstat{text-align:center}
+.pstat .n{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold)}
+.pstat .l{font-size:11px;color:var(--muted)}
+
+.nav-menu{background:var(--dark-2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.nav-menu a{display:flex;align-items:center;gap:12px;padding:13px 18px;color:var(--muted);text-decoration:none;font-size:14px;transition:all .2s;border-bottom:1px solid var(--border)}
+.nav-menu a:last-child{border-bottom:none}
+.nav-menu a:hover,.nav-menu a.active{background:rgba(201,168,76,0.06);color:var(--text)}
+.nav-menu a.active{color:var(--gold)}
+.nav-menu a .icon{font-size:16px;width:20px;text-align:center}
+
+/* FEED PRINCIPAL */
+.feed-col{min-width:0}
+
+.compose-box{background:var(--dark-2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+.compose-top{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}
+.compose-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8B5E28);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.compose-input{flex:1;background:var(--dark-3);border:1px solid var(--border);border-radius:8px;padding:12px 16px;color:var(--text);font-size:14px;resize:none;outline:none;min-height:56px;transition:border-color .2s;font-family:'DM Sans',sans-serif}
+.compose-input:focus{border-color:var(--gold)}
+.compose-input::placeholder{color:var(--muted)}
+.compose-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.compose-types{display:flex;gap:6px;flex-wrap:wrap}
+.type-pill{padding:5px 12px;border-radius:100px;font-size:11px;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:transparent;color:var(--muted)}
+.type-pill.selected,.type-pill:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.08)}
+.btn-post{background:var(--gold);color:var(--dark);padding:9px 22px;border-radius:7px;font-size:13px;font-weight:500;border:none;cursor:pointer;transition:background .2s;white-space:nowrap}
+.btn-post:hover{background:var(--gold-light)}
+
+/* FILTRES FEED */
+.feed-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.feed-filter{padding:6px 14px;border-radius:100px;font-size:12px;cursor:pointer;transition:all .2s;background:var(--dark-3);border:1px solid var(--border);color:var(--muted)}
+.feed-filter.active,.feed-filter:hover{background:var(--gold);border-color:var(--gold);color:var(--dark);font-weight:500}
+
+/* POST CARD */
+.post{background:var(--dark-2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;transition:border-color .2s}
+.post:hover{border-color:rgba(201,168,76,0.3)}
+.post-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.post-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.post-author{flex:1}
+.post-name{font-size:14px;font-weight:500;display:flex;align-items:center;gap:6px}
+.post-name .badge{font-size:10px;background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid var(--border);padding:1px 7px;border-radius:100px;letter-spacing:.06em;text-transform:uppercase}
+.post-meta{font-size:12px;color:var(--muted);margin-top:2px}
+.post-type-tag{font-size:11px;padding:3px 10px;border-radius:100px;font-weight:500;text-transform:uppercase;letter-spacing:.08em}
+.type-louange{background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid var(--border)}
+.type-temoignage{background:rgba(40,180,100,0.12);color:var(--success);border:1px solid rgba(40,180,100,0.3)}
+.type-priere{background:rgba(100,120,220,0.12);color:#8899ee;border:1px solid rgba(100,120,220,0.3)}
+.type-ressource{background:rgba(220,180,40,0.1);color:#d4a843;border:1px solid rgba(220,180,40,0.3)}
+.type-annonce{background:rgba(220,60,60,0.1);color:var(--danger);border:1px solid rgba(220,60,60,0.25)}
+
+.post-content{font-size:14px;line-height:1.75;color:var(--text);margin-bottom:16px;white-space:pre-wrap}
+.post-content .verse{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);font-style:italic;display:block;margin:8px 0;padding-left:14px;border-left:2px solid var(--gold)}
+.post-media{border-radius:8px;background:var(--dark-3);width:100%;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:16px;overflow:hidden}
+.post-media img{width:100%;height:100%;object-fit:cover}
+
+.post-actions{display:flex;align-items:center;gap:4px;padding-top:12px;border-top:1px solid var(--border)}
+.action-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:7px 12px;border-radius:7px;transition:all .2s;font-family:'DM Sans',sans-serif}
+.action-btn:hover{background:var(--dark-3);color:var(--text)}
+.action-btn.liked{color:#e05555}
+.action-btn.prayed{color:#8899ee}
+.action-btn.shared{color:var(--success)}
+
+/* SIDEBAR DROITE */
+.sidebar-right{padding-top:12px}
+.widget{background:var(--dark-2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.widget-title{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.member-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.member-row:last-child{border-bottom:none}
+.member-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.member-info .name{font-size:13px;font-weight:500}
+.member-info .role{font-size:11px;color:var(--muted)}
+.member-follow{background:rgba(201,168,76,0.1);border:1px solid var(--border);color:var(--gold);font-size:11px;padding:3px 10px;border-radius:100px;cursor:pointer;transition:all .2s;border:none}
+.member-follow:hover{background:var(--gold);color:var(--dark)}
+
+.trending-item{padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.trending-item:last-child{border-bottom:none}
+.trending-item:hover .trending-tag{color:var(--gold-light)}
+.trending-tag{font-size:13px;font-weight:500;color:var(--gold)}
+.trending-count{font-size:11px;color:var(--muted);margin-top:2px}
+
+.btn-full{display:block;text-align:center;background:rgba(201,168,76,0.08);border:1px solid var(--border);color:var(--gold);padding:10px;border-radius:8px;font-size:13px;cursor:pointer;transition:all .2s;text-decoration:none;margin-top:14px}
+.btn-full:hover{background:rgba(201,168,76,0.16)}
+
+/* MODAL PUBLICATION */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--dark-2);border:1px solid var(--border);border-radius:16px;max-width:520px;width:100%;overflow:hidden}
+.modal-header{padding:24px 28px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:22px}
+.modal-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer}
+.modal-body{padding:24px 28px 28px}
+.type-selector{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.type-opt{padding:7px 14px;border-radius:100px;font-size:12px;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .2s}
+.type-opt.selected{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.08)}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+.form-group textarea,.form-group input{width:100%;background:var(--dark-3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;color:var(--text);font-size:14px;outline:none;font-family:'DM Sans',sans-serif;resize:none;transition:border-color .2s}
+.form-group textarea:focus,.form-group input:focus{border-color:var(--gold)}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end}
+.btn-cancel{background:transparent;border:1px solid var(--border);color:var(--muted);padding:10px 20px;border-radius:7px;font-size:13px;cursor:pointer}
+.btn-publish{background:var(--gold);color:var(--dark);padding:10px 24px;border-radius:7px;font-size:13px;font-weight:500;border:none;cursor:pointer;transition:background .2s}
+.btn-publish:hover{background:var(--gold-light)}
+
+footer{background:var(--dark-2);border-top:1px solid var(--border);padding:40px;text-align:center}
+footer .logo{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold);margin-bottom:10px}
+footer p{color:var(--muted);font-size:13px;line-height:1.8}
+footer .links{display:flex;gap:20px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+footer .links a{color:var(--muted);text-decoration:none;font-size:13px;transition:color .2s}
+footer .links a:hover{color:var(--gold)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Lyra Music</a>
+  <div class="nav-links">
+    <a href="musiciens.html">Musiciens</a>
+    <a href="evenements.html">Événements</a>
+    <a href="boutique.html">Boutique</a>
+    <a href="communaute.html" class="active">Communauté</a>
+  </div>
+  <button class="nav-cta" onclick="openModal()">+ Publier</button>
+</nav>
+
+<div class="layout">
+
+  <!-- SIDEBAR GAUCHE -->
+  <aside class="sidebar-left">
+    <div class="profile-card">
+      <div class="avatar">🎹</div>
+      <div class="profile-name">Christ-Elie</div>
+      <div class="profile-role">Pianiste · Paris</div>
+      <div class="profile-stats">
+        <div class="pstat"><div class="n">47</div><div class="l">Publications</div></div>
+        <div class="pstat"><div class="n">312</div><div class="l">Abonnés</div></div>
+        <div class="pstat"><div class="n">198</div><div class="l">Abonnements</div></div>
+      </div>
+    </div>
+
+    <nav class="nav-menu">
+      <a href="#" class="active"><span class="icon">🏠</span> Fil d'actualité</a>
+      <a href="musiciens.html"><span class="icon">🎵</span> Musiciens</a>
+      <a href="evenements.html"><span class="icon">📅</span> Événements</a>
+      <a href="#"><span class="icon">🙏</span> Prières</a>
+      <a href="#"><span class="icon">📖</span> Ressources</a>
+      <a href="boutique.html"><span class="icon">🎸</span> Boutique</a>
+    </nav>
+  </aside>
+
+  <!-- FEED PRINCIPAL -->
+  <main class="feed-col">
+
+    <!-- Composer -->
+    <div class="compose-box">
+      <div class="compose-top">
+        <div class="compose-avatar">🎹</div>
+        <textarea class="compose-input" id="compose-text" placeholder="Partagez une louange, un témoignage, une demande de prière…" rows="2" onclick="openModal()"></textarea>
+      </div>
+      <div class="compose-bottom">
+        <div class="compose-types">
+          <button class="type-pill" onclick="openModal('Louange')">🎶 Louange</button>
+          <button class="type-pill" onclick="openModal('Témoignage')">✨ Témoignage</button>
+          <button class="type-pill" onclick="openModal('Prière')">🙏 Prière</button>
+          <button class="type-pill" onclick="openModal('Ressource')">📖 Ressource</button>
+        </div>
+        <button class="btn-post" onclick="openModal()">Publier</button>
+      </div>
+    </div>
+
+    <!-- Filtres -->
+    <div class="feed-filters">
+      <button class="feed-filter active" onclick="filterFeed('all',this)">Tout</button>
+      <button class="feed-filter" onclick="filterFeed('Louange',this)">🎶 Louanges</button>
+      <button class="feed-filter" onclick="filterFeed('Témoignage',this)">✨ Témoignages</button>
+      <button class="feed-filter" onclick="filterFeed('Prière',this)">🙏 Prières</button>
+      <button class="feed-filter" onclick="filterFeed('Ressource',this)">📖 Ressources</button>
+      <button class="feed-filter" onclick="filterFeed('Annonce',this)">📣 Annonces</button>
+    </div>
+
+    <!-- Posts -->
+    <div id="posts-feed"></div>
+  </main>
+
+  <!-- SIDEBAR DROITE -->
+  <aside class="sidebar-right">
+
+    <div class="widget">
+      <div class="widget-title">Membres actifs</div>
+      <div class="member-row">
+        <div class="member-av" style="background:linear-gradient(135deg,#C9A84C,#8B5E28)">🎹</div>
+        <div class="member-info" style="flex:1"><div class="name">Samuel K.</div><div class="role">Pianiste · Paris</div></div>
+        <button class="member-follow">+ Suivre</button>
+      </div>
+      <div class="member-row">
+        <div class="member-av" style="background:linear-gradient(135deg,#4caf7d,#2d7a56)">🎤</div>
+        <div class="member-info" style="flex:1"><div class="name">Grace M.</div><div class="role">Chanteuse · Lyon</div></div>
+        <button class="member-follow">+ Suivre</button>
+      </div>
+      <div class="member-row">
+        <div class="member-av" style="background:linear-gradient(135deg,#8899ee,#4455aa)">🎷</div>
+        <div class="member-info" style="flex:1"><div class="name">Nathan B.</div><div class="role">Saxophone · Bordeaux</div></div>
+        <button class="member-follow">+ Suivre</button>
+      </div>
+      <div class="member-row">
+        <div class="member-av" style="background:linear-gradient(135deg,#e05555,#a03333)">🥁</div>
+        <div class="member-info" style="flex:1"><div class="name">Joël F.</div><div class="role">Batteur · Marseille</div></div>
+        <button class="member-follow">+ Suivre</button>
+      </div>
+      <a class="btn-full" href="musiciens.html">Voir tous les musiciens →</a>
+    </div>
+
+    <div class="widget">
+      <div class="widget-title">Tendances</div>
+      <div class="trending-item">
+        <div class="trending-tag">#GospelFrancophone</div>
+        <div class="trending-count">142 publications</div>
+      </div>
+      <div class="trending-item">
+        <div class="trending-tag">#Worship</div>
+        <div class="trending-count">98 publications</div>
+      </div>
+      <div class="trending-item">
+        <div class="trending-tag">#Mariage2025</div>
+        <div class="trending-count">67 publications</div>
+      </div>
+      <div class="trending-item">
+        <div class="trending-tag">#SOSMission</div>
+        <div class="trending-count">31 publications</div>
+      </div>
+      <div class="trending-item">
+        <div class="trending-tag">#PianoGospel</div>
+        <div class="trending-count">55 publications</div>
+      </div>
+    </div>
+
+    <div class="widget">
+      <div class="widget-title">Verset du jour</div>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:16px;line-height:1.7;color:var(--text);font-style:italic">"Chantez à l'Éternel un cantique nouveau, car il a fait des merveilles."</p>
+      <p style="font-size:12px;color:var(--gold);margin-top:8px">— Psaume 98:1</p>
+    </div>
+
+  </aside>
+</div>
+
+<!-- Modal publication -->
+<div class="modal-overlay" id="post-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Nouvelle publication</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="type-selector" id="type-selector">
+        <button class="type-opt selected" onclick="selectType('Louange',this)">🎶 Louange</button>
+        <button class="type-opt" onclick="selectType('Témoignage',this)">✨ Témoignage</button>
+        <button class="type-opt" onclick="selectType('Prière',this)">🙏 Prière</button>
+        <button class="type-opt" onclick="selectType('Ressource',this)">📖 Ressource</button>
+        <button class="type-opt" onclick="selectType('Annonce',this)">📣 Annonce</button>
+      </div>
+      <div class="form-group">
+        <textarea id="post-content" rows="5" placeholder="Écrivez votre message…"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Verset biblique (optionnel)</label>
+        <input type="text" id="post-verse" placeholder="Ex : Psaume 150:1 — Louez l'Éternel !">
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+        <button class="btn-publish" onclick="publishPost()">Publier</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="logo">Lyra Music</div>
+  <p>Le réseau social des musiciens chrétiens francophones.</p>
+  <div class="links">
+    <a href="index.html">Accueil</a>
+    <a href="musiciens.html">Musiciens</a>
+    <a href="evenements.html">Événements</a>
+    <a href="mailto:levitiquepianoschool@gmail.com">Contact</a>
+  </div>
+  <p style="margin-top:20px;font-size:11px;opacity:.4">© 2025 Lyra Music</p>
+</footer>
+
+<script>
+const POSTS=[
+  {id:1,author:'Samuel K.',role:'Pianiste · Paris',avatar:'🎹',avatarBg:'linear-gradient(135deg,#C9A84C,#8B5E28)',type:'Louange',time:'il y a 2h',content:'Gloire à Dieu pour ce dimanche de louange ! On a joué pendant 2h avec l\'équipe et la présence était palpable. Rien de tel que de se donner entièrement à l\'adoration.\n\nMerci à toute l\'équipe de l\'église de Versailles 🙏',verse:'Que tout ce qui respire loue l\'Éternel ! — Psaume 150:6',likes:34,comments:8,prayers:12},
+  {id:2,author:'Grace M.',role:'Chanteuse · Lyon',avatar:'🎤',avatarBg:'linear-gradient(135deg,#4caf7d,#2d7a56)',type:'Témoignage',time:'il y a 5h',content:'Je voulais partager un témoignage incroyable. Il y a 3 mois je cherchais désespérément une mission pour payer mon loyer. J\'ai posté sur Lyra Music un vendredi soir et dès le samedi matin j\'avais 3 demandes !\n\nDieu pourvoit toujours. Ne lâchez pas.',verse:null,likes:89,comments:21,prayers:44},
+  {id:3,author:'Pasteur David A.',role:'Administrateur · Paris 93',avatar:'📖',avatarBg:'linear-gradient(135deg,#8899ee,#4455aa)',type:'Ressource',time:'il y a 1j',content:'Je partage cette série sur la louange dans le Nouveau Testament. Très enrichissant pour comprendre pourquoi nous louons, pas seulement comment.\n\n📚 "La Théologie de la Louange" — disponible en téléchargement gratuit sur notre site.',verse:'Adorez le Seigneur en tenue sacrée. — 1 Chroniques 16:29',likes:56,comments:14,prayers:7},
+  {id:4,author:'Miriam T.',role:'Danseuse · Paris',avatar:'💃',avatarBg:'linear-gradient(135deg,#e05555,#a03333)',type:'Annonce',time:'il y a 2j',content:'🎉 ATELIER DANSE PROPHÉTIQUE — Paris 75\n\nJe propose un atelier de danse prophétique le samedi 19 avril à Paris. Ouvert à tous les niveaux, aucune expérience requise.\n\nInscriptions via WhatsApp. Places limitées à 15 personnes.',verse:null,likes:43,comments:17,prayers:5},
+  {id:5,author:'Nathan B.',role:'Saxophoniste · Bordeaux',avatar:'🎷',avatarBg:'linear-gradient(135deg,#C9A84C,#5a3e1b)',type:'Prière',time:'il y a 3j',content:'Frères et sœurs, j\'ai besoin de vos prières. Je traverse une période difficile dans ma vie professionnelle et personnelle. Je sais que l\'Éternel est fidèle mais mon cœur est lourd ce soir.\n\nMerci de vous souvenir de moi dans vos prières. 🙏',verse:null,likes:12,comments:31,prayers:98},
+  {id:6,author:'Ezra K.',role:'DJ · Strasbourg',avatar:'🎧',avatarBg:'linear-gradient(135deg,#4caf7d,#1a5c35)',type:'Louange',time:'il y a 4j',content:'Incroyable soirée gospel à Strasbourg hier soir ! La salle était pleine, les gens adoraient, et Dieu était glorifié.\n\nSi vous voulez les mixes de la soirée, envoyez-moi un message privé. Je les partage gratuitement avec la communauté 🎶',verse:'Louez-le avec les cymbales sonores, avec les cymbales retentissantes ! — Psaume 150:5',likes:71,comments:19,prayers:23},
+];
+
+const TYPE_CLASS={Louange:'type-louange',Témoignage:'type-temoignage',Prière:'type-priere',Ressource:'type-ressource',Annonce:'type-annonce'};
+const TYPE_EMOJI={Louange:'🎶',Témoignage:'✨',Prière:'🙏',Ressource:'📖',Annonce:'📣'};
+let activeFilter='all', selectedType='Louange';
+let localPosts=[];
+
+function renderPosts(){
+  const filter=activeFilter;
+  let list=[...localPosts,...POSTS].filter(p=>filter==='all'||p.type===filter);
+  const feed=document.getElementById('posts-feed');
+  feed.innerHTML=list.map(p=>postHTML(p)).join('');
+}
+
+function postHTML(p){
+  return`<div class="post" id="post-${p.id}">
+    <div class="post-header">
+      <div class="post-avatar" style="background:${p.avatarBg}">${p.avatar}</div>
+      <div class="post-author">
+        <div class="post-name">${p.author} <span class="post-type-tag ${TYPE_CLASS[p.type]}">${TYPE_EMOJI[p.type]} ${p.type}</span></div>
+        <div class="post-meta">${p.role} · ${p.time}</div>
+      </div>
+    </div>
+    <div class="post-content">${escHtml(p.content)}${p.verse?`\n<span class="verse">${escHtml(p.verse)}</span>`:''}</div>
+    <div class="post-actions">
+      <button class="action-btn" onclick="like(${p.id},this)">❤️ <span>${p.likes}</span></button>
+      <button class="action-btn" onclick="pray(${p.id},this)">🙏 <span>${p.prayers}</span> Prier</button>
+      <button class="action-btn">💬 <span>${p.comments}</span> Réponses</button>
+      <button class="action-btn" onclick="share(${p.id},this)">↗ Partager</button>
+    </div>
+  </div>`;
+}
+
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function like(id,btn){
+  btn.classList.toggle('liked');
+  const span=btn.querySelector('span');
+  const n=parseInt(span.textContent);
+  span.textContent=btn.classList.contains('liked')?n+1:n-1;
+}
+function pray(id,btn){
+  btn.classList.toggle('prayed');
+  const span=btn.querySelector('span');
+  const n=parseInt(span.textContent);
+  span.textContent=btn.classList.contains('prayed')?n+1:n-1;
+}
+function share(id,btn){
+  btn.classList.add('shared');btn.textContent='✓ Partagé';
+  setTimeout(()=>{btn.classList.remove('shared');btn.innerHTML='↗ Partager';},2000);
+}
+
+function filterFeed(f,btn){
+  activeFilter=f;
+  document.querySelectorAll('.feed-filter').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPosts();
+}
+
+let modalOpen=false;
+function openModal(type){
+  if(type)selectType(type,null);
+  document.getElementById('post-modal').classList.add('open');
+}
+function closeModal(){document.getElementById('post-modal').classList.remove('open');}
+document.getElementById('post-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
+
+function selectType(type,btn){
+  selectedType=type;
+  document.querySelectorAll('.type-opt').forEach(b=>b.classList.remove('selected'));
+  if(btn)btn.classList.add('selected');
+  else{
+    document.querySelectorAll('.type-opt').forEach(b=>{if(b.textContent.includes(type))b.classList.add('selected');});
+  }
+}
+
+function publishPost(){
+  const content=document.getElementById('post-content').value.trim();
+  if(!content){document.getElementById('post-content').focus();return;}
+  const verse=document.getElementById('post-verse').value.trim();
+  const newPost={
+    id:Date.now(),author:'Vous',role:'Membre · Lyra Music',
+    avatar:'🎵',avatarBg:'linear-gradient(135deg,#C9A84C,#8B5E28)',
+    type:selectedType,time:'À l\'instant',
+    content,verse:verse||null,likes:0,comments:0,prayers:0
+  };
+  localPosts.unshift(newPost);
+  document.getElementById('post-content').value='';
+  document.getElementById('post-verse').value='';
+  closeModal();
+  renderPosts();
+}
+
+// Suivre
+document.querySelectorAll('.member-follow').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    if(this.textContent==='+ Suivre'){this.textContent='✓ Suivi';this.style.background='rgba(76,175,125,0.15)';this.style.color='#4caf7d';}
+    else{this.textContent='+ Suivre';this.style.background='';this.style.color='';}
+  });
+});
+
+renderPosts();
+</script>
+</body>
+</html>

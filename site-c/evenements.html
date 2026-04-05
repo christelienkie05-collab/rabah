@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Événements — Lyra Music</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A84C;--gold-light:#E8C96A;--dark:#0D0D0D;--dark-2:#151515;--dark-3:#1E1E1E;--text:#F0EDE6;--muted:#8A8478;--border:rgba(201,168,76,0.18);--radius:12px;--danger:#e05555;--success:#4caf7d}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:rgba(13,13,13,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--gold);text-decoration:none;letter-spacing:.05em}
+.nav-links{display:flex;gap:28px}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-links a.active{color:var(--gold)}
+.nav-cta{background:var(--gold);color:var(--dark);padding:8px 20px;border-radius:6px;font-size:13px;font-weight:500;text-decoration:none;transition:background .2s;border:none;cursor:pointer}
+.nav-cta:hover{background:var(--gold-light)}
+@media(max-width:700px){.nav-links{display:none}}
+
+.page-header{padding:100px 40px 32px;max-width:1200px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.page-header-text h1{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,5vw,56px);font-weight:300;margin-bottom:10px}
+.page-header-text h1 em{color:var(--gold);font-style:normal}
+.page-header-text p{color:var(--muted);font-size:15px;max-width:480px;line-height:1.7}
+
+.toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:0 40px 24px;max-width:1200px;margin:0 auto}
+.search-box{flex:1;min-width:200px;position:relative}
+.search-box input{width:100%;background:var(--dark-2);border:1px solid var(--border);border-radius:8px;padding:10px 16px 10px 40px;color:var(--text);font-size:14px;outline:none;transition:border-color .2s}
+.search-box input:focus{border-color:var(--gold)}
+.search-box input::placeholder{color:var(--muted)}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px}
+.btn-geo{display:flex;align-items:center;gap:7px;background:var(--dark-3);border:1px solid var(--border);color:var(--muted);padding:10px 16px;border-radius:8px;font-size:13px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn-geo:hover{border-color:var(--gold);color:var(--gold)}
+.btn-geo.active{background:rgba(201,168,76,0.12);border-color:var(--gold);color:var(--gold)}
+
+.filters{display:flex;gap:8px;flex-wrap:wrap;padding:0 40px 32px;max-width:1200px;margin:0 auto}
+.filter-btn{padding:7px 16px;border-radius:100px;font-size:12px;cursor:pointer;transition:all .2s;background:var(--dark-3);border:1px solid var(--border);color:var(--muted)}
+.filter-btn.active,.filter-btn:hover{background:var(--gold);border-color:var(--gold);color:var(--dark);font-weight:500}
+.filter-btn.sos-btn{border-color:rgba(220,60,60,0.4);color:var(--danger)}
+.filter-btn.sos-btn.active{background:var(--danger);border-color:var(--danger);color:#fff}
+
+.feed-wrap{padding:0 40px 80px;max-width:1200px;margin:0 auto}
+.feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
+@media(max-width:800px){.feed{grid-template-columns:1fr}}
+@media(max-width:600px){.page-header,.toolbar,.filters,.feed-wrap{padding-left:20px;padding-right:20px}}
+
+.ev-card{background:var(--dark-2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:border-color .25s,transform .25s;cursor:pointer;position:relative}
+.ev-card:hover{border-color:rgba(201,168,76,0.5);transform:translateY(-2px)}
+.ev-card.sos-card{border-color:rgba(220,60,60,0.4)}
+.ev-card.sos-card:hover{border-color:var(--danger)}
+.ev-sos-banner{position:absolute;top:0;left:0;right:0;background:rgba(220,60,60,0.12);border-bottom:1px solid rgba(220,60,60,0.3);padding:7px 16px;border-radius:var(--radius) var(--radius) 0 0;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--danger);font-weight:500}
+.ev-body{padding-top:0}
+.ev-card.sos-card .ev-body{padding-top:36px}
+.ev-type{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.ev-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;margin-bottom:6px;line-height:1.3}
+.ev-meta{font-size:13px;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ev-meta span{display:flex;align-items:center;gap:4px}
+.dist-badge{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid var(--border);padding:2px 8px;border-radius:100px;font-size:11px}
+.ev-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+.tag{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid var(--border);padding:3px 9px;border-radius:100px;font-size:11px}
+.ev-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.ev-budget{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold)}
+.ev-budget span{font-size:13px;font-family:'DM Sans',sans-serif;color:var(--muted)}
+.btn-postuler{background:var(--gold);color:var(--dark);border:none;padding:9px 20px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;text-decoration:none;transition:background .2s;white-space:nowrap}
+.btn-postuler:hover{background:var(--gold-light)}
+.btn-postuler.urgent{background:var(--danger);color:#fff}
+.btn-postuler.urgent:hover{background:#c0392b}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--dark-2);border:1px solid var(--border);border-radius:16px;max-width:540px;width:100%;padding:0;overflow:hidden;position:relative}
+.modal-header{padding:28px 32px 20px;border-bottom:1px solid var(--border)}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer}
+.modal-body{padding:24px 32px 32px}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--dark-3);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);font-size:14px;outline:none;transition:border-color .2s;font-family:'DM Sans',sans-serif}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold)}
+.form-group select option{background:var(--dark-3)}
+.sos-toggle{display:flex;align-items:center;gap:12px;background:rgba(220,60,60,0.08);border:1px solid rgba(220,60,60,0.25);border-radius:8px;padding:12px 16px;cursor:pointer}
+.sos-toggle input[type=checkbox]{accent-color:var(--danger);width:16px;height:16px;cursor:pointer}
+.sos-toggle-label{font-size:13px;color:var(--text)}
+.sos-toggle-label span{color:var(--danger);font-weight:500}
+.modal-actions{display:flex;gap:10px;flex-direction:column;margin-top:8px}
+.modal-actions a,.btn-submit{display:flex;align-items:center;gap:10px;padding:13px 18px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;transition:all .2s;border:none;cursor:pointer;justify-content:center}
+.modal-wa{background:rgba(37,211,102,0.12);border:1px solid rgba(37,211,102,0.3);color:#25d366}
+.modal-wa:hover{background:rgba(37,211,102,0.2)}
+.btn-submit{background:var(--gold);color:var(--dark)}
+.btn-submit:hover{background:var(--gold-light)}
+
+.empty{text-align:center;padding:80px 24px;color:var(--muted)}
+.empty h3{font-family:'Cormorant Garamond',serif;font-size:28px;margin-bottom:8px;color:var(--text)}
+
+.btn-primary{background:var(--gold);color:var(--dark);padding:11px 24px;border-radius:8px;font-size:14px;font-weight:500;text-decoration:none;border:none;cursor:pointer;transition:all .2s}
+.btn-primary:hover{background:var(--gold-light)}
+
+footer{background:var(--dark-2);border-top:1px solid var(--border);padding:40px;text-align:center}
+footer .logo{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold);margin-bottom:10px}
+footer p{color:var(--muted);font-size:13px;line-height:1.8}
+footer .links{display:flex;gap:20px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+footer .links a{color:var(--muted);text-decoration:none;font-size:13px;transition:color .2s}
+footer .links a:hover{color:var(--gold)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Lyra Music</a>
+  <div class="nav-links">
+    <a href="musiciens.html">Musiciens</a>
+    <a href="evenements.html" class="active">Événements</a>
+    <a href="boutique.html">Boutique</a>
+    <a href="communaute.html">Communauté</a>
+  </div>
+  <button class="nav-cta" onclick="openPublish()">+ Publier</button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-text">
+    <h1>Missions &<br><em>événements</em></h1>
+    <p>Mariages, cultes, galas, concerts — trouvez le talent qu'il vous faut ou postulez à une mission.</p>
+  </div>
+  <button class="btn-primary" onclick="openPublish()">+ Publier une annonce</button>
+</div>
+
+<div class="toolbar">
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search" placeholder="Titre, ville, instrument…" oninput="applyFilters()">
+  </div>
+  <button class="btn-geo" id="btn-geo" onclick="activerProximite()">📍 Autour de moi</button>
+</div>
+
+<div class="filters">
+  <button class="filter-btn active" onclick="setFilter('all',this)">Toutes</button>
+  <button class="filter-btn" onclick="setFilter('MARIAGE',this)">💍 Mariage</button>
+  <button class="filter-btn" onclick="setFilter('EGLISE',this)">⛪ Église</button>
+  <button class="filter-btn" onclick="setFilter('GALA',this)">🏆 Gala</button>
+  <button class="filter-btn" onclick="setFilter('CONCERT',this)">🎶 Concert</button>
+  <button class="filter-btn" onclick="setFilter('ANNIVERSAIRE',this)">🎂 Anniversaire</button>
+  <button class="filter-btn sos-btn" onclick="toggleSos(this)">🚨 SOS Urgence</button>
+</div>
+
+<div class="feed-wrap">
+  <div class="feed" id="feed"></div>
+  <div class="empty" id="empty" style="display:none">
+    <h3>Aucune annonce trouvée</h3>
+    <p>Soyez le premier à publier une annonce dans cette catégorie.</p>
+    <br>
+    <button class="btn-primary" onclick="openPublish()">+ Publier une annonce</button>
+  </div>
+</div>
+
+<!-- Modal publier -->
+<div class="modal-overlay" id="publish-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closePublish()">✕</button>
+      <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px">Nouvelle annonce</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:24px">Trouvez votre musicien</div>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Titre de l'annonce</label>
+        <input type="text" id="f-titre" placeholder="Ex : Pianiste pour mariage à Paris">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="form-group">
+          <label>Type d'événement</label>
+          <select id="f-type">
+            <option value="MARIAGE">Mariage</option>
+            <option value="EGLISE">Église / Culte</option>
+            <option value="GALA">Gala</option>
+            <option value="CONCERT">Concert</option>
+            <option value="ANNIVERSAIRE">Anniversaire</option>
+            <option value="PERSONNALISE">Autre</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="f-date">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Ville / Lieu</label>
+        <input type="text" id="f-lieu" placeholder="Ex : Paris 16e, Lyon, Versailles…">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="form-group">
+          <label>Budget par musicien (€)</label>
+          <input type="number" id="f-budget" placeholder="150">
+        </div>
+        <div class="form-group">
+          <label>Instruments recherchés</label>
+          <input type="text" id="f-instruments" placeholder="Piano, Guitare…">
+        </div>
+      </div>
+      <label class="sos-toggle">
+        <input type="checkbox" id="f-sos">
+        <div class="sos-toggle-label"><span>🚨 SOS Urgence</span> — Mission dans moins de 48h</div>
+      </label>
+      <div class="modal-actions" style="margin-top:20px">
+        <a id="wa-link" href="#" class="modal-wa" target="_blank" onclick="submitViaWA(event)">
+          <span>💬</span> Publier via WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="logo">Lyra Music</div>
+  <p>La marketplace des musiciens chrétiens francophones.</p>
+  <div class="links">
+    <a href="index.html">Accueil</a>
+    <a href="musiciens.html">Musiciens</a>
+    <a href="communaute.html">Communauté</a>
+    <a href="mailto:levitiquepianoschool@gmail.com">Contact</a>
+    <a href="https://instagram.com/levitique_piano_school" target="_blank">Instagram</a>
+    <a href="https://wa.me/33651426961" target="_blank">WhatsApp</a>
+  </div>
+  <p style="margin-top:20px;font-size:11px;opacity:.4">© 2025 Lyra Music</p>
+</footer>
+
+<script>
+const CITY_COORDS={
+  'paris':[48.8566,2.3522],'paris 75':[48.8566,2.3522],'paris 93':[48.9142,2.3553],
+  'paris 92':[48.8924,2.2372],'paris 94':[48.7803,2.4568],'paris 16':[48.8637,2.2769],
+  'versailles':[48.8014,2.1301],'lyon':[45.7640,4.8357],'marseille':[43.2965,5.3698],
+  'bordeaux':[44.8378,-0.5792],'toulouse':[43.6047,1.4442],'nice':[43.7102,7.2620],
+  'strasbourg':[48.5734,7.7521],'nantes':[47.2184,-1.5536],'montpellier':[43.6119,3.8772],
+  'lille':[50.6292,3.0573],'grenoble':[45.1885,5.7245],'rennes':[48.1147,-1.6794],
+};
+
+const ANNONCES=[
+  {id:1,titre:'Pianiste pour mariage',type:'MARIAGE',date:'15 juin 2025',lieu:'Paris 16e',budget:150,sos:true,instruments:['Piano'],desc:'Cérémonie + cocktail, 4h de prestation.'},
+  {id:2,titre:'Groupe de louange — culte dominical',type:'EGLISE',date:'Tous les dimanches',lieu:'Versailles',budget:80,sos:false,instruments:['Piano','Guitare','Batterie'],desc:'Église évangélique, 150 membres.'},
+  {id:3,titre:'DJ Gospel — Gala annuel',type:'GALA',date:'28 nov. 2025',lieu:'Lyon',budget:300,sos:false,instruments:['DJ'],desc:'Soirée de gala 200 personnes.'},
+  {id:4,titre:'Violoniste pour cérémonie',type:'MARIAGE',date:'12 juil. 2025',lieu:'Paris 92',budget:200,sos:false,instruments:['Violon'],desc:'Cérémonie en plein air.'},
+  {id:5,titre:'Choriste pour enregistrement',type:'CONCERT',date:'30 avr. 2025',lieu:'Lyon',budget:120,sos:false,instruments:['Chant'],desc:'Studio d\'enregistrement, 2 sessions.'},
+  {id:6,titre:'Groupe complet — concert gospel',type:'CONCERT',date:'8 mars 2025',lieu:'Marseille',budget:500,sos:false,instruments:['Piano','Guitare','Batterie','Chant','Basse'],desc:'Concert de gospel évangile, salle de 500 places.'},
+  {id:7,titre:'Saxophoniste URGENT — anniversaire',type:'ANNIVERSAIRE',date:'Demain',lieu:'Paris 75',budget:180,sos:true,instruments:['Saxophone'],desc:'Anniversaire surprise, ambiance jazz gospel.'},
+];
+
+const TYPE_EMOJI={MARIAGE:'💍',EGLISE:'⛪',GALA:'🏆',CONCERT:'🎶',ANNIVERSAIRE:'🎂',PERSONNALISE:'✨'};
+let activeFilter='all', sosOnly=false, userPos=null, proximityOn=false;
+
+function haversine(la1,lo1,la2,lo2){
+  const R=6371,dLa=(la2-la1)*Math.PI/180,dLo=(lo2-lo1)*Math.PI/180;
+  const a=Math.sin(dLa/2)**2+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dLo/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+function getCoords(lieu){
+  const k=lieu.toLowerCase();
+  for(const[city,c]of Object.entries(CITY_COORDS)){if(k.includes(city))return c;}
+  return null;
+}
+function distLabel(km){return km<10?Math.round(km)+' km':Math.round(km/10)*10+' km';}
+
+function applyFilters(){
+  const q=document.getElementById('search').value.toLowerCase();
+  let list=ANNONCES.filter(a=>{
+    if(activeFilter!=='all'&&a.type!==activeFilter)return false;
+    if(sosOnly&&!a.sos)return false;
+    if(q&&!a.titre.toLowerCase().includes(q)&&!a.lieu.toLowerCase().includes(q)&&!a.instruments.join(' ').toLowerCase().includes(q))return false;
+    return true;
+  });
+
+  if(proximityOn&&userPos){
+    list=list.map(a=>{
+      const c=getCoords(a.lieu);
+      return{...a,dist:c?haversine(userPos.lat,userPos.lng,c[0],c[1]):9999};
+    }).sort((a,b)=>{
+      if(a.sos!==b.sos)return b.sos-a.sos;
+      return a.dist-b.dist;
+    });
+  } else {
+    list=list.sort((a,b)=>b.sos-a.sos);
+  }
+
+  const feed=document.getElementById('feed');
+  if(!list.length){feed.innerHTML='';document.getElementById('empty').style.display='block';return;}
+  document.getElementById('empty').style.display='none';
+  feed.innerHTML=list.map(a=>card(a)).join('');
+}
+
+function card(a){
+  const distBadge=a.dist!=null&&a.dist<9999?`<span class="dist-badge">📍 ${distLabel(a.dist)}</span>`:'';
+  return`<div class="ev-card${a.sos?' sos-card':''}">
+    ${a.sos?`<div class="ev-sos-banner">🚨 SOS Urgence — Mission dans moins de 48h</div>`:''}
+    <div class="ev-body">
+      <div class="ev-type">${TYPE_EMOJI[a.type]||'✨'} ${a.type}</div>
+      <div class="ev-title">${a.titre}</div>
+      <div class="ev-meta">
+        <span>📅 ${a.date}</span>
+        <span>📍 ${a.lieu} ${distBadge}</span>
+      </div>
+      <div class="ev-tags">${a.instruments.map(i=>`<span class="tag">${i}</span>`).join('')}</div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.5">${a.desc}</p>
+      <div class="ev-footer">
+        <div class="ev-budget">~${a.budget}€ <span>/ musicien</span></div>
+        <a class="btn-postuler${a.sos?' urgent':''}" href="https://wa.me/33651426961?text=Je suis intéressé par l'annonce : ${encodeURIComponent(a.titre)} (${a.lieu})" target="_blank">${a.sos?'🚨 Postuler':'Postuler'}</a>
+      </div>
+    </div>
+  </div>`;
+}
+
+function setFilter(f,btn){
+  activeFilter=f;
+  document.querySelectorAll('.filter-btn:not(.sos-btn)').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function toggleSos(btn){
+  sosOnly=!sosOnly;
+  btn.classList.toggle('active',sosOnly);
+  applyFilters();
+}
+
+function activerProximite(){
+  if(!navigator.geolocation){alert('Géolocalisation non supportée.');return;}
+  const btn=document.getElementById('btn-geo');
+  btn.textContent='📍 Localisation…';
+  navigator.geolocation.getCurrentPosition(pos=>{
+    userPos={lat:pos.coords.latitude,lng:pos.coords.longitude};
+    proximityOn=true;
+    btn.textContent='📍 Autour de moi ✓';
+    btn.classList.add('active');
+    applyFilters();
+  },()=>{
+    btn.textContent='📍 Autour de moi';
+    alert('Impossible d\'accéder à votre position.');
+  });
+}
+
+function openPublish(){document.getElementById('publish-modal').classList.add('open');}
+function closePublish(){document.getElementById('publish-modal').classList.remove('open');}
+document.getElementById('publish-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closePublish();});
+
+function submitViaWA(e){
+  e.preventDefault();
+  const titre=document.getElementById('f-titre').value||'(sans titre)';
+  const type=document.getElementById('f-type').value;
+  const date=document.getElementById('f-date').value||'date à préciser';
+  const lieu=document.getElementById('f-lieu').value||'lieu à préciser';
+  const budget=document.getElementById('f-budget').value||'?';
+  const instruments=document.getElementById('f-instruments').value||'à préciser';
+  const sos=document.getElementById('f-sos').checked;
+  const msg=`${sos?'🚨 SOS URGENCE — ':''}Nouvelle annonce Lyra Music\n\nTitre : ${titre}\nType : ${type}\nDate : ${date}\nLieu : ${lieu}\nBudget : ${budget}€/musicien\nInstruments : ${instruments}`;
+  window.open(`https://wa.me/33651426961?text=${encodeURIComponent(msg)}`, '_blank');
+  closePublish();
+}
+
+applyFilters();
+</script>
+</body>
+</html>
