@@ -153,11 +153,11 @@
   .modal-pp { background: rgba(0,112,186,0.12); border: 1px solid rgba(0,112,186,0.3); color: #4da6e0; }
   .modal-pp:hover { background: rgba(0,112,186,0.2); }
 
-  /* ── TARIFS ── */
+  /* ── MODELE ── */
   .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
   .plan-card { background: var(--dark-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; transition: all .2s; }
   .plan-card.featured { border-color: var(--gold); position: relative; }
-  .plan-card.featured::before { content: 'Populaire'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--dark); font-size: 11px; font-weight: 500; padding: 4px 14px; border-radius: 100px; }
+  .plan-card.featured::before { content: 'Automatique'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--dark); font-size: 11px; font-weight: 500; padding: 4px 14px; border-radius: 100px; }
   .plan-name { font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
   .plan-price { font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 300; margin-bottom: 4px; }
   .plan-price span { font-size: 16px; font-family: 'DM Sans', sans-serif; color: var(--muted); }
@@ -174,10 +174,10 @@
   footer .links a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .2s; }
   footer .links a:hover { color: var(--gold); }
 
-  /* ── PAYWALL ── */
-  .paywall-banner { background: rgba(201,168,76,0.08); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; text-align: center; margin-top: 40px; }
-  .paywall-banner h3 { font-family: 'Cormorant Garamond', serif; font-size: 28px; margin-bottom: 8px; }
-  .paywall-banner p { color: var(--muted); font-size: 15px; margin-bottom: 20px; }
+  /* ── BOOST BANNER ── */
+  .boost-banner { background: rgba(201,168,76,0.06); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-top: 40px; }
+  .boost-banner p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .boost-banner strong { color: var(--text); }
 </style>
 </head>
 <body>
@@ -189,9 +189,9 @@
     <a href="#talents">Talents</a>
     <a href="#annonces">Annonces</a>
     <a href="#boutique">Boutique</a>
-    <a href="#tarifs">Tarifs</a>
+    <a href="#comment">Comment ça marche</a>
   </div>
-  <a href="#tarifs" class="nav-cta">Créer mon profil</a>
+  <a href="#annonces" class="nav-cta">Publier une annonce</a>
 </nav>
 
 <!-- HERO -->
@@ -231,10 +231,9 @@
 
   <div class="feed" id="talent-feed"></div>
 
-  <div class="paywall-banner" id="paywall" style="display:none">
-    <h3>Voir plus de profils</h3>
-    <p>3 profils gratuits. Inscrivez-vous pour accéder à tous les talents.</p>
-    <a href="#tarifs" class="btn-primary">Choisir un plan</a>
+  <div class="boost-banner" id="boost-cta" style="display:none">
+    <p><strong>Vous êtes musicien ?</strong><br>Postez votre profil gratuitement et boostez votre visibilité pour 5€/semaine.</p>
+    <a href="https://wa.me/33651426961?text=Je veux booster mon profil Lyra Music" target="_blank" class="btn-primary" style="white-space:nowrap">Booster mon profil</a>
   </div>
 </section>
 
@@ -265,49 +264,53 @@
   <div class="shop-grid" id="shop-grid"></div>
 </section>
 
-<!-- TARIFS -->
-<section id="tarifs" style="max-width:900px">
-  <div class="section-label">Plans</div>
-  <h2 class="section-title">Rejoignez la communauté</h2>
-  <p class="section-sub">Annonceurs toujours gratuits. Musiciens : choisissez votre visibilité.</p>
+<!-- COMMENT CA MARCHE -->
+<section id="comment" style="max-width:900px">
+  <div class="section-label">Modèle</div>
+  <h2 class="section-title">Gratuit pour poster,<br>on gagne ensemble</h2>
+  <p class="section-sub">Comme Vinted ou Le Bon Coin — publiez, contactez, postulez librement. On prend une petite commission uniquement quand une mission est confirmée.</p>
   <div class="pricing-grid">
+
     <div class="plan-card">
-      <div class="plan-name">Annonceur</div>
+      <div class="plan-name">Tout le monde</div>
       <div class="plan-price">0€ <span>/ toujours</span></div>
-      <p class="plan-desc">Pour les organisateurs d'événements.</p>
+      <p class="plan-desc">Aucun abonnement. Créez votre compte et c'est parti.</p>
       <ul class="plan-features">
+        <li>Créer son profil talent</li>
+        <li>Parcourir tous les profils</li>
         <li>Publier des annonces illimitées</li>
-        <li>Contacter les talents</li>
-        <li>Paiement sécurisé (escrow)</li>
-        <li>Accès à la boutique</li>
+        <li>Postuler aux missions</li>
+        <li>Messagerie & contact direct</li>
       </ul>
-      <a href="#" class="btn-outline" style="display:block;text-align:center">Créer un compte</a>
+      <a href="https://wa.me/33651426961?text=Je veux créer mon profil Lyra Music" target="_blank" class="btn-outline" style="display:block;text-align:center">Créer mon profil</a>
     </div>
+
     <div class="plan-card featured">
-      <div class="plan-name">Musicien Basique</div>
-      <div class="plan-price">5€ <span>/ mois</span></div>
-      <p class="plan-desc">Pour commencer à recevoir des missions.</p>
+      <div class="plan-name">Commission</div>
+      <div class="plan-price">10% <span>/ mission</span></div>
+      <p class="plan-desc">Uniquement quand une réservation est confirmée et payée.</p>
       <ul class="plan-features">
-        <li>Profil complet + vidéos</li>
-        <li>Postuler aux annonces</li>
-        <li>Messagerie interne</li>
-        <li>Setlist partagée</li>
+        <li>Paiement sécurisé (escrow Stripe)</li>
+        <li>Argent libéré 48h après l'événement</li>
+        <li>Protection talent & annonceur</li>
+        <li>Gestion des litiges incluse</li>
       </ul>
-      <a href="#" class="btn-primary" style="display:block;text-align:center">Commencer</a>
+      <a href="#annonces" class="btn-primary" style="display:block;text-align:center">Voir les missions</a>
     </div>
+
     <div class="plan-card">
-      <div class="plan-name">Musicien Pro</div>
-      <div class="plan-price">15€ <span>/ mois</span></div>
-      <p class="plan-desc">Pour maximiser votre visibilité.</p>
+      <div class="plan-name">Boost optionnel</div>
+      <div class="plan-price">5€ <span>/ semaine</span></div>
+      <p class="plan-desc">Apparaissez en tête du feed. Stoppez quand vous voulez.</p>
       <ul class="plan-features">
-        <li>Tout le plan Basique</li>
-        <li>Profil mis en avant</li>
-        <li>Badge Vérifié</li>
+        <li>Position prioritaire dans le feed</li>
+        <li>Badge "Mis en avant"</li>
         <li>Alertes SOS en priorité</li>
-        <li>Stats de profil</li>
+        <li>15€/mois pour une visibilité continue</li>
       </ul>
-      <a href="#" class="btn-outline" style="display:block;text-align:center">Passer Pro</a>
+      <a href="https://wa.me/33651426961?text=Je veux booster mon profil Lyra Music" target="_blank" class="btn-outline" style="display:block;text-align:center">Booster mon profil</a>
     </div>
+
   </div>
 </section>
 
@@ -397,18 +400,12 @@ animateCount(document.getElementById('stat-annonces'), 38);
 animateCount(document.getElementById('stat-villes'), 22);
 
 // ── Render talents ──
-let shownCount = 0, activeFilter = 'all';
+let activeFilter = 'all';
 function renderTalents(filter) {
   const feed = document.getElementById('talent-feed');
   const filtered = filter === 'all' ? TALENTS : TALENTS.filter(t => t.category === filter);
-  feed.innerHTML = '';
-  shownCount = 0;
-  filtered.forEach((t, i) => {
-    if (i >= 3) return; // Paywall après 3
-    feed.innerHTML += talentCard(t, i);
-    shownCount++;
-  });
-  document.getElementById('paywall').style.display = filtered.length > 3 ? 'block' : 'none';
+  feed.innerHTML = filtered.map(t => talentCard(t)).join('');
+  document.getElementById('boost-cta').style.display = 'flex';
 }
 
 function talentCard(t) {
