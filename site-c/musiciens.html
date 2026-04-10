@@ -3,7 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Découvrez les musiciens gospel et chrétiens de France. Pianistes, guitaristes, chanteurs vérifiés avec vidéos. Réservez pour votre mariage, culte ou église.">
+<meta property="og:title" content="Musiciens gospel — Lyra Music">
+<meta property="og:description" content="Pianistes, guitaristes, chanteurs gospel vérifiés avec vidéos. Trouvez le talent idéal pour votre événement chrétien.">
+<meta property="og:image" content="https://lyra-music-five.vercel.app/assets/og-image.jpg">
+<meta property="og:url" content="https://lyra-music-five.vercel.app/musiciens.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <title>Musiciens — Lyra Music</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -16,7 +26,7 @@ html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden}
 
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:rgba(13,13,13,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-.nav-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--gold);text-decoration:none;letter-spacing:.05em}
+.nav-logo{text-decoration:none;display:flex;align-items:center}.nav-logo img{height:40px;width:auto;mix-blend-mode:lighten}
 .nav-links{display:flex;gap:28px}
 .nav-links a{color:var(--muted);text-decoration:none;font-size:13px;transition:color .2s}
 .nav-links a:hover,.nav-links a.active{color:var(--text)}
@@ -72,6 +82,34 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .empty{text-align:center;padding:80px 24px;color:var(--muted)}
 .empty h3{font-family:'Cormorant Garamond',serif;font-size:28px;margin-bottom:8px;color:var(--text)}
 
+/* PROFILE MODAL */
+.profile-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:200;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
+.profile-overlay.open{display:flex}
+.profile-modal{background:var(--dark-2);border:1px solid var(--border);border-radius:20px;max-width:600px;width:100%;margin:auto;overflow:hidden;position:relative}
+.pm-close{position:absolute;top:14px;right:14px;background:var(--dark-3);border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:1;transition:color .2s}
+.pm-close:hover{color:var(--text)}
+.pm-head{padding:28px 28px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px}
+.pm-av{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#8B5E28);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.pm-name{font-size:20px;font-weight:500;margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pm-name .badge{font-size:11px;background:rgba(40,180,100,0.12);color:var(--success);border:1px solid rgba(40,180,100,0.3);padding:2px 8px;border-radius:100px}
+.pm-meta{font-size:13px;color:var(--muted)}
+.pm-body{padding:20px 28px 28px}
+.pm-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.pm-bio{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px}
+.pm-section{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;margin-top:4px}
+.pm-videos{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+.pm-vid-wrap{width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:var(--dark-3)}
+.pm-vid-wrap iframe{width:100%;height:100%;border:none}
+.pm-socials{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.social-btn{display:inline-flex;align-items:center;gap:7px;background:var(--dark-3);border:1px solid var(--border);color:var(--text);padding:8px 16px;border-radius:8px;text-decoration:none;font-size:13px;transition:all .2s}
+.social-btn:hover{border-color:var(--gold);color:var(--gold)}
+.pm-contact-btn{width:100%;background:var(--gold);color:var(--dark);border:none;padding:12px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;transition:background .2s;text-align:center}
+.pm-contact-btn:hover{background:var(--gold-light)}
+.pm-contact-info{display:none;background:var(--dark-3);border:1px solid var(--border);border-radius:10px;padding:16px;flex-direction:column;gap:10px;margin-top:10px}
+.pm-contact-info.open{display:flex}
+.contact-link{display:flex;align-items:center;gap:8px;color:var(--text);text-decoration:none;font-size:14px;transition:color .2s}
+.contact-link:hover{color:var(--gold)}
+
 .boost-banner{background:rgba(201,168,76,0.06);border:1px solid var(--border);border-radius:var(--radius);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:40px}
 .boost-banner p{color:var(--muted);font-size:14px;line-height:1.6}
 .boost-banner strong{color:var(--text)}
@@ -87,20 +125,49 @@ footer p{color:var(--muted);font-size:13px;line-height:1.8}
 footer .links{display:flex;gap:20px;justify-content:center;margin-top:16px;flex-wrap:wrap}
 footer .links a{color:var(--muted);text-decoration:none;font-size:13px;transition:color .2s}
 footer .links a:hover{color:var(--gold)}
+/* ADS */
+.ad-label{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);opacity:.5;margin-bottom:8px}
+.ad-horizontal{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:18px 22px;background:var(--dark-2);border:1px solid var(--border);border-radius:12px;transition:border-color .2s;text-decoration:none;margin-bottom:12px}
+.ad-horizontal:hover{border-color:rgba(201,168,76,0.4)}
+.ad-horizontal .ad-icon{font-size:36px}
+.ad-horizontal .ad-body h4{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px}
+.ad-horizontal .ad-body p{font-size:11px;color:var(--muted);line-height:1.4}
+.ad-horizontal .ad-cta{background:var(--gold);color:var(--dark);padding:7px 14px;border-radius:6px;font-size:11px;font-weight:500;white-space:nowrap}
+.ad-horizontal:hover .ad-cta{background:var(--gold-light)}
+@media(max-width:600px){.ad-horizontal{grid-template-columns:auto 1fr}.ad-horizontal .ad-cta{display:none}}
+.nav-hamburger{display:none;background:none;border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:6px;font-size:18px;cursor:pointer;line-height:1;transition:border-color .2s}
+.nav-hamburger:hover{border-color:var(--gold);color:var(--gold)}
+.mobile-menu{display:none;position:fixed;top:73px;left:0;right:0;background:rgba(13,13,13,0.98);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);z-index:99;padding:8px 20px 20px;flex-direction:column}
+.mobile-menu.open{display:flex}
+.mobile-menu a{color:var(--muted);text-decoration:none;font-size:15px;padding:14px 8px;border-bottom:1px solid var(--border);transition:color .2s;display:flex;align-items:center;gap:10px}
+.mobile-menu a:last-of-type{border-bottom:none}
+.mobile-menu a:hover,.mobile-menu a.active{color:var(--text)}
+.mobile-menu .mob-cta{background:var(--gold);color:var(--dark)!important;text-align:center;border-radius:8px;padding:14px;font-weight:500;margin-top:12px;justify-content:center;border:none!important}
+.mobile-menu .mob-cta:hover{background:var(--gold-light)!important}
+@media(max-width:700px){.nav-hamburger{display:block}.nav-cta{display:none}}
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="index.html" class="nav-logo">Lyra Music</a>
+  <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="Lyra Music"></a>
   <div class="nav-links">
     <a href="musiciens.html" class="active">Musiciens</a>
     <a href="evenements.html">Événements</a>
     <a href="boutique.html">Boutique</a>
     <a href="communaute.html">Communauté</a>
   </div>
+  <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Menu">☰</button>
   <a href="evenements.html" class="nav-cta">Publier une annonce</a>
 </nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html">🏠 Accueil</a>
+  <a href="musiciens.html" class="active">🎵 Musiciens</a>
+  <a href="evenements.html">📅 Événements</a>
+  <a href="boutique.html">🎸 Boutique</a>
+  <a href="communaute.html">🙏 Communauté</a>
+  <a href="#" class="mob-cta" onclick="document.getElementById('modal-inscription')?.classList.add('open');toggleMobileMenu()">🎼 Proposer mon talent</a>
+</div>
 
 <div class="page-header">
   <h1>Les <em>musiciens</em><br>de la communauté</h1>
@@ -132,6 +199,25 @@ footer .links a:hover{color:var(--gold)}
 </div>
 
 <div class="feed-wrap">
+  <!-- PUB THOMANN -->
+  <div class="ad-label" style="margin-top:4px">Partenaire</div>
+  <a class="ad-horizontal" href="https://www.thomann.de/fr/index.html" target="_blank" rel="noopener sponsored">
+    <div class="ad-icon">🎸</div>
+    <div class="ad-body">
+      <h4>Thomann — Instruments & Accessoires</h4>
+      <p>Le spécialiste n°1 en Europe. Piano, guitare, micro, sono — tout pour le musicien chrétien.</p>
+    </div>
+    <div class="ad-cta">Voir →</div>
+  </a>
+  <!-- PUB MODERN GOSPEL ACADEMY -->
+  <a class="ad-horizontal" href="https://moderngospelacademy.com/" target="_blank" rel="noopener sponsored">
+    <div class="ad-icon">🎹</div>
+    <div class="ad-body">
+      <h4>Modern Gospel Academy — Apprenez à jouer du gospel</h4>
+      <p>Cours en ligne pour pianistes, guitaristes et chanteurs. 25 000+ élèves formés depuis 2014.</p>
+    </div>
+    <div class="ad-cta">S'inscrire →</div>
+  </a>
   <div class="boost-banner">
     <p><strong>Vous êtes musicien ?</strong> Postez votre profil gratuitement et soyez trouvé par des centaines d'organisateurs dans votre région.</p>
     <a href="https://wa.me/33651426961?text=Je veux créer mon profil musicien sur Lyra Music" target="_blank" class="btn-primary">Créer mon profil</a>
@@ -143,8 +229,37 @@ footer .links a:hover{color:var(--gold)}
   </div>
 </div>
 
+<!-- MODAL PROFIL -->
+<div class="profile-overlay" id="profile-overlay" onclick="if(event.target===this)closeProfile()">
+  <div class="profile-modal">
+    <button class="pm-close" onclick="closeProfile()">✕</button>
+    <div class="pm-head">
+      <div class="pm-av" id="pm-av">🎵</div>
+      <div>
+        <div class="pm-name" id="pm-name"></div>
+        <div class="pm-meta" id="pm-meta"></div>
+      </div>
+    </div>
+    <div class="pm-body">
+      <div class="pm-tags" id="pm-tags"></div>
+      <div class="pm-bio" id="pm-bio"></div>
+      <div id="pm-videos-section" style="display:none">
+        <div class="pm-section">Vidéos</div>
+        <div class="pm-videos" id="pm-videos"></div>
+      </div>
+      <div id="pm-socials-section" style="display:none">
+        <div class="pm-section">Réseaux sociaux</div>
+        <div class="pm-socials" id="pm-socials"></div>
+      </div>
+      <div class="pm-section">Contact</div>
+      <button class="pm-contact-btn" id="pm-contact-btn" onclick="revealProfileContact()">📞 Voir les coordonnées</button>
+      <div class="pm-contact-info" id="pm-contact-info"></div>
+    </div>
+  </div>
+</div>
+
 <footer>
-  <div class="logo">Lyra Music</div>
+  <div class="footer-logo"><img src="assets/logo.png" alt="Lyra Music" style="height:48px;width:auto;mix-blend-mode:lighten;margin-bottom:8px"></div>
   <p>La marketplace des musiciens chrétiens francophones.</p>
   <div class="links">
     <a href="index.html">Accueil</a>
@@ -154,7 +269,7 @@ footer .links a:hover{color:var(--gold)}
     <a href="https://instagram.com/levitique_piano_school" target="_blank">Instagram</a>
     <a href="https://wa.me/33651426961" target="_blank">WhatsApp</a>
   </div>
-  <p style="margin-top:20px;font-size:11px;opacity:.4">© 2025 Lyra Music</p>
+  <p style="margin-top:20px;font-size:11px;opacity:.4">© 2026 Lyra Music</p>
 </footer>
 
 <script>
@@ -176,18 +291,67 @@ const CITY_COORDS = {
 };
 
 const TALENTS = [
-  {id:1,name:'Samuel K.',cat:'piano',zone:'Paris 75',youtube:'https://www.youtube.com/embed/dQw4w9WgXcQ',bio:'Pianiste gospel — 10 ans de scène',verified:true,boosted:true,likes:47,tags:['Gospel','Worship','Mariage']},
-  {id:2,name:'Grace M.',cat:'chant',zone:'Lyon',youtube:null,bio:'Soprano — worship & mariage',verified:true,boosted:false,likes:32,tags:['Soprano','Gospel','Gala']},
-  {id:3,name:'David A.',cat:'guitare',zone:'Paris 93',youtube:null,bio:'Guitare électrique & acoustique',verified:false,boosted:false,likes:18,tags:['Électrique','Acoustique']},
-  {id:4,name:'Esther N.',cat:'violon',zone:'Versailles',youtube:null,bio:'Violoniste classique & gospel',verified:true,boosted:false,likes:29,tags:['Classique','Gospel','Mariage']},
-  {id:5,name:'Nathan B.',cat:'saxophone',zone:'Bordeaux',youtube:null,bio:'Saxophoniste alto & ténor',verified:false,boosted:false,likes:21,tags:['Alto','Ténor','Jazz Gospel']},
-  {id:6,name:'Miriam T.',cat:'danseur',zone:'Paris 75',youtube:null,bio:'Danse prophétique & liturgique',verified:true,boosted:true,likes:55,tags:['Prophétique','Liturgique']},
-  {id:7,name:'Joël F.',cat:'batterie',zone:'Marseille',youtube:null,bio:'Batteur gospel depuis 15 ans',verified:true,boosted:false,likes:38,tags:['Gospel','Worship']},
-  {id:8,name:'Rachel C.',cat:'piano',zone:'Toulouse',youtube:null,bio:'Piano classique & contemporain',verified:false,boosted:false,likes:14,tags:['Classique','Contemporain']},
-  {id:9,name:'Caleb M.',cat:'trompette',zone:'Lyon',youtube:null,bio:'Trompette jazz & gospel',verified:true,boosted:false,likes:25,tags:['Jazz','Gospel']},
-  {id:10,name:'Déborah L.',cat:'chant',zone:'Paris 92',youtube:null,bio:'Alto — chœur & solo',verified:false,boosted:false,likes:19,tags:['Alto','Chœur','Mariage']},
-  {id:11,name:'Ezra K.',cat:'dj',zone:'Strasbourg',youtube:null,bio:'DJ gospel — ambiance garantie',verified:true,boosted:true,likes:61,tags:['Gospel','Ambiance','DJ Set']},
-  {id:12,name:'Abigaïl S.',cat:'guitare',zone:'Nantes',youtube:null,bio:'Guitare basse & lead',verified:false,boosted:false,likes:11,tags:['Basse','Lead']},
+  {id:1,name:'Samuel K.',cat:'piano',zone:'Paris 75',
+   bio:'Pianiste gospel — 10 ans de scène. Formé au CRR de Paris, spécialisé dans le worship contemporain et les cérémonies de mariage chrétiennes. Disponible sur toute l\'Île-de-France.',
+   verified:true,boosted:true,likes:47,tags:['Gospel','Worship','Mariage'],
+   phone:'+33 6 12 34 56 78',email:'samuel.k@lyramusic.fr',
+   instagram:'https://instagram.com/samuel_piano_gospel',tiktok:'https://www.tiktok.com/@samuel_piano',
+   videos:['https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1']},
+  {id:2,name:'Grace M.',cat:'chant',zone:'Lyon',
+   bio:'Soprano — worship & mariage. Voix puissante et douce, formée dans le chant lyrique et gospel. Disponible pour concerts, cultes et galas sur Lyon et région.',
+   verified:true,boosted:false,likes:32,tags:['Soprano','Gospel','Gala'],
+   phone:'+33 7 23 45 67 89',email:null,
+   instagram:'https://instagram.com/gracemchant',tiktok:null,videos:[]},
+  {id:3,name:'David A.',cat:'guitare',zone:'Paris 93',
+   bio:'Guitare électrique & acoustique. Musicien de worship depuis 8 ans, membre de plusieurs équipes d\'adoration en Seine-Saint-Denis.',
+   verified:false,boosted:false,likes:18,tags:['Électrique','Acoustique'],
+   phone:null,email:'david.a.guitare@gmail.com',
+   instagram:null,tiktok:'https://www.tiktok.com/@david_guitariste',videos:[]},
+  {id:4,name:'Esther N.',cat:'violon',zone:'Versailles',
+   bio:'Violoniste classique & gospel. Diplômée du Conservatoire de Versailles, elle mêle grâce et spiritualité dans chaque prestation de mariage ou concert.',
+   verified:true,boosted:false,likes:29,tags:['Classique','Gospel','Mariage'],
+   phone:'+33 6 45 67 89 01',email:'esther.violon@lyramusic.fr',
+   instagram:'https://instagram.com/esther_violon',tiktok:null,videos:[]},
+  {id:5,name:'Nathan B.',cat:'saxophone',zone:'Bordeaux',
+   bio:'Saxophoniste alto & ténor. Jazz gospel et ambiances feutrées pour cocktails, mariages et soirées chrétiennes. 12 ans d\'expérience scénique.',
+   verified:false,boosted:false,likes:21,tags:['Alto','Ténor','Jazz Gospel'],
+   phone:'+33 6 78 90 12 34',email:null,
+   instagram:'https://instagram.com/nathan_sax_gospel',tiktok:null,videos:[]},
+  {id:6,name:'Miriam T.',cat:'danseur',zone:'Paris 75',
+   bio:'Danse prophétique & liturgique. Chorégraphe et danseuse chrétienne depuis 7 ans, spécialisée dans la danse d\'adoration et l\'expression artistique biblique.',
+   verified:true,boosted:true,likes:55,tags:['Prophétique','Liturgique'],
+   phone:'+33 7 89 01 23 45',email:'miriam.danse@lyramusic.fr',
+   instagram:'https://instagram.com/miriam_danse_prophetique',tiktok:'https://www.tiktok.com/@miriam_dance',videos:[]},
+  {id:7,name:'Joël F.',cat:'batterie',zone:'Marseille',
+   bio:'Batteur gospel depuis 15 ans. Membre fondateur de plusieurs groupes gospel marseillais. Rigueur rythmique et esprit de communion sur scène.',
+   verified:true,boosted:false,likes:38,tags:['Gospel','Worship'],
+   phone:'+33 6 90 12 34 56',email:'joel.batterie@gmail.com',
+   instagram:null,tiktok:null,videos:[]},
+  {id:8,name:'Rachel C.',cat:'piano',zone:'Toulouse',
+   bio:'Piano classique & contemporain. Accompagnatrice idéale pour cérémonies, chœurs et enregistrements. Très à l\'aise avec les répertoires gospel et classique.',
+   verified:false,boosted:false,likes:14,tags:['Classique','Contemporain'],
+   phone:null,email:'rachel.piano.toulouse@gmail.com',
+   instagram:'https://instagram.com/rachel_piano',tiktok:null,videos:[]},
+  {id:9,name:'Caleb M.',cat:'trompette',zone:'Lyon',
+   bio:'Trompette jazz & gospel. Timbre chaud et expressif, habitué des cultes évangéliques et des événements chrétiens en Rhône-Alpes.',
+   verified:true,boosted:false,likes:25,tags:['Jazz','Gospel'],
+   phone:'+33 7 01 23 45 67',email:'caleb.trompette@lyramusic.fr',
+   instagram:null,tiktok:'https://www.tiktok.com/@caleb_trumpet',videos:[]},
+  {id:10,name:'Déborah L.',cat:'chant',zone:'Paris 92',
+   bio:'Alto — chœur & solo. Voix grave et enveloppante, soliste dans plusieurs chorales gospel d\'Île-de-France. Disponible pour mariages, concerts et enregistrements.',
+   verified:false,boosted:false,likes:19,tags:['Alto','Chœur','Mariage'],
+   phone:'+33 6 12 98 76 54',email:null,
+   instagram:'https://instagram.com/deborah_alto',tiktok:null,videos:[]},
+  {id:11,name:'Ezra K.',cat:'dj',zone:'Strasbourg',
+   bio:'DJ gospel — ambiance garantie. Spécialiste des soirées chrétiennes, galas et mariages. Mix gospel, afro gospel et contemporain. Plus de 200 événements au compteur.',
+   verified:true,boosted:true,likes:61,tags:['Gospel','Ambiance','DJ Set'],
+   phone:'+33 7 34 56 78 90',email:'ezra.dj@lyramusic.fr',
+   instagram:'https://instagram.com/ezra_dj_gospel',tiktok:'https://www.tiktok.com/@ezra_gospeldj',videos:[]},
+  {id:12,name:'Abigaïl S.',cat:'guitare',zone:'Nantes',
+   bio:'Guitare basse & lead. Polyvalente et créative, elle apporte groove et modernité aux équipes de worship. Disponible pour cultes, concerts et enregistrements.',
+   verified:false,boosted:false,likes:11,tags:['Basse','Lead'],
+   phone:null,email:'abigail.guitare@gmail.com',
+   instagram:'https://instagram.com/abigail_bass',tiktok:null,videos:[]},
 ];
 
 let activeFilter='all', userPos=null, proximityOn=false;
@@ -238,27 +402,83 @@ function applyFilters(){
 }
 
 function card(t){
-  const vid=t.youtube
-    ?`<iframe src="${t.youtube}" allow="accelerometer;autoplay;encrypted-media" allowfullscreen></iframe>`
+  const hasVideo=t.videos&&t.videos.length>0;
+  const ph=hasVideo
+    ?`<div class="play-ph" style="background:linear-gradient(135deg,#1a1000,#222);flex-direction:column;gap:6px"><span style="font-size:32px">▶</span><span style="font-size:11px;color:var(--gold)">Voir la vidéo</span></div>`
     :`<div class="play-ph">🎵</div>`;
   const distBadge=t.dist!=null&&t.dist<9999?`<span class="dist-badge">📍 ${distLabel(t.dist)}</span>`:'';
-  return`<div class="card">
-    <div class="card-video">${vid}</div>
+  const bioShort=t.bio.length>80?t.bio.slice(0,80)+'…':t.bio;
+  return`<div class="card" onclick="openProfile(${t.id})">
+    <div class="card-video">${ph}</div>
     <div class="card-body">
-      <div class="card-name">${t.name}</div>
+      <div class="card-name">${t.name}${t.verified?' <span class="tag verified" style="font-size:10px">✓</span>':''}</div>
       <div class="card-meta">${t.cat.charAt(0).toUpperCase()+t.cat.slice(1)} · ${t.zone} ${distBadge}</div>
       <div class="card-tags">
         ${t.boosted?'<span class="tag boosted">⭐ Mis en avant</span>':''}
-        ${t.verified?'<span class="tag verified">✓ Vérifié</span>':''}
         ${t.tags.map(g=>`<span class="tag">${g}</span>`).join('')}
       </div>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.5">${t.bio}</p>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.5">${bioShort}</p>
       <div class="card-footer">
-        <button class="card-like" id="like-${t.id}" onclick="like(${t.id},${t.likes})">♡ <span>${t.likes}</span></button>
-        <a class="card-contact" href="https://wa.me/33651426961?text=Bonjour, je souhaite contacter ${encodeURIComponent(t.name)} via Lyra Music" target="_blank">Contacter</a>
+        <button class="card-like" id="like-${t.id}" onclick="event.stopPropagation();like(${t.id},${t.likes})">♡ <span>${t.likes}</span></button>
+        <button class="card-contact" onclick="event.stopPropagation();openProfile(${t.id})">Voir le profil →</button>
       </div>
     </div>
   </div>`;
+}
+
+let currentProfileId=null;
+function openProfile(id){
+  const t=TALENTS.find(t=>t.id===id);
+  if(!t)return;
+  currentProfileId=id;
+  const CAT_EMOJI={piano:'🎹',guitare:'🎸',chant:'🎤',violon:'🎻',saxophone:'🎷',trompette:'🎺',batterie:'🥁',dj:'🎧',danseur:'💃'};
+  document.getElementById('pm-av').textContent=CAT_EMOJI[t.cat]||'🎵';
+  document.getElementById('pm-name').innerHTML=`${t.name}${t.verified?' <span class="badge">✓ Vérifié</span>':''}`;
+  document.getElementById('pm-meta').textContent=`${t.cat.charAt(0).toUpperCase()+t.cat.slice(1)} · ${t.zone}`;
+  document.getElementById('pm-tags').innerHTML=[
+    t.boosted?'<span class="tag boosted">⭐ Mis en avant</span>':'',
+    ...t.tags.map(g=>`<span class="tag">${g}</span>`)
+  ].join('');
+  document.getElementById('pm-bio').textContent=t.bio;
+  // Videos
+  const vsec=document.getElementById('pm-videos-section');
+  const vcontainer=document.getElementById('pm-videos');
+  if(t.videos&&t.videos.length){
+    vcontainer.innerHTML=t.videos.map(url=>`<div class="pm-vid-wrap"><iframe src="${url}" loading="lazy" allow="accelerometer;encrypted-media;picture-in-picture" allowfullscreen></iframe></div>`).join('');
+    vsec.style.display='block';
+  }else{vsec.style.display='none';}
+  // Socials
+  const ssec=document.getElementById('pm-socials-section');
+  const scontainer=document.getElementById('pm-socials');
+  const socials=[];
+  if(t.instagram)socials.push(`<a href="${t.instagram}" target="_blank" class="social-btn">📸 Instagram</a>`);
+  if(t.tiktok)socials.push(`<a href="${t.tiktok}" target="_blank" class="social-btn">🎵 TikTok</a>`);
+  if(socials.length){scontainer.innerHTML=socials.join('');ssec.style.display='block';}
+  else{ssec.style.display='none';}
+  // Contact
+  document.getElementById('pm-contact-btn').style.display='block';
+  document.getElementById('pm-contact-info').className='pm-contact-info';
+  document.getElementById('pm-contact-info').innerHTML='';
+  document.getElementById('profile-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeProfile(){
+  document.getElementById('profile-overlay').classList.remove('open');
+  document.body.style.overflow='';
+  // Pause videos
+  document.getElementById('pm-videos').innerHTML='';
+}
+function revealProfileContact(){
+  const t=TALENTS.find(t=>t.id===currentProfileId);
+  if(!t)return;
+  const links=[];
+  if(t.phone)links.push(`<a href="tel:${t.phone}" class="contact-link">📞 ${t.phone}</a>`);
+  if(t.email)links.push(`<a href="mailto:${t.email}" class="contact-link">✉️ ${t.email}</a>`);
+  if(!links.length)links.push('<span style="color:var(--muted);font-size:13px">Contact non renseigné — répondre via WhatsApp</span>');
+  const box=document.getElementById('pm-contact-info');
+  box.innerHTML=links.join('');
+  box.classList.add('open');
+  document.getElementById('pm-contact-btn').style.display='none';
 }
 
 function setFilter(cat,btn){
@@ -293,6 +513,18 @@ function activerProximite(){
 }
 
 applyFilters();
+function toggleMobileMenu(){
+  const m=document.getElementById('mobile-menu');
+  const h=document.getElementById('nav-hamburger');
+  if(!m)return;
+  m.classList.toggle('open');
+  h.textContent=m.classList.contains('open')?'✕':'☰';
+}
+window.addEventListener('scroll',function(){
+  const m=document.getElementById('mobile-menu');
+  const h=document.getElementById('nav-hamburger');
+  if(m&&m.classList.contains('open')){m.classList.remove('open');if(h)h.textContent='☰';}
+},{passive:true});
 </script>
 </body>
 </html>
