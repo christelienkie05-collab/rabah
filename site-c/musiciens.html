@@ -110,9 +110,24 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .contact-link{display:flex;align-items:center;gap:8px;color:var(--text);text-decoration:none;font-size:14px;transition:color .2s}
 .contact-link:hover{color:var(--gold)}
 
-.boost-banner{background:rgba(201,168,76,0.06);border:1px solid var(--border);border-radius:var(--radius);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:40px}
+.boost-banner{background:rgba(201,168,76,0.06);border:1px solid var(--border);border-radius:var(--radius);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:16px}
 .boost-banner p{color:var(--muted);font-size:14px;line-height:1.6}
 .boost-banner strong{color:var(--text)}
+.boost-banner-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn-boost{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:11px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:'DM Sans',sans-serif}
+.btn-boost:hover{background:rgba(201,168,76,0.12)}
+/* BOOST MODAL */
+.boost-option{background:var(--dark-3);border:1px solid var(--border);border-radius:10px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s;margin-bottom:10px}
+.boost-option.selected{border-color:var(--gold);background:rgba(201,168,76,0.06)}
+.boost-option:hover{border-color:rgba(201,168,76,0.4)}
+.bo-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--muted);flex-shrink:0;transition:all .2s}
+.boost-option.selected .bo-radio{border-color:var(--gold);background:var(--gold)}
+.bo-body{flex:1}
+.bo-name{font-size:14px;font-weight:500;margin-bottom:3px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.bo-desc{font-size:12px;color:var(--muted);line-height:1.4}
+.bo-popular{font-size:10px;background:var(--gold);color:var(--dark);padding:2px 8px;border-radius:100px;letter-spacing:.05em;font-weight:600}
+.bo-price{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold);font-weight:600;white-space:nowrap}
+.boost-note{font-size:12px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.5;opacity:.8}
 
 .btn-primary{background:var(--gold);color:var(--dark);padding:11px 24px;border-radius:8px;font-size:14px;font-weight:500;text-decoration:none;border:none;cursor:pointer;transition:all .2s;white-space:nowrap}
 .btn-primary:hover{background:var(--gold-light)}
@@ -220,12 +235,60 @@ footer .links a:hover{color:var(--gold)}
   </a>
   <div class="boost-banner">
     <p><strong>Vous êtes musicien ?</strong> Postez votre profil gratuitement et soyez trouvé par des centaines d'organisateurs dans votre région.</p>
-    <a href="https://wa.me/33651426961?text=Je veux créer mon profil musicien sur Lyra Music" target="_blank" class="btn-primary">Créer mon profil</a>
+    <div class="boost-banner-actions">
+      <a href="https://wa.me/33651426961?text=Je%20veux%20créer%20mon%20profil%20musicien%20sur%20Lyra%20Music" target="_blank" class="btn-primary">🎵 Créer mon profil</a>
+      <button class="btn-boost" onclick="openBoostModal()">🚀 Booster mon profil — dès 5€</button>
+    </div>
   </div>
   <div class="feed" id="feed"></div>
   <div class="empty" id="empty" style="display:none">
     <h3>Aucun musicien trouvé</h3>
     <p>Essayez un autre filtre ou activez "Autour de moi" pour élargir la zone.</p>
+  </div>
+</div>
+
+<!-- MODAL BOOST -->
+<div class="modal-overlay" id="boost-modal" onclick="if(event.target===this)closeBoostModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:300;align-items:center;justify-content:center;padding:20px">
+  <div class="modal" style="max-width:460px">
+    <button class="modal-close" onclick="closeBoostModal()">✕</button>
+    <div class="modal-header">
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;margin-bottom:6px">🚀 Booster mon profil</h2>
+      <p style="font-size:13px;color:var(--muted)">Apparaissez en tête du feed et soyez vu en premier par les organisateurs</p>
+    </div>
+    <div class="modal-body">
+      <div id="boost-options">
+        <div class="boost-option" onclick="selectBoost(this,'1 semaine','5')">
+          <div class="bo-radio"></div>
+          <div class="bo-body">
+            <div class="bo-name">1 semaine</div>
+            <div class="bo-desc">Idéal pour tester. Apparaissez en tête du feed 7 jours consécutifs.</div>
+          </div>
+          <div class="bo-price">5€</div>
+        </div>
+        <div class="boost-option selected" onclick="selectBoost(this,'1 mois','15')">
+          <div class="bo-radio" style="border-color:var(--gold);background:var(--gold)"></div>
+          <div class="bo-body">
+            <div class="bo-name">1 mois <span class="bo-popular">Recommandé</span></div>
+            <div class="bo-desc">Le plus rentable — 4 semaines de visibilité maximale dans votre zone.</div>
+          </div>
+          <div class="bo-price">15€</div>
+        </div>
+        <div class="boost-option" onclick="selectBoost(this,'3 mois','35')">
+          <div class="bo-radio"></div>
+          <div class="bo-body">
+            <div class="bo-name">3 mois</div>
+            <div class="bo-desc">Pour les pros — visibilité continue tout le trimestre, badge ⭐ permanent.</div>
+          </div>
+          <div class="bo-price">35€</div>
+        </div>
+      </div>
+      <div class="modal-actions" style="margin-top:16px">
+        <a id="boost-wa-link" href="https://wa.me/33651426961?text=Bonjour%2C+je+veux+booster+mon+profil+1+mois+%2815%E2%82%AC%29+sur+Lyra+Music" target="_blank" class="modal-wa" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:13px 18px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;background:rgba(37,211,102,0.12);border:1px solid rgba(37,211,102,0.3);color:#25d366">
+          📱 Payer via WhatsApp
+        </a>
+      </div>
+      <p class="boost-note">✓ Activation sous 2h · ✓ Badge ⭐ visible · ✓ Annulable à tout moment</p>
+    </div>
   </div>
 </div>
 
@@ -479,6 +542,34 @@ function revealProfileContact(){
   box.innerHTML=links.join('');
   box.classList.add('open');
   document.getElementById('pm-contact-btn').style.display='none';
+}
+
+// ── BOOST MODAL ──
+let selectedBoostDuration = '1 mois';
+let selectedBoostPrice = '15';
+
+function openBoostModal(){
+  const m = document.getElementById('boost-modal');
+  m.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeBoostModal(){
+  document.getElementById('boost-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+function selectBoost(el, duration, price){
+  document.querySelectorAll('.boost-option').forEach(o => {
+    o.classList.remove('selected');
+    o.querySelector('.bo-radio').style.borderColor = '';
+    o.querySelector('.bo-radio').style.background = '';
+  });
+  el.classList.add('selected');
+  el.querySelector('.bo-radio').style.borderColor = 'var(--gold)';
+  el.querySelector('.bo-radio').style.background = 'var(--gold)';
+  selectedBoostDuration = duration;
+  selectedBoostPrice = price;
+  const msg = encodeURIComponent(`Bonjour, je veux booster mon profil ${duration} (${price}€) sur Lyra Music`);
+  document.getElementById('boost-wa-link').href = `https://wa.me/33651426961?text=${msg}`;
 }
 
 function setFilter(cat,btn){

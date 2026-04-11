@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Boutique d'instruments et accessoires pour musiciens chrétiens. Pianos, guitares, micros sélectionnés en partenariat avec Thomann. Livraison rapide.">
+<meta name="description" content="Boutique instruments pour musiciens chrétiens. Pianos Yamaha, guitares Fender, batteries Roland, micros Shure. Sélection gospel, livraison rapide via Thomann.">
 <meta property="og:title" content="Boutique Instruments — Lyra Music">
 <meta property="og:description" content="Instruments et accessoires sélectionnés pour musiciens gospel. Yamaha, Fender, Roland, Shure — en partenariat avec Thomann.">
 <meta property="og:image" content="https://lyra-music-five.vercel.app/assets/og-image.jpg">
@@ -26,63 +26,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .nav-links{display:flex;gap:28px}
 .nav-links a{color:var(--muted);text-decoration:none;font-size:13px;transition:color .2s}
 .nav-links a:hover,.nav-links a.active{color:var(--text)}
+.nav-links a.active{color:var(--gold)}
 .nav-cta{background:var(--gold);color:var(--dark);padding:9px 22px;border-radius:6px;font-size:13px;font-weight:500;text-decoration:none;transition:background .2s}
 .nav-cta:hover{background:var(--gold-light)}
-
-main{padding:120px 40px 80px;max-width:1100px;margin:0 auto}
-
-.page-header{text-align:center;margin-bottom:64px}
-.section-label{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,0.3);border-radius:20px;padding:6px 16px;margin-bottom:24px}
-.page-header h1{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;margin-bottom:16px}
-.page-header h1 em{color:var(--gold);font-style:normal}
-.page-header p{color:var(--muted);font-size:15px;max-width:520px;margin:0 auto;line-height:1.7}
-
-.coming-soon-box{background:var(--dark-2);border:1px solid var(--border);border-radius:20px;padding:64px 40px;text-align:center;margin-bottom:64px;position:relative;overflow:hidden}
-.coming-soon-box::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,0.06) 0%,transparent 70%)}
-.coming-soon-icon{font-size:64px;margin-bottom:24px;display:block}
-.coming-soon-box h2{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:400;margin-bottom:16px}
-.coming-soon-box p{color:var(--muted);font-size:15px;max-width:480px;margin:0 auto 32px;line-height:1.7}
-.notify-form{display:flex;gap:12px;max-width:400px;margin:0 auto}
-.notify-form input{flex:1;background:var(--dark-3);border:1px solid var(--border);border-radius:8px;padding:12px 16px;color:var(--text);font-size:14px;outline:none;font-family:'DM Sans',sans-serif}
-.notify-form input::placeholder{color:var(--muted)}
-.notify-form input:focus{border-color:var(--gold)}
-.notify-form button{background:var(--gold);color:var(--dark);border:none;border-radius:8px;padding:12px 20px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:background .2s}
-.notify-form button:hover{background:var(--gold-light)}
-.success-msg{display:none;color:var(--success);font-size:13px;margin-top:12px}
-
-.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;margin-bottom:64px}
-.product-card{background:var(--dark-2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:border-color .2s,transform .2s}
-.product-card:hover{border-color:rgba(201,168,76,0.4);transform:translateY(-2px)}
-.product-img{aspect-ratio:4/3;background:var(--dark-3);display:flex;align-items:center;justify-content:center;font-size:64px}
-.product-body{padding:20px}
-.product-badge{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
-.product-name{font-size:15px;font-weight:500;margin-bottom:6px}
-.product-desc{color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:16px}
-.product-price{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);margin-bottom:12px}
-.product-soon{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);background:var(--dark-3);border-radius:6px;padding:6px 12px}
-
-.partner-section{background:var(--dark-2);border:1px solid var(--border);border-radius:16px;padding:40px;display:flex;align-items:center;gap:40px;margin-bottom:64px}
-.partner-icon{font-size:48px;flex-shrink:0}
-.partner-body h3{font-size:18px;font-weight:500;margin-bottom:8px}
-.partner-body p{color:var(--muted);font-size:14px;line-height:1.6}
-
-footer{background:var(--dark-2);border-top:1px solid var(--border);padding:48px 40px;text-align:center}
-footer .footer-logo img{height:48px;width:auto;mix-blend-mode:lighten;margin-bottom:16px}
-footer p{color:var(--muted);font-size:13px;line-height:1.7;max-width:480px;margin:0 auto 24px}
-footer .links{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;margin-bottom:16px}
-footer .links a{color:var(--muted);text-decoration:none;font-size:13px;transition:color .2s}
-footer .links a:hover{color:var(--gold)}
-
-@media(max-width:768px){
-  nav{padding:16px 20px}
-  main{padding:100px 20px 60px}
-  .page-header h1{font-size:32px}
-  .coming-soon-box{padding:40px 20px}
-  .notify-form{flex-direction:column}
-  .partner-section{flex-direction:column;gap:20px;text-align:center}
-  footer{padding:40px 20px}
-}
-@media(max-width:700px){.nav-links{display:none}}
 .nav-hamburger{display:none;background:none;border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:6px;font-size:18px;cursor:pointer;line-height:1;transition:border-color .2s}
 .nav-hamburger:hover{border-color:var(--gold);color:var(--gold)}
 .mobile-menu{display:none;position:fixed;top:73px;left:0;right:0;background:rgba(13,13,13,0.98);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);z-index:99;padding:8px 20px 20px;flex-direction:column}
@@ -92,7 +38,82 @@ footer .links a:hover{color:var(--gold)}
 .mobile-menu a:hover,.mobile-menu a.active{color:var(--text)}
 .mobile-menu .mob-cta{background:var(--gold);color:var(--dark)!important;text-align:center;border-radius:8px;padding:14px;font-weight:500;margin-top:12px;justify-content:center;border:none!important}
 .mobile-menu .mob-cta:hover{background:var(--gold-light)!important}
-@media(max-width:700px){.nav-hamburger{display:block}.nav-cta{display:none}}
+@media(max-width:700px){.nav-links{display:none}.nav-hamburger{display:block}.nav-cta{display:none}}
+
+main{padding:100px 40px 80px;max-width:1100px;margin:0 auto}
+@media(max-width:600px){main{padding:90px 20px 60px}nav{padding:16px 20px}}
+
+.section-label{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,0.3);border-radius:20px;padding:6px 16px;margin-bottom:20px}
+.page-header{margin-bottom:40px}
+.page-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,5vw,52px);font-weight:300;margin-bottom:12px}
+.page-header h1 em{color:var(--gold);font-style:normal}
+.page-header p{color:var(--muted);font-size:15px;max-width:520px;line-height:1.7}
+
+.affiliate-setup{background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.3);border-radius:12px;padding:16px 20px;margin-bottom:32px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.affiliate-setup .aff-icon{font-size:28px;flex-shrink:0}
+.affiliate-setup p{font-size:13px;color:var(--muted);line-height:1.5;flex:1}
+.affiliate-setup strong{color:var(--gold)}
+.affiliate-setup a{background:var(--gold);color:var(--dark);padding:8px 16px;border-radius:6px;font-size:12px;font-weight:500;text-decoration:none;white-space:nowrap;transition:background .2s}
+.affiliate-setup a:hover{background:var(--gold-light)}
+
+.toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.search-box{flex:1;min-width:200px;position:relative}
+.search-box input{width:100%;background:var(--dark-2);border:1px solid var(--border);border-radius:8px;padding:10px 16px 10px 40px;color:var(--text);font-size:14px;outline:none;transition:border-color .2s}
+.search-box input:focus{border-color:var(--gold)}
+.search-box input::placeholder{color:var(--muted)}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px}
+.sort-select{background:var(--dark-2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-size:13px;outline:none;cursor:pointer}
+.sort-select option{background:var(--dark-3)}
+
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px}
+.filter-btn{padding:7px 16px;border-radius:100px;font-size:12px;cursor:pointer;transition:all .2s;background:var(--dark-3);border:1px solid var(--border);color:var(--muted)}
+.filter-btn.active,.filter-btn:hover{background:var(--gold);border-color:var(--gold);color:var(--dark);font-weight:500}
+
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;margin-bottom:60px}
+.product-card{background:var(--dark-2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:border-color .2s,transform .2s;display:flex;flex-direction:column}
+.product-card:hover{border-color:rgba(201,168,76,0.45);transform:translateY(-3px)}
+.product-img{aspect-ratio:4/3;background:var(--dark-3);display:flex;align-items:center;justify-content:center;font-size:72px;position:relative}
+.product-badge{position:absolute;top:12px;left:12px;background:var(--gold);color:var(--dark);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:100px}
+.product-body{padding:20px;flex:1;display:flex;flex-direction:column;gap:10px}
+.product-cat{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.product-brand{font-size:11px;color:var(--muted)}
+.product-name{font-size:15px;font-weight:500;line-height:1.3}
+.product-desc{color:var(--muted);font-size:12px;line-height:1.5;flex:1}
+.product-price{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--gold)}
+.btn-buy{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--gold);color:var(--dark);padding:11px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;transition:background .2s;margin-top:4px}
+.btn-buy:hover{background:var(--gold-light)}
+
+.empty-state{text-align:center;padding:80px 24px;color:var(--muted)}
+.empty-state h3{font-family:'Cormorant Garamond',serif;font-size:28px;margin-bottom:8px;color:var(--text)}
+
+.partner-section{background:var(--dark-2);border:1px solid var(--border);border-radius:16px;padding:36px;display:flex;align-items:center;gap:32px;margin-bottom:48px;flex-wrap:wrap}
+.partner-icon{font-size:52px;flex-shrink:0}
+.partner-body h3{font-size:18px;font-weight:500;margin-bottom:8px}
+.partner-body p{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:16px}
+.partner-links{display:flex;gap:10px;flex-wrap:wrap}
+.partner-links a{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:7px;font-size:13px;font-weight:500;text-decoration:none;transition:all .2s}
+.partner-link-main{background:var(--gold);color:var(--dark)}
+.partner-link-main:hover{background:var(--gold-light)}
+.partner-link-sec{background:var(--dark-3);border:1px solid var(--border);color:var(--muted)}
+.partner-link-sec:hover{border-color:var(--gold);color:var(--gold)}
+
+.faq-section{margin-bottom:60px}
+.faq-section h2{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;margin-bottom:24px}
+.faq-item{background:var(--dark-2);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.faq-q{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:500;transition:color .2s}
+.faq-q:hover{color:var(--gold)}
+.faq-q .faq-arrow{color:var(--muted);transition:transform .2s;font-size:12px}
+.faq-item.open .faq-arrow{transform:rotate(180deg)}
+.faq-a{display:none;padding:0 20px 16px;font-size:13px;color:var(--muted);line-height:1.7}
+.faq-item.open .faq-a{display:block}
+
+footer{background:var(--dark-2);border-top:1px solid var(--border);padding:48px 40px;text-align:center}
+footer .footer-logo img{height:48px;width:auto;mix-blend-mode:lighten;margin-bottom:16px}
+footer p{color:var(--muted);font-size:13px;line-height:1.7;max-width:480px;margin:0 auto 24px}
+footer .links{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;margin-bottom:16px}
+footer .links a{color:var(--muted);text-decoration:none;font-size:13px;transition:color .2s}
+footer .links a:hover{color:var(--gold)}
+@media(max-width:600px){.partner-section{flex-direction:column;gap:20px}.toolbar{flex-direction:column}.search-box{width:100%}footer{padding:40px 20px}}
 </style>
 </head>
 <body>
@@ -108,6 +129,7 @@ footer .links a:hover{color:var(--gold)}
   <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Menu">☰</button>
   <a href="communaute.html" class="nav-cta">Rejoindre</a>
 </nav>
+
 <div class="mobile-menu" id="mobile-menu">
   <a href="index.html">🏠 Accueil</a>
   <a href="musiciens.html">🎵 Musiciens</a>
@@ -124,70 +146,70 @@ footer .links a:hover{color:var(--gold)}
     <p>Instruments, accessoires et matériel audio sélectionnés pour les musiciens du gospel francophone. En partenariat avec Thomann.</p>
   </div>
 
-  <div class="coming-soon-box">
-    <span class="coming-soon-icon">🚀</span>
-    <h2>Bientôt disponible</h2>
-    <p>Nous finalisons notre sélection d'équipements en partenariat avec Thomann. Laissez votre email pour être notifié en avant-première.</p>
-    <div class="notify-form">
-      <input type="email" id="notify-email" placeholder="votre@email.com">
-      <button onclick="notifyMe()">Me notifier</button>
-    </div>
-    <p class="success-msg" id="success-msg">✓ Parfait ! Vous serez notifié en avant-première.</p>
+  <div class="affiliate-setup" id="aff-setup-banner">
+    <div class="aff-icon">💡</div>
+    <p><strong>Activez l'affiliation Thomann</strong> pour toucher 3,5–6% de commission sur chaque vente. Inscrivez-vous sur Awin, rejoignez le programme Thomann (ID: 19936), puis renseignez votre Publisher ID dans le code (<code>AWIN_ID</code>).</p>
+    <a href="https://www.awin.com/fr/rejoindre-awin" target="_blank" rel="noopener">S'inscrire sur Awin →</a>
   </div>
 
-  <div style="margin-bottom:32px">
-    <div class="section-label">Aperçu</div>
-    <h2 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;margin-top:12px;margin-bottom:24px">Ce qui arrive bientôt</h2>
+  <div class="toolbar">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search-input" placeholder="Rechercher un instrument, une marque..." oninput="filterProducts()">
+    </div>
+    <select class="sort-select" id="sort-select" onchange="filterProducts()">
+      <option value="default">Trier : Recommandé</option>
+      <option value="price-asc">Prix croissant</option>
+      <option value="price-desc">Prix décroissant</option>
+    </select>
   </div>
 
-  <div class="preview-grid">
-    <div class="product-card">
-      <div class="product-img">🎹</div>
-      <div class="product-body">
-        <div class="product-badge">Clavier</div>
-        <div class="product-name">Yamaha P-145</div>
-        <div class="product-desc">Piano numérique 88 touches, toucher lourd GHC, idéal pour l'église et le culte.</div>
-        <div class="product-price">599 €</div>
-        <div class="product-soon">⏳ Bientôt disponible</div>
-      </div>
-    </div>
-    <div class="product-card">
-      <div class="product-img">🎸</div>
-      <div class="product-body">
-        <div class="product-badge">Guitare</div>
-        <div class="product-name">Fender Player Stratocaster</div>
-        <div class="product-desc">Guitare électrique polyvalente, parfaite pour le gospel contemporain et la louange.</div>
-        <div class="product-price">849 €</div>
-        <div class="product-soon">⏳ Bientôt disponible</div>
-      </div>
-    </div>
-    <div class="product-card">
-      <div class="product-img">🥁</div>
-      <div class="product-body">
-        <div class="product-badge">Percussion</div>
-        <div class="product-name">Roland TD-07DMK</div>
-        <div class="product-desc">Kit de batterie électronique compact, parfait pour répétitions à domicile ou petites scènes.</div>
-        <div class="product-price">1 149 €</div>
-        <div class="product-soon">⏳ Bientôt disponible</div>
-      </div>
-    </div>
-    <div class="product-card">
-      <div class="product-img">🎤</div>
-      <div class="product-body">
-        <div class="product-badge">Voix</div>
-        <div class="product-name">Shure SM58</div>
-        <div class="product-desc">Le micro vocal de référence, incontournable sur toutes les scènes gospel depuis 50 ans.</div>
-        <div class="product-price">99 €</div>
-        <div class="product-soon">⏳ Bientôt disponible</div>
-      </div>
-    </div>
+  <div class="filters">
+    <button class="filter-btn active" onclick="setCategory('all',this)">Tout</button>
+    <button class="filter-btn" onclick="setCategory('piano',this)">🎹 Piano & Claviers</button>
+    <button class="filter-btn" onclick="setCategory('guitare',this)">🎸 Guitares</button>
+    <button class="filter-btn" onclick="setCategory('batterie',this)">🥁 Batterie</button>
+    <button class="filter-btn" onclick="setCategory('voix',this)">🎤 Voix & Micros</button>
+    <button class="filter-btn" onclick="setCategory('accessoire',this)">🎧 Accessoires</button>
+  </div>
+
+  <div class="product-grid" id="product-grid"></div>
+  <div class="empty-state" id="empty-state" style="display:none">
+    <h3>Aucun résultat</h3>
+    <p>Essayez un autre mot-clé ou une autre catégorie.</p>
   </div>
 
   <div class="partner-section">
     <div class="partner-icon">🤝</div>
     <div class="partner-body">
       <h3>Partenariat Thomann</h3>
-      <p>Lyra Music s'associe à Thomann, le leader européen de l'équipement musical, pour vous proposer les meilleurs produits aux meilleurs prix. Chaque achat via Lyra soutient directement la plateforme et la communauté gospel francophone.</p>
+      <p>Lyra Music s'associe à <strong>Thomann</strong>, le leader européen de l'équipement musical, pour vous proposer les meilleurs instruments aux meilleurs prix. Chaque achat via nos liens soutient directement la communauté gospel francophone. Livraison rapide depuis l'Allemagne, 30 jours satisfait ou remboursé.</p>
+      <div class="partner-links">
+        <a href="https://www.thomann.de/fr/index.html?utm_source=lyramusic&utm_medium=referral" target="_blank" rel="noopener sponsored" class="partner-link-main">🎸 Explorer Thomann →</a>
+        <a href="https://www.thomann.de/fr/pianos_numeriques_portables.html?utm_source=lyramusic&utm_medium=referral" target="_blank" rel="noopener sponsored" class="partner-link-sec">Pianos numériques</a>
+        <a href="https://www.thomann.de/fr/micros_live.html?utm_source=lyramusic&utm_medium=referral" target="_blank" rel="noopener sponsored" class="partner-link-sec">Micros live</a>
+        <a href="https://www.thomann.de/fr/batteries_electroniques.html?utm_source=lyramusic&utm_medium=referral" target="_blank" rel="noopener sponsored" class="partner-link-sec">Batteries élec.</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Comment fonctionne la commande ? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">En cliquant sur "Acheter sur Thomann", vous êtes redirigé vers la page produit Thomann. Vous commandez directement chez eux — livraison en 2 à 5 jours ouvrés en France. Retours gratuits sous 30 jours.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Pourquoi passer par Lyra Music plutôt que Thomann directement ? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Notre sélection est faite spécifiquement pour les musiciens gospel et d'église. Nous avons filtré les milliers de produits Thomann pour ne garder que ce qui correspond à vos besoins. Chaque achat via Lyra soutient aussi la plateforme gospel francophone.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Les prix sont-ils les mêmes que sur Thomann ? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Oui. En cliquant sur le bouton, vous voyez le prix final directement sur Thomann. Aucun surcoût caché. Nous touchons une commission d'affiliation de leur côté, sans impact sur votre prix d'achat.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Un produit n'est pas disponible ou vous cherchez autre chose ? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Contactez-nous sur WhatsApp — nous pouvons vous recommander le produit le plus adapté à votre budget et à votre style de jeu gospel.</div>
     </div>
   </div>
 </main>
@@ -208,6 +230,94 @@ footer .links a:hover{color:var(--gold)}
 </footer>
 
 <script>
+// ═══════════════════════════════════════════════════════════════
+// ⚙️  CONFIGURATION AFFILIATION THOMANN
+// 1. Inscrivez-vous sur https://www.awin.com/fr/rejoindre-awin
+// 2. Rejoignez le programme Thomann (Awin advertiser ID: 19936)
+// 3. Remplacez null par votre Awin Publisher ID (ex: '123456')
+const AWIN_ID = null;
+// ═══════════════════════════════════════════════════════════════
+
+function tLink(url) {
+  if (AWIN_ID) {
+    return 'https://www.awin1.com/cread.php?awinmid=19936&awinaffid=' + AWIN_ID + '&clickref=lyramusic&ued=' + encodeURIComponent(url);
+  }
+  return url + (url.includes('?') ? '&' : '?') + 'utm_source=lyramusic&utm_medium=referral';
+}
+
+if (AWIN_ID) document.getElementById('aff-setup-banner').style.display = 'none';
+
+const PRODUCTS = [
+  {id:1,  cat:'piano',      icon:'🎹', brand:'Yamaha',     name:'Yamaha P-145',                 badge:'Best seller',   desc:'Piano numérique 88 touches, toucher lourd GHC, sons CFX et Bösendorfer. L\'entrée de gamme idéale pour l\'église.',        price:599,  url:'https://www.thomann.de/fr/yamaha_p145b.htm'},
+  {id:2,  cat:'piano',      icon:'🎹', brand:'Roland',     name:'Roland FP-30X',                badge:'Top qualité',   desc:'Son SuperNATURAL, 88 touches PHA-4 pondérées. Le meilleur piano portable de sa gamme pour les musiciens gospel.',          price:749,  url:'https://www.thomann.de/fr/roland_fp_30x_bk.htm'},
+  {id:3,  cat:'piano',      icon:'🎹', brand:'Korg',       name:'Korg B2',                      badge:null,            desc:'Piano numérique 88 touches, 12 sons réalistes. Idéal pour débuter ou jouer en répétition. Compact et léger.',             price:459,  url:'https://www.thomann.de/fr/korg_b2_bk.htm'},
+  {id:4,  cat:'piano',      icon:'🎹', brand:'Arturia',    name:'Arturia KeyLab Essential 61',  badge:null,            desc:'Contrôleur MIDI 61 touches semi-lestées. Parfait pour compositions gospel et production musicale chrétienne.',             price:229,  url:'https://www.thomann.de/fr/arturia_keylab_essential_61.htm'},
+  {id:5,  cat:'guitare',    icon:'🎸', brand:'Fender',     name:'Fender Player Stratocaster',   badge:'Populaire',     desc:'La Stratocaster de référence. Sons cristallins pour le gospel contemporain et la louange. Manche pau ferro.',              price:849,  url:'https://www.thomann.de/fr/fender_player_stratocaster_pau_ferro_3tsb.htm'},
+  {id:6,  cat:'guitare',    icon:'🎸', brand:'Squier',     name:'Squier Classic Vibe 70s',      badge:'Bon prix',      desc:'Son vintage pour petit budget. Idéale pour débuter la guitare électrique dans les groupes de louange et worship.',         price:449,  url:'https://www.thomann.de/fr/squier_classic_vibe_70s_stratocaster_3tsb.htm'},
+  {id:7,  cat:'guitare',    icon:'🎸', brand:'Yamaha',     name:'Yamaha FG800',                 badge:null,            desc:'Guitare acoustique folk, table épicéa massif, son chaud et équilibré. La référence pour la louange acoustique.',           price:229,  url:'https://www.thomann.de/fr/yamaha_fg800.htm'},
+  {id:8,  cat:'batterie',   icon:'🥁', brand:'Roland',     name:'Roland TD-07DMK',              badge:'Pro',           desc:'Kit électronique compact avec sons TD premium. Parfait pour répétitions à domicile et petites scènes gospel.',             price:1149, url:'https://www.thomann.de/fr/roland_td_07dmk.htm'},
+  {id:9,  cat:'batterie',   icon:'🥁', brand:'Alesis',     name:'Alesis Nitro Mesh Kit',        badge:'Bon prix',      desc:'Batterie électronique avec peaux mesh silencieuses. Idéale pour s\'exercer sans déranger les voisins.',                     price:379,  url:'https://www.thomann.de/fr/alesis_nitro_mesh_kit.htm'},
+  {id:10, cat:'voix',       icon:'🎤', brand:'Shure',      name:'Shure SM58',                   badge:'Incontournable', desc:'Le micro vocal de scène de référence depuis 50 ans. Robuste, fiable, sur toutes les scènes gospel du monde.',            price:99,   url:'https://www.thomann.de/fr/shure_sm58_lc.htm'},
+  {id:11, cat:'voix',       icon:'🎤', brand:'Sennheiser', name:'Sennheiser e835',              badge:null,            desc:'Micro dynamique cardioïde, excellent rejet du bruit de fond. Solide et fiable pour le chant gospel live.',                price:89,   url:'https://www.thomann.de/fr/sennheiser_e_835.htm'},
+  {id:12, cat:'voix',       icon:'🎤', brand:'Shure',      name:'Shure SE215 In-Ear',           badge:'Pro scène',     desc:'Intra-auriculaires professionnels avec câble détachable. Le standard pour le monitoring sur scène gospel.',               price:114,  url:'https://www.thomann.de/fr/shure_se215_cl.htm'},
+  {id:13, cat:'voix',       icon:'🎙️', brand:'Behringer',  name:'Behringer XM8500',             badge:'Entrée gamme',  desc:'Micro vocal dynamique à moins de 25€. Idéal pour chorales, répétitions et petits événements d\'église.',                  price:24,   url:'https://www.thomann.de/fr/behringer_xm8500.htm'},
+  {id:14, cat:'accessoire', icon:'🎸', brand:'Boss',       name:'Boss DS-1 Distortion',         badge:null,            desc:'La pédale d\'effet légendaire. Indispensable pour guitaristes gospel rock et chrétien contemporain.',                      price:57,   url:'https://www.thomann.de/fr/boss_ds_1.htm'},
+  {id:15, cat:'accessoire', icon:'🦶', brand:'Roland',     name:'Roland DP-10 Pédale Sustain',  badge:null,            desc:'Pédale sustain robuste compatible avec tous les pianos numériques et synthés. Construction métal solide.',                 price:29,   url:'https://www.thomann.de/fr/roland_dp_10.htm'},
+  {id:16, cat:'accessoire', icon:'🔌', brand:"D'Addario",  name:"D'Addario Câble Pro 3m",       badge:null,            desc:'Câble jack 3m blindé double, idéal pour scène et répétition. Garantie à vie D\'Addario.',                                 price:18,   url:'https://www.thomann.de/fr/daddario_pw_cgtp_10.htm'},
+];
+
+const CAT_LABELS = {piano:'Piano & Claviers', guitare:'Guitares', batterie:'Batterie', voix:'Voix & Micros', accessoire:'Accessoires'};
+let currentCat = 'all';
+
+function setCategory(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterProducts();
+}
+
+function filterProducts() {
+  const search = document.getElementById('search-input').value.toLowerCase();
+  const sort = document.getElementById('sort-select').value;
+  let list = PRODUCTS.filter(p => {
+    const matchCat = currentCat === 'all' || p.cat === currentCat;
+    const matchSearch = !search || p.name.toLowerCase().includes(search) || p.brand.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search);
+    return matchCat && matchSearch;
+  });
+  if (sort === 'price-asc') list.sort((a,b) => a.price - b.price);
+  if (sort === 'price-desc') list.sort((a,b) => b.price - a.price);
+  renderProducts(list);
+}
+
+function renderProducts(list) {
+  const grid = document.getElementById('product-grid');
+  const empty = document.getElementById('empty-state');
+  if (!list.length) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  grid.innerHTML = list.map(p => `
+    <div class="product-card">
+      <div class="product-img">
+        ${p.badge ? '<div class="product-badge">' + p.badge + '</div>' : ''}
+        ${p.icon}
+      </div>
+      <div class="product-body">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="product-cat">${CAT_LABELS[p.cat]||p.cat}</div>
+          <div class="product-brand">${p.brand}</div>
+        </div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-price">${p.price.toLocaleString('fr-FR')} €</div>
+        <a href="${tLink(p.url)}" target="_blank" rel="noopener sponsored" class="btn-buy">🛒 Acheter sur Thomann</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+filterProducts();
+
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+
 function toggleMobileMenu(){
   const m=document.getElementById('mobile-menu');
   const h=document.getElementById('nav-hamburger');
@@ -220,12 +330,6 @@ window.addEventListener('scroll',function(){
   const h=document.getElementById('nav-hamburger');
   if(m&&m.classList.contains('open')){m.classList.remove('open');if(h)h.textContent='☰';}
 },{passive:true});
-function notifyMe(){
-  const email=document.getElementById('notify-email').value.trim();
-  if(!email||!email.includes('@')){document.getElementById('notify-email').focus();return;}
-  document.getElementById('notify-email').value='';
-  document.getElementById('success-msg').style.display='block';
-}
 </script>
 </body>
 </html>
