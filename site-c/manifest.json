@@ -1,0 +1,26 @@
+{
+  "name": "Lyra Music",
+  "short_name": "Lyra Music",
+  "description": "La marketplace des musiciens chrétiens francophones — Talents, Événements, Communauté",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0D0D0D",
+  "theme_color": "#C9A84C",
+  "orientation": "portrait-primary",
+  "lang": "fr",
+  "categories": ["music", "social", "business"],
+  "icons": [
+    { "src": "assets/logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "assets/logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Musiciens",   "url": "/musiciens.html",   "description": "Trouver un musicien" },
+    { "name": "Événements",  "url": "/evenements.html",  "description": "Missions et annonces" },
+    { "name": "Messages",    "url": "/messages.html",    "description": "Messagerie directe" },
+    { "name": "Boutique",    "url": "/boutique.html",    "description": "Instruments gospel" }
+  ],
+  "screenshots": [
+    { "src": "assets/og-image.jpg", "sizes": "1200x630", "type": "image/jpeg" }
+  ]
+}

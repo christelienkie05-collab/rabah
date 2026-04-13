@@ -14,6 +14,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#C9A84C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Lyra Music">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -128,6 +133,21 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .bo-popular{font-size:10px;background:var(--gold);color:var(--dark);padding:2px 8px;border-radius:100px;letter-spacing:.05em;font-weight:600}
 .bo-price{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold);font-weight:600;white-space:nowrap}
 .boost-note{font-size:12px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.5;opacity:.8}
+/* BADGES DE CERTIFICATION */
+.cert-verified{background:rgba(76,175,125,0.12);color:#4caf7d;border:1px solid rgba(76,175,125,0.35);padding:2px 7px;border-radius:100px;font-size:10px;font-weight:600;letter-spacing:.04em}
+.cert-pro{background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.45);padding:2px 7px;border-radius:100px;font-size:10px;font-weight:600;letter-spacing:.04em}
+.cert-founder{background:linear-gradient(135deg,rgba(201,168,76,0.25),rgba(180,120,40,0.15));color:var(--gold-light);border:1px solid rgba(201,168,76,0.6);padding:2px 8px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:.06em}
+/* CERTIFICATION MODAL */
+.cert-steps{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+.cert-step{background:var(--dark-3);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px}
+.cert-step-num{width:26px;height:26px;border-radius:50%;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);color:var(--gold);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.cert-step-body h4{font-size:13px;font-weight:500;margin-bottom:3px}
+.cert-step-body p{font-size:12px;color:var(--muted);line-height:1.4}
+.cert-levels{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.cert-level-card{background:var(--dark-3);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.cert-level-card .cl-badge{font-size:20px;margin-bottom:6px}
+.cert-level-card .cl-name{font-size:13px;font-weight:500;margin-bottom:4px}
+.cert-level-card .cl-desc{font-size:11px;color:var(--muted);line-height:1.4}
 
 .btn-primary{background:var(--gold);color:var(--dark);padding:11px 24px;border-radius:8px;font-size:14px;font-weight:500;text-decoration:none;border:none;cursor:pointer;transition:all .2s;white-space:nowrap}
 .btn-primary:hover{background:var(--gold-light)}
@@ -169,6 +189,7 @@ footer .links a:hover{color:var(--gold)}
   <div class="nav-links">
     <a href="musiciens.html" class="active">Musiciens</a>
     <a href="evenements.html">Événements</a>
+    <a href="messages.html">Messages</a>
     <a href="boutique.html">Boutique</a>
     <a href="communaute.html">Communauté</a>
   </div>
@@ -179,6 +200,7 @@ footer .links a:hover{color:var(--gold)}
   <a href="index.html">🏠 Accueil</a>
   <a href="musiciens.html" class="active">🎵 Musiciens</a>
   <a href="evenements.html">📅 Événements</a>
+  <a href="messages.html">💬 Messages</a>
   <a href="boutique.html">🎸 Boutique</a>
   <a href="communaute.html">🙏 Communauté</a>
   <a href="#" class="mob-cta" onclick="document.getElementById('modal-inscription')?.classList.add('open');toggleMobileMenu()">🎼 Proposer mon talent</a>
@@ -238,12 +260,72 @@ footer .links a:hover{color:var(--gold)}
     <div class="boost-banner-actions">
       <a href="https://wa.me/33651426961?text=Je%20veux%20créer%20mon%20profil%20musicien%20sur%20Lyra%20Music" target="_blank" class="btn-primary">🎵 Créer mon profil</a>
       <button class="btn-boost" onclick="openBoostModal()">🚀 Booster mon profil — dès 5€</button>
+      <button class="btn-boost" onclick="openCertModal()" style="border-color:var(--success);color:var(--success)">✦ Certifier mon profil</button>
     </div>
   </div>
   <div class="feed" id="feed"></div>
   <div class="empty" id="empty" style="display:none">
     <h3>Aucun musicien trouvé</h3>
     <p>Essayez un autre filtre ou activez "Autour de moi" pour élargir la zone.</p>
+  </div>
+</div>
+
+<!-- MODAL CERTIFICATION -->
+<div class="modal-overlay" id="cert-modal" onclick="if(event.target===this)closeCertModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:300;align-items:center;justify-content:center;padding:20px">
+  <div class="modal" style="max-width:480px">
+    <button class="modal-close" onclick="closeCertModal()">✕</button>
+    <div class="modal-header">
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;margin-bottom:6px">✦ Certifier mon profil</h2>
+      <p style="font-size:13px;color:var(--muted)">Un profil certifié inspire confiance et obtient 3× plus de contacts</p>
+    </div>
+    <div class="modal-body">
+      <div class="cert-levels">
+        <div class="cert-level-card">
+          <div class="cl-badge"><span class="cert-verified">✓ Vérifié</span></div>
+          <div class="cl-name" style="margin-top:8px">Vérifié</div>
+          <div class="cl-desc">Identité confirmée · Gratuit</div>
+        </div>
+        <div class="cert-level-card" style="border-color:rgba(201,168,76,0.4)">
+          <div class="cl-badge"><span class="cert-pro">⭐ Pro</span></div>
+          <div class="cl-name" style="margin-top:8px">Pro</div>
+          <div class="cl-desc">Qualité musicale validée · 0€</div>
+        </div>
+        <div class="cert-level-card" style="border-color:rgba(201,168,76,0.6)">
+          <div class="cl-badge"><span class="cert-founder">✦ Fondateur</span></div>
+          <div class="cl-name" style="margin-top:8px">Fondateur</div>
+          <div class="cl-desc">Réservé aux 50 premiers · Événement</div>
+        </div>
+      </div>
+      <div class="cert-steps">
+        <div class="cert-step">
+          <div class="cert-step-num">1</div>
+          <div class="cert-step-body">
+            <h4>Photo de votre pièce d'identité</h4>
+            <p>Carte d'identité ou passeport — envoyée en privé via WhatsApp, jamais publiée.</p>
+          </div>
+        </div>
+        <div class="cert-step">
+          <div class="cert-step-num">2</div>
+          <div class="cert-step-body">
+            <h4>Vidéo de 30 secondes</h4>
+            <p>Jouez ou chantez quelques mesures en direct. Prouve votre niveau réel (badge Pro).</p>
+          </div>
+        </div>
+        <div class="cert-step">
+          <div class="cert-step-num">3</div>
+          <div class="cert-step-body">
+            <h4>Validation sous 24h</h4>
+            <p>Notre équipe examine votre dossier et active le badge sur votre profil.</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions" style="margin-top:4px">
+        <a href="https://wa.me/33651426961?text=Bonjour%2C+je+veux+certifier+mon+profil+Lyra+Music" target="_blank" class="modal-wa" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:13px 18px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;background:rgba(37,211,102,0.12);border:1px solid rgba(37,211,102,0.3);color:#25d366">
+          📱 Démarrer la vérification via WhatsApp
+        </a>
+      </div>
+      <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px;opacity:.7">🔒 Vos documents sont traités de façon confidentielle et ne sont jamais publiés</p>
+    </div>
   </div>
 </div>
 
@@ -354,68 +436,76 @@ const CITY_COORDS = {
 };
 
 const TALENTS = [
-  {id:1,name:'Samuel K.',cat:'piano',zone:'Paris 75',
+  {id:1,name:'Samuel K.',cat:'piano',zone:'Paris 75',certLevel:'founder',
    bio:'Pianiste gospel — 10 ans de scène. Formé au CRR de Paris, spécialisé dans le worship contemporain et les cérémonies de mariage chrétiennes. Disponible sur toute l\'Île-de-France.',
    verified:true,boosted:true,likes:47,tags:['Gospel','Worship','Mariage'],
    phone:'+33 6 12 34 56 78',email:'samuel.k@lyramusic.fr',
    instagram:'https://instagram.com/samuel_piano_gospel',tiktok:'https://www.tiktok.com/@samuel_piano',
    videos:['https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1']},
-  {id:2,name:'Grace M.',cat:'chant',zone:'Lyon',
+  {id:2,name:'Grace M.',cat:'chant',zone:'Lyon',certLevel:'pro',
    bio:'Soprano — worship & mariage. Voix puissante et douce, formée dans le chant lyrique et gospel. Disponible pour concerts, cultes et galas sur Lyon et région.',
    verified:true,boosted:false,likes:32,tags:['Soprano','Gospel','Gala'],
    phone:'+33 7 23 45 67 89',email:null,
    instagram:'https://instagram.com/gracemchant',tiktok:null,videos:[]},
-  {id:3,name:'David A.',cat:'guitare',zone:'Paris 93',
+  {id:3,name:'David A.',cat:'guitare',zone:'Paris 93',certLevel:'none',
    bio:'Guitare électrique & acoustique. Musicien de worship depuis 8 ans, membre de plusieurs équipes d\'adoration en Seine-Saint-Denis.',
    verified:false,boosted:false,likes:18,tags:['Électrique','Acoustique'],
    phone:null,email:'david.a.guitare@gmail.com',
    instagram:null,tiktok:'https://www.tiktok.com/@david_guitariste',videos:[]},
-  {id:4,name:'Esther N.',cat:'violon',zone:'Versailles',
+  {id:4,name:'Esther N.',cat:'violon',zone:'Versailles',certLevel:'verified',
    bio:'Violoniste classique & gospel. Diplômée du Conservatoire de Versailles, elle mêle grâce et spiritualité dans chaque prestation de mariage ou concert.',
    verified:true,boosted:false,likes:29,tags:['Classique','Gospel','Mariage'],
    phone:'+33 6 45 67 89 01',email:'esther.violon@lyramusic.fr',
    instagram:'https://instagram.com/esther_violon',tiktok:null,videos:[]},
-  {id:5,name:'Nathan B.',cat:'saxophone',zone:'Bordeaux',
+  {id:5,name:'Nathan B.',cat:'saxophone',zone:'Bordeaux',certLevel:'none',
    bio:'Saxophoniste alto & ténor. Jazz gospel et ambiances feutrées pour cocktails, mariages et soirées chrétiennes. 12 ans d\'expérience scénique.',
    verified:false,boosted:false,likes:21,tags:['Alto','Ténor','Jazz Gospel'],
    phone:'+33 6 78 90 12 34',email:null,
    instagram:'https://instagram.com/nathan_sax_gospel',tiktok:null,videos:[]},
-  {id:6,name:'Miriam T.',cat:'danseur',zone:'Paris 75',
+  {id:6,name:'Miriam T.',cat:'danseur',zone:'Paris 75',certLevel:'founder',
    bio:'Danse prophétique & liturgique. Chorégraphe et danseuse chrétienne depuis 7 ans, spécialisée dans la danse d\'adoration et l\'expression artistique biblique.',
    verified:true,boosted:true,likes:55,tags:['Prophétique','Liturgique'],
    phone:'+33 7 89 01 23 45',email:'miriam.danse@lyramusic.fr',
    instagram:'https://instagram.com/miriam_danse_prophetique',tiktok:'https://www.tiktok.com/@miriam_dance',videos:[]},
-  {id:7,name:'Joël F.',cat:'batterie',zone:'Marseille',
+  {id:7,name:'Joël F.',cat:'batterie',zone:'Marseille',certLevel:'pro',
    bio:'Batteur gospel depuis 15 ans. Membre fondateur de plusieurs groupes gospel marseillais. Rigueur rythmique et esprit de communion sur scène.',
    verified:true,boosted:false,likes:38,tags:['Gospel','Worship'],
    phone:'+33 6 90 12 34 56',email:'joel.batterie@gmail.com',
    instagram:null,tiktok:null,videos:[]},
-  {id:8,name:'Rachel C.',cat:'piano',zone:'Toulouse',
+  {id:8,name:'Rachel C.',cat:'piano',zone:'Toulouse',certLevel:'none',
    bio:'Piano classique & contemporain. Accompagnatrice idéale pour cérémonies, chœurs et enregistrements. Très à l\'aise avec les répertoires gospel et classique.',
    verified:false,boosted:false,likes:14,tags:['Classique','Contemporain'],
    phone:null,email:'rachel.piano.toulouse@gmail.com',
    instagram:'https://instagram.com/rachel_piano',tiktok:null,videos:[]},
-  {id:9,name:'Caleb M.',cat:'trompette',zone:'Lyon',
+  {id:9,name:'Caleb M.',cat:'trompette',zone:'Lyon',certLevel:'verified',
    bio:'Trompette jazz & gospel. Timbre chaud et expressif, habitué des cultes évangéliques et des événements chrétiens en Rhône-Alpes.',
    verified:true,boosted:false,likes:25,tags:['Jazz','Gospel'],
    phone:'+33 7 01 23 45 67',email:'caleb.trompette@lyramusic.fr',
    instagram:null,tiktok:'https://www.tiktok.com/@caleb_trumpet',videos:[]},
-  {id:10,name:'Déborah L.',cat:'chant',zone:'Paris 92',
+  {id:10,name:'Déborah L.',cat:'chant',zone:'Paris 92',certLevel:'none',
    bio:'Alto — chœur & solo. Voix grave et enveloppante, soliste dans plusieurs chorales gospel d\'Île-de-France. Disponible pour mariages, concerts et enregistrements.',
    verified:false,boosted:false,likes:19,tags:['Alto','Chœur','Mariage'],
    phone:'+33 6 12 98 76 54',email:null,
    instagram:'https://instagram.com/deborah_alto',tiktok:null,videos:[]},
-  {id:11,name:'Ezra K.',cat:'dj',zone:'Strasbourg',
+  {id:11,name:'Ezra K.',cat:'dj',zone:'Strasbourg',certLevel:'pro',
    bio:'DJ gospel — ambiance garantie. Spécialiste des soirées chrétiennes, galas et mariages. Mix gospel, afro gospel et contemporain. Plus de 200 événements au compteur.',
    verified:true,boosted:true,likes:61,tags:['Gospel','Ambiance','DJ Set'],
    phone:'+33 7 34 56 78 90',email:'ezra.dj@lyramusic.fr',
    instagram:'https://instagram.com/ezra_dj_gospel',tiktok:'https://www.tiktok.com/@ezra_gospeldj',videos:[]},
-  {id:12,name:'Abigaïl S.',cat:'guitare',zone:'Nantes',
+  {id:12,name:'Abigaïl S.',cat:'guitare',zone:'Nantes',certLevel:'none',
    bio:'Guitare basse & lead. Polyvalente et créative, elle apporte groove et modernité aux équipes de worship. Disponible pour cultes, concerts et enregistrements.',
    verified:false,boosted:false,likes:11,tags:['Basse','Lead'],
    phone:null,email:'abigail.guitare@gmail.com',
    instagram:'https://instagram.com/abigail_bass',tiktok:null,videos:[]},
 ];
+
+// Certification badge helper
+function certBadge(level) {
+  if (level === 'founder') return '<span class="cert-founder">✦ Fondateur</span>';
+  if (level === 'pro')     return '<span class="cert-pro">⭐ Pro</span>';
+  if (level === 'verified') return '<span class="cert-verified">✓ Vérifié</span>';
+  return '';
+}
 
 let activeFilter='all', userPos=null, proximityOn=false;
 
@@ -474,7 +564,7 @@ function card(t){
   return`<div class="card" onclick="openProfile(${t.id})">
     <div class="card-video">${ph}</div>
     <div class="card-body">
-      <div class="card-name">${t.name}${t.verified?' <span class="tag verified" style="font-size:10px">✓</span>':''}</div>
+      <div class="card-name">${t.name} ${certBadge(t.certLevel)}</div>
       <div class="card-meta">${t.cat.charAt(0).toUpperCase()+t.cat.slice(1)} · ${t.zone} ${distBadge}</div>
       <div class="card-tags">
         ${t.boosted?'<span class="tag boosted">⭐ Mis en avant</span>':''}
@@ -496,7 +586,7 @@ function openProfile(id){
   currentProfileId=id;
   const CAT_EMOJI={piano:'🎹',guitare:'🎸',chant:'🎤',violon:'🎻',saxophone:'🎷',trompette:'🎺',batterie:'🥁',dj:'🎧',danseur:'💃'};
   document.getElementById('pm-av').textContent=CAT_EMOJI[t.cat]||'🎵';
-  document.getElementById('pm-name').innerHTML=`${t.name}${t.verified?' <span class="badge">✓ Vérifié</span>':''}`;
+  document.getElementById('pm-name').innerHTML=`${t.name} ${certBadge(t.certLevel)}`;
   document.getElementById('pm-meta').textContent=`${t.cat.charAt(0).toUpperCase()+t.cat.slice(1)} · ${t.zone}`;
   document.getElementById('pm-tags').innerHTML=[
     t.boosted?'<span class="tag boosted">⭐ Mis en avant</span>':'',
@@ -556,6 +646,16 @@ function openBoostModal(){
 function closeBoostModal(){
   document.getElementById('boost-modal').style.display = 'none';
   document.body.style.overflow = '';
+}
+
+// ── CERTIFICATION MODAL ──
+function openCertModal(){
+  document.getElementById('cert-modal').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function closeCertModal(){
+  document.getElementById('cert-modal').style.display='none';
+  document.body.style.overflow='';
 }
 function selectBoost(el, duration, price){
   document.querySelectorAll('.boost-option').forEach(o => {
@@ -617,5 +717,7 @@ window.addEventListener('scroll',function(){
   if(m&&m.classList.contains('open')){m.classList.remove('open');if(h)h.textContent='☰';}
 },{passive:true});
 </script>
+<script src="chat-widget.js"></script>
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>
