@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Missions musicales pour mariages, concerts, cultes gospel. Publiez votre annonce gratuitement et trouvez le musicien idéal. Paiement sécurisé Stripe.">
-<meta property="og:title" content="Événements & Missions — Lyra Music">
+<meta property="og:title" content="Événements & Missions — Rabah">
 <meta property="og:description" content="Publiez ou trouvez des missions musicales pour mariages, concerts, cultes gospel. Annonces vérifiées, contact direct.">
 <meta property="og:image" content="https://lyra-music-five.vercel.app/assets/og-image.jpg">
 <meta property="og:url" content="https://lyra-music-five.vercel.app/evenements.html">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<title>Événements — Lyra Music</title>
+<title>Événements — Rabah</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
@@ -18,7 +18,7 @@
 <meta name="theme-color" content="#C9A84C">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Lyra Music">
+<meta name="apple-mobile-web-app-title" content="Rabah">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{--gold:#C9A84C;--gold-light:#E8C96A;--dark:#0D0D0D;--dark-2:#151515;--dark-3:#1E1E1E;--text:#F0EDE6;--muted:#8A8478;--border:rgba(201,168,76,0.18);--radius:12px;--danger:#e05555;--success:#4caf7d}
@@ -154,9 +154,9 @@ footer .links a:hover{color:var(--gold)}
 <body>
 
 <nav>
-  <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="Lyra Music"></a>
+  <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="Rabah"></a>
   <div class="nav-links">
-    <a href="musiciens.html">Musiciens</a>
+    <a href="musiciens.html">Prestataires</a>
     <a href="evenements.html" class="active">Événements</a>
     <a href="messages.html">Messages</a>
     <a href="boutique.html">Boutique</a>
@@ -167,7 +167,7 @@ footer .links a:hover{color:var(--gold)}
 </nav>
 <div class="mobile-menu" id="mobile-menu">
   <a href="index.html">🏠 Accueil</a>
-  <a href="musiciens.html">🎵 Musiciens</a>
+  <a href="musiciens.html">🎵 Prestataires</a>
   <a href="evenements.html" class="active">📅 Événements</a>
   <a href="messages.html">💬 Messages</a>
   <a href="boutique.html">🎸 Boutique</a>
@@ -290,17 +290,17 @@ footer .links a:hover{color:var(--gold)}
 </div>
 
 <footer>
-  <div class="footer-logo"><img src="assets/logo.png" alt="Lyra Music" style="height:48px;width:auto;mix-blend-mode:lighten;margin-bottom:8px"></div>
+  <div class="footer-logo"><img src="assets/logo.png" alt="Rabah" style="height:48px;width:auto;mix-blend-mode:lighten;margin-bottom:8px"></div>
   <p>La marketplace des musiciens chrétiens francophones.</p>
   <div class="links">
     <a href="index.html">Accueil</a>
-    <a href="musiciens.html">Musiciens</a>
+    <a href="musiciens.html">Prestataires</a>
     <a href="communaute.html">Communauté</a>
     <a href="mailto:levitiquepianoschool@gmail.com">Contact</a>
     <a href="https://instagram.com/levitique_piano_school" target="_blank">Instagram</a>
     <a href="https://wa.me/33651426961" target="_blank">WhatsApp</a>
   </div>
-  <p style="margin-top:20px;font-size:11px;opacity:.4">© 2026 Lyra Music</p>
+  <p style="margin-top:20px;font-size:11px;opacity:.4">© 2026 Rabah</p>
 </footer>
 
 <script>
@@ -466,7 +466,7 @@ function submitViaWA(e){
   const budget=document.getElementById('f-budget').value||'?';
   const instruments=document.getElementById('f-instruments').value||'à préciser';
   const sos=document.getElementById('f-sos').checked;
-  const msg=`${sos?'🚨 SOS URGENCE — ':''}Nouvelle annonce Lyra Music\n\nTitre : ${titre}\nType : ${type}\nDate : ${date}\nLieu : ${lieu}\nBudget : ${budget}€/musicien\nInstruments : ${instruments}`;
+  const msg=`${sos?'🚨 SOS URGENCE — ':''}Nouvelle annonce Rabah\n\nTitre : ${titre}\nType : ${type}\nDate : ${date}\nLieu : ${lieu}\nBudget : ${budget}€/musicien\nInstruments : ${instruments}`;
   window.open(`https://wa.me/33651426961?text=${encodeURIComponent(msg)}`, '_blank');
   closePublish();
 }

@@ -1,5 +1,5 @@
-// Lyra Music — Service Worker v1
-const CACHE = 'lyra-v1';
+// Rabah — Service Worker v1
+const CACHE = 'rabah-v1';
 const SHELL = [
   '/index.html', '/musiciens.html', '/evenements.html',
   '/communaute.html', '/boutique.html', '/messages.html',

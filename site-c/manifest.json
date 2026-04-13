@@ -1,7 +1,7 @@
 {
-  "name": "Lyra Music",
-  "short_name": "Lyra Music",
-  "description": "La marketplace des musiciens chrétiens francophones — Talents, Événements, Communauté",
+  "name": "Rabah",
+  "short_name": "Rabah",
+  "description": "La communauté gospel qui se multiplie — Prestataires, Événements, Messagerie",
   "start_url": "/index.html",
   "scope": "/",
   "display": "standalone",
@@ -15,7 +15,7 @@
     { "src": "assets/logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ],
   "shortcuts": [
-    { "name": "Musiciens",   "url": "/musiciens.html",   "description": "Trouver un musicien" },
+    { "name": "Prestataires",   "url": "/musiciens.html",   "description": "Trouver un musicien" },
     { "name": "Événements",  "url": "/evenements.html",  "description": "Missions et annonces" },
     { "name": "Messages",    "url": "/messages.html",    "description": "Messagerie directe" },
     { "name": "Boutique",    "url": "/boutique.html",    "description": "Instruments gospel" }

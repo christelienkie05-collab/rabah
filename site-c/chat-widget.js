@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// LYRA MUSIC — Assistant IA intégré
+// RABAH — Assistant IA intégré
 // S'auto-injecte sur toutes les pages via <script src="chat-widget.js">
 // ═══════════════════════════════════════════════════════════════
 (function () {
@@ -47,7 +47,7 @@
   // ── HTML ─────────────────────────────────────────────────────
   const container = document.createElement('div');
   container.innerHTML = `
-  <button id="lm-chat-bubble" onclick="lmToggle()" aria-label="Assistant Lyra Music">
+  <button id="lm-chat-bubble" onclick="lmToggle()" aria-label="Assistant Rabah">
     🎵
     <span class="lm-notif" id="lm-notif">1</span>
   </button>
@@ -55,7 +55,7 @@
     <div class="lm-header">
       <div class="lm-header-av">🎵</div>
       <div class="lm-header-body">
-        <div class="lm-header-name">Assistant Lyra Music</div>
+        <div class="lm-header-name">Assistant Rabah</div>
         <div class="lm-header-status">En ligne · répond en quelques secondes</div>
       </div>
       <button class="lm-close" onclick="lmToggle()">✕</button>
@@ -73,12 +73,12 @@
   const KB = [
     {
       triggers: ['bonjour','salut','hello','bonsoir','bjr','coucou','bsr','yo'],
-      response: `Bonjour ! 👋 Je suis l'assistant IA de Lyra Music.\n\nJe peux vous aider sur :\n• 🎵 Trouver un musicien\n• 📅 Publier une annonce\n• 🛒 Boutique instruments\n• 💳 Paiement & sécurité\n• ✨ Service conciergerie\n• 🚀 Booster votre profil\n\nQue puis-je faire pour vous ?`,
+      response: `Bonjour ! 👋 Je suis l'assistant IA de Rabah.\n\nJe peux vous aider sur :\n• 🎵 Trouver un musicien\n• 📅 Publier une annonce\n• 🛒 Boutique instruments\n• 💳 Paiement & sécurité\n• ✨ Service conciergerie\n• 🚀 Booster votre profil\n\nQue puis-je faire pour vous ?`,
       suggestions: ['Trouver un musicien','Publier une annonce','Comment payer ?','C\'est quoi la conciergerie ?']
     },
     {
       triggers: ['trouver','chercher','musicien','pianiste','guitariste','chanteur','violoniste','saxophoniste','batteur','talent','profil','artiste'],
-      response: `Pour trouver un musicien :\n\n1. Rendez-vous sur **Musiciens**\n2. Filtrez par instrument (piano, guitare, chant…)\n3. Cherchez par ville ou utilisez **📍 Autour de moi**\n4. Cliquez sur une carte pour voir le profil vidéo complet\n5. Cliquez **"Voir les coordonnées"** pour le contacter directement\n\nTous les profils sont vérifiés par notre équipe.`,
+      response: `Pour trouver un musicien :\n\n1. Rendez-vous sur **Prestataires**\n2. Filtrez par instrument (piano, guitare, chant…)\n3. Cherchez par ville ou utilisez **📍 Autour de moi**\n4. Cliquez sur une carte pour voir le profil vidéo complet\n5. Cliquez **"Voir les coordonnées"** pour le contacter directement\n\nTous les profils sont vérifiés par notre équipe.`,
       suggestions: ['Comment contacter un musicien ?','Comment payer ?','C\'est quoi la conciergerie ?']
     },
     {
@@ -88,7 +88,7 @@
     },
     {
       triggers: ['payer','paiement','prix','coût','tarif','combien','argent','sécurisé','sécurité','stripe'],
-      response: `💳 **Comment ça marche :**\n\nLyra Music utilise **Stripe** (le système de paiement le plus sécurisé du monde).\n\n① Vous payez → l'argent est bloqué en **séquestre** chez Stripe\n② L'événement a lieu et le musicien confirme\n③ **48h après** → l'argent est libéré automatiquement au musicien\n\nEn cas de problème → **remboursement intégral garanti**. Lyra perçoit 10% de commission sur chaque transaction.`,
+      response: `💳 **Comment ça marche :**\n\nRabah utilise **Stripe** (le système de paiement le plus sécurisé du monde).\n\n① Vous payez → l'argent est bloqué en **séquestre** chez Stripe\n② L'événement a lieu et le musicien confirme\n③ **48h après** → l'argent est libéré automatiquement au musicien\n\nEn cas de problème → **remboursement intégral garanti**. Rabah perçoit 10% de commission sur chaque transaction.`,
       suggestions: ['C\'est quoi l\'escrow ?','La commission de 10% ?','Conciergerie tarifs']
     },
     {
@@ -98,7 +98,7 @@
     },
     {
       triggers: ['commission','10%','frais','plateforme'],
-      response: `Lyra Music perçoit **10% de commission** sur chaque réservation payée.\n\nExemple :\n• Organisateur paie 200€\n• Musicien reçoit **180€**\n• Lyra perçoit **20€** automatiquement via Stripe\n\nCette commission finance la plateforme, la vérification des profils, et le support. Elle est prélevée automatiquement, vous n'avez rien à calculer.`,
+      response: `Rabah perçoit **10% de commission** sur chaque réservation payée.\n\nExemple :\n• Organisateur paie 200€\n• Musicien reçoit **180€**\n• Rabah perçoit **20€** automatiquement via Stripe\n\nCette commission finance la plateforme, la vérification des profils, et le support. Elle est prélevée automatiquement, vous n'avez rien à calculer.`,
       suggestions: ['Comment payer ?','Trouver un musicien','Booster mon profil']
     },
     {
@@ -113,7 +113,7 @@
     },
     {
       triggers: ['boutique','instrument','acheter','commander','piano','guitare','batterie','micro','shure','yamaha','roland','fender','thomann'],
-      response: `🛒 **La boutique Lyra Music** propose 16+ instruments sélectionnés pour les musiciens gospel :\n\n🎹 Pianos — Yamaha P-145, Roland FP-30X, Korg B2\n🎸 Guitares — Fender Stratocaster, Squier, Yamaha FG800\n🥁 Batteries — Roland TD-07DMK, Alesis Nitro\n🎤 Micros — Shure SM58, Sennheiser e835, Behringer\n\nEn cliquant "Acheter", vous êtes redirigé chez Thomann, Bax Music, Amazon ou Woodbrass. Livraison 2 à 5 jours.`,
+      response: `🛒 **La boutique Rabah** propose 16+ instruments sélectionnés pour les musiciens gospel :\n\n🎹 Pianos — Yamaha P-145, Roland FP-30X, Korg B2\n🎸 Guitares — Fender Stratocaster, Squier, Yamaha FG800\n🥁 Batteries — Roland TD-07DMK, Alesis Nitro\n🎤 Micros — Shure SM58, Sennheiser e835, Behringer\n\nEn cliquant "Acheter", vous êtes redirigé chez Thomann, Bax Music, Amazon ou Woodbrass. Livraison 2 à 5 jours.`,
       suggestions: ['Meilleur piano pour l\'église ?','Livraison boutique ?','Retours boutique ?']
     },
     {
@@ -138,7 +138,7 @@
     },
     {
       triggers: ['inscrire','inscription','compte','créer','s\'enregistrer','rejoindre','devenir'],
-      response: `📝 **Comment s'inscrire sur Lyra Music :**\n\n**En tant que musicien :**\nContactez-nous sur WhatsApp en cliquant "Créer mon profil" sur la page Musiciens. Nous créons votre profil avec vos infos, bio et vidéos.\n\n**En tant qu'organisateur :**\nAucune inscription requise — publiez une annonce directement sur la page Événements.\n\nL'inscription musicien est **totalement gratuite**.`,
+      response: `📝 **Comment s'inscrire sur Rabah :**\n\n**En tant que prestataire :**\nContactez-nous sur WhatsApp en cliquant "Créer mon profil" sur la page Prestataires. Nous créons votre profil avec vos infos, bio et vidéos.\n\n**En tant qu'organisateur :**\nAucune inscription requise — publiez une annonce directement sur la page Événements.\n\nL'inscription prestataire est **totalement gratuite**.`,
       suggestions: ['Booster mon profil','Publier une annonce','Conciergerie']
     },
     {

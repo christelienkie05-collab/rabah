@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="description" content="Messagerie directe Lyra Music — Échangez avec les musiciens et organisateurs de la communauté gospel.">
+<meta name="description" content="Messagerie directe Rabah — Échangez avec les musiciens et organisateurs de la communauté gospel.">
 <meta name="theme-color" content="#C9A84C">
-<title>Messages — Lyra Music</title>
+<title>Messages — Rabah</title>
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -134,9 +134,9 @@ footer{display:none}
 <body>
 
 <nav>
-  <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="Lyra Music"></a>
+  <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="Rabah"></a>
   <div class="nav-links">
-    <a href="musiciens.html">Musiciens</a>
+    <a href="musiciens.html">Prestataires</a>
     <a href="evenements.html">Événements</a>
     <a href="messages.html" class="active">Messages</a>
     <a href="boutique.html">Boutique</a>
@@ -242,7 +242,7 @@ let CONVOS = [
   {
     id:2, userId:2, unread:0,
     messages:[
-      {from:'me',   text:'Bonjour Grace, je vous contacte suite à votre profil sur Lyra Music.', time:'Hier'},
+      {from:'me',   text:'Bonjour Grace, je vous contacte suite à votre profil sur Rabah.', time:'Hier'},
       {from:'them', text:'Bonjour ! Avec plaisir, dites-moi en quoi consiste l\'événement ?', time:'Hier'},
       {from:'me',   text:'C\'est un culte de louange pour environ 300 personnes, fin août à Lyon.', time:'Hier'},
       {from:'them', text:'Super, ça m\'intéresse ! Quel est le budget prévu ?', time:'Hier'},
@@ -252,7 +252,7 @@ let CONVOS = [
     id:3, userId:7, unread:1,
     messages:[
       {from:'them', text:'Bonjour, j\'ai utilisé le service conciergerie et je voulais vous remercier — le groupe était fantastique pour notre mariage !', time:'Lun.'},
-      {from:'them', text:'Nous recommanderons Lyra Music à tout notre entourage 🙏', time:'Lun.'},
+      {from:'them', text:'Nous recommanderons Rabah à tout notre entourage 🙏', time:'Lun.'},
       {from:'me',   text:'Merci beaucoup Christelle, c\'est une joie de lire votre retour ! Félicitations pour votre mariage 💍', time:'Lun.'},
     ]
   },
@@ -322,7 +322,7 @@ function openConvo(id) {
   document.getElementById('chat-name').innerHTML = `${u.name} ${u.verified ? '<span style="font-size:10px;background:rgba(76,175,125,0.15);color:#4caf7d;border:1px solid rgba(76,175,125,0.3);padding:1px 6px;border-radius:100px">✓ Vérifié</span>' : ''}`;
   document.getElementById('chat-status').textContent = u.online ? '🟢 En ligne maintenant' : `${u.role}`;
   document.getElementById('chat-wa-btn').onclick = () => {
-    const msg = encodeURIComponent(`Bonjour ${u.name}, je vous contacte depuis Lyra Music`);
+    const msg = encodeURIComponent(`Bonjour ${u.name}, je vous contacte depuis Rabah`);
     window.open(`https://wa.me/33651426961?text=${msg}`, '_blank');
   };
 
@@ -473,7 +473,7 @@ function viewProfile() {
 }
 
 function attachFile() {
-  const msg = encodeURIComponent('Bonjour, je veux partager un fichier via Lyra Music');
+  const msg = encodeURIComponent('Bonjour, je veux partager un fichier via Rabah');
   window.open('https://wa.me/33651426961?text=' + msg, '_blank');
 }
 
