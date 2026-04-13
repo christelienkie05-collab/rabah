@@ -118,16 +118,23 @@ footer p{color:var(--muted);font-size:13px;line-height:1.8}
 footer .links{display:flex;gap:20px;justify-content:center;margin-top:16px;flex-wrap:wrap}
 footer .links a{color:var(--muted);text-decoration:none;font-size:13px;transition:color .2s}
 footer .links a:hover{color:var(--gold)}
-/* CONTACT REVEAL */
+/* ADRESSE */
 .ev-address{font-size:12px;color:var(--muted);display:flex;align-items:flex-start;gap:5px;margin-bottom:12px;line-height:1.4}
 .ev-address em{font-style:italic;opacity:.7}
-.ev-contact-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:4px}
-.btn-contact{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:8px 16px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;white-space:nowrap}
-.btn-contact:hover{background:rgba(201,168,76,0.12)}
-.contact-reveal-box{display:none;flex-direction:column;gap:8px;background:var(--dark-3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:10px;width:100%}
-.contact-reveal-box.open{display:flex}
-.contact-link-ev{display:flex;align-items:center;gap:7px;color:var(--text);text-decoration:none;font-size:13px;transition:color .2s}
-.contact-link-ev:hover{color:var(--gold)}
+/* CONTACTS DE RÉFÉRENCE */
+.ev-contacts{margin-bottom:16px}
+.ev-contacts-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.ev-contacts-list{display:flex;flex-direction:column;gap:6px}
+.ev-contact-chip{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--dark-3);border:1px solid var(--border);border-radius:8px}
+.ev-contact-avatar{width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,0.15);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.ev-contact-name{font-size:13px;font-weight:500}
+.ev-contact-role{font-size:11px;color:var(--muted);margin-left:auto;text-align:right}
+/* MODAL CHOIX CONTACT */
+.csm-person{background:var(--dark-3);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s;margin-bottom:10px}
+.csm-person:hover{border-color:var(--gold);background:rgba(201,168,76,0.05)}
+.csm-av{width:40px;height:40px;border-radius:50%;background:rgba(201,168,76,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.csm-name{font-size:14px;font-weight:500;margin-bottom:2px}
+.csm-role{font-size:12px;color:var(--muted)}
 /* ADS */
 .ad-label{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);opacity:.5;margin-bottom:8px}
 .ad-horizontal{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:18px 22px;background:var(--dark-2);border:1px solid var(--border);border-radius:12px;transition:border-color .2s;text-decoration:none}
@@ -289,6 +296,19 @@ footer .links a:hover{color:var(--gold)}
   </div>
 </div>
 
+<!-- MODAL CHOIX DU CONTACT -->
+<div id="contact-select-modal" onclick="if(event.target===this)closeContactSelect()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:300;align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--dark-2);border:1px solid var(--border);border-radius:16px;max-width:440px;width:100%;overflow:hidden;position:relative">
+    <button onclick="closeContactSelect()" style="position:absolute;top:14px;right:14px;background:var(--dark-3);border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+    <div style="padding:24px 28px 18px;border-bottom:1px solid var(--border)">
+      <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">💬 Postuler</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;margin-bottom:4px">À qui souhaitez-vous vous adresser ?</div>
+      <div style="font-size:12px;color:var(--muted)" id="csm-event-title"></div>
+    </div>
+    <div style="padding:20px 28px 28px" id="csm-contacts"></div>
+  </div>
+</div>
+
 <footer>
   <div class="footer-logo"><img src="assets/logo.png" alt="Rabah" style="height:48px;width:auto;mix-blend-mode:lighten;margin-bottom:8px"></div>
   <p>La marketplace des musiciens chrétiens francophones.</p>
@@ -317,31 +337,51 @@ const ANNONCES=[
   {id:1,titre:'Pianiste pour mariage',type:'MARIAGE',date:'15 juin 2026',lieu:'Paris 16e',
    adresse:'Église Saint-Honoré d\'Eylau, 66 Av. Raymond Poincaré, 75016 Paris',
    budget:150,sos:true,instruments:['Piano'],desc:'Cérémonie + cocktail, 4h de prestation.',
-   phone:'+33 6 12 34 56 78',email:'mariage.paris16@gmail.com'},
+   contacts:[
+     {name:'Marie L.',role:'Organisatrice du mariage',avatar:'👰'},
+     {name:'Père Antoine',role:'Responsable de l\'église',avatar:'⛪'}
+   ]},
   {id:2,titre:'Groupe de louange — culte dominical',type:'EGLISE',date:'Tous les dimanches',lieu:'Versailles',
    adresse:'11 Rue du Maréchal Joffre, 78000 Versailles',
    budget:80,sos:false,instruments:['Piano','Guitare','Batterie'],desc:'Église évangélique, 150 membres.',
-   phone:'+33 1 39 50 12 34',email:'contact@eglise-versailles.fr'},
+   contacts:[
+     {name:'Pasteur Jean-Marc',role:'Pasteur principal',avatar:'🙏'},
+     {name:'Sarah B.',role:'Responsable louange',avatar:'🎤'},
+     {name:'Marc T.',role:'Administrateur',avatar:'📋'}
+   ]},
   {id:3,titre:'DJ Gospel — Gala annuel',type:'GALA',date:'28 nov. 2026',lieu:'Lyon',
    adresse:null,
    budget:300,sos:false,instruments:['DJ'],desc:'Soirée de gala 200 personnes.',
-   phone:'+33 7 23 45 67 89',email:null},
+   contacts:[
+     {name:'Christelle M.',role:'Coordinatrice événement',avatar:'🏆'}
+   ]},
   {id:4,titre:'Violoniste pour cérémonie',type:'MARIAGE',date:'12 juil. 2026',lieu:'Paris 92',
    adresse:'Domaine de Villarceaux, 95710 Chaussy (déplacement possible)',
    budget:200,sos:false,instruments:['Violon'],desc:'Cérémonie en plein air.',
-   phone:null,email:'virginie.mariage92@gmail.com'},
+   contacts:[
+     {name:'Virginie C.',role:'Future mariée',avatar:'💍'},
+     {name:'Thomas C.',role:'Futur marié',avatar:'🤵'}
+   ]},
   {id:5,titre:'Choriste pour enregistrement',type:'CONCERT',date:'30 mai 2026',lieu:'Lyon',
    adresse:'Studio Sound Factory, 8 Rue Sébastien Gryphe, 69007 Lyon',
    budget:120,sos:false,instruments:['Chant'],desc:'Studio d\'enregistrement, 2 sessions.',
-   phone:'+33 6 45 67 89 01',email:'studio.lyon.gospel@gmail.com'},
+   contacts:[
+     {name:'Élie B.',role:'Directeur artistique',avatar:'🎵'}
+   ]},
   {id:6,titre:'Groupe complet — concert gospel',type:'CONCERT',date:'20 juin 2026',lieu:'Marseille',
    adresse:'Le Dôme, 48 Av. de Saint-Just, 13004 Marseille',
    budget:500,sos:false,instruments:['Piano','Guitare','Batterie','Chant','Basse'],desc:'Concert de gospel évangile, salle de 500 places.',
-   phone:'+33 4 91 12 34 56',email:'concert.gospel.marseille@gmail.com'},
+   contacts:[
+     {name:'Emmanuel K.',role:'Directeur de concert',avatar:'🎶'},
+     {name:'Naïma R.',role:'Assistante production',avatar:'📌'},
+     {name:'David A.',role:'Régisseur son',avatar:'🎧'}
+   ]},
   {id:7,titre:'Saxophoniste URGENT — anniversaire',type:'ANNIVERSAIRE',date:'Demain',lieu:'Paris 75',
    adresse:null,
    budget:180,sos:true,instruments:['Saxophone'],desc:'Anniversaire surprise, ambiance jazz gospel.',
-   phone:'+33 7 89 01 23 45',email:null},
+   contacts:[
+     {name:'Lucas P.',role:'Organisateur',avatar:'🎂'}
+   ]},
 ];
 
 const TYPE_EMOJI={MARIAGE:'💍',EGLISE:'⛪',GALA:'🏆',CONCERT:'🎶',ANNIVERSAIRE:'🎂',PERSONNALISE:'✨'};
@@ -390,11 +430,20 @@ function card(a){
   const distBadge=a.dist!=null&&a.dist<9999?`<span class="dist-badge">📍 ${distLabel(a.dist)}</span>`:'';
   const adresseHtml=a.adresse
     ?`<div class="ev-address">🏠 ${a.adresse}</div>`
-    :`<div class="ev-address">🏠 <em>Adresse bientôt disponible</em></div>`;
-  const hasContact=a.phone||a.email;
-  const contactLinks=[];
-  if(a.phone)contactLinks.push(`<a href="tel:${a.phone}" class="contact-link-ev">📞 ${a.phone}</a>`);
-  if(a.email)contactLinks.push(`<a href="mailto:${a.email}" class="contact-link-ev">✉️ ${a.email}</a>`);
+    :`<div class="ev-address">🏠 <em>Adresse communiquée après candidature</em></div>`;
+  const contacts=a.contacts||[];
+  const contactsHtml=contacts.length?`
+    <div class="ev-contacts">
+      <div class="ev-contacts-label">👥 Contact${contacts.length>1?'s':''} de référence</div>
+      <div class="ev-contacts-list">
+        ${contacts.map(c=>`
+          <div class="ev-contact-chip">
+            <div class="ev-contact-avatar">${c.avatar||'👤'}</div>
+            <div class="ev-contact-name">${c.name}</div>
+            <div class="ev-contact-role">${c.role}</div>
+          </div>`).join('')}
+      </div>
+    </div>`:'';
   return`<div class="ev-card${a.sos?' sos-card':''}">
     ${a.sos?`<div class="ev-sos-banner">🚨 SOS Urgence — Mission dans moins de 48h</div>`:''}
     <div class="ev-body">
@@ -407,21 +456,40 @@ function card(a){
       ${adresseHtml}
       <div class="ev-tags">${a.instruments.map(i=>`<span class="tag">${i}</span>`).join('')}</div>
       <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.5">${a.desc}</p>
+      ${contactsHtml}
       <div class="ev-footer">
         <div class="ev-budget">~${a.budget}€ <span>/ musicien</span></div>
-        <div class="ev-contact-row">
-          ${hasContact?`<button class="btn-contact" id="cbtn-${a.id}" onclick="revealContact(${a.id})">📞 Contacter</button>`:''}
-          <a class="btn-postuler${a.sos?' urgent':''}" href="https://wa.me/33651426961?text=Annonce+Lyra+Music+: ${encodeURIComponent(a.titre)}" target="_blank">${a.sos?'🚨 Postuler':'Postuler via WA'}</a>
-        </div>
+        <button class="btn-postuler${a.sos?' urgent':''}" onclick="postuler(${a.id})">${a.sos?'🚨 Postuler':'💬 Postuler'}</button>
       </div>
-      ${hasContact?`<div class="contact-reveal-box" id="cbox-${a.id}">${contactLinks.join('')}</div>`:''}
     </div>
   </div>`;
 }
 
-function revealContact(id){
-  document.getElementById('cbtn-'+id).style.display='none';
-  document.getElementById('cbox-'+id).classList.add('open');
+function postuler(id){
+  const a=ANNONCES.find(a=>a.id===id);
+  if(!a)return;
+  const contacts=a.contacts||[];
+  if(contacts.length<=1){
+    window.location.href='messages.html';
+    return;
+  }
+  // Plusieurs contacts — ouvrir le modal de sélection
+  document.getElementById('csm-event-title').textContent=a.titre;
+  document.getElementById('csm-contacts').innerHTML=contacts.map(c=>`
+    <div class="csm-person" onclick="window.location.href='messages.html'">
+      <div class="csm-av">${c.avatar||'👤'}</div>
+      <div style="flex:1">
+        <div class="csm-name">${c.name}</div>
+        <div class="csm-role">${c.role}</div>
+      </div>
+      <div style="color:var(--gold);font-size:13px;white-space:nowrap">Écrire →</div>
+    </div>`).join('');
+  document.getElementById('contact-select-modal').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function closeContactSelect(){
+  document.getElementById('contact-select-modal').style.display='none';
+  document.body.style.overflow='';
 }
 
 function setFilter(f,btn){
