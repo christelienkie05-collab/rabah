@@ -128,6 +128,35 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .contact-name{font-size:14px;font-weight:500}
 .contact-role{font-size:11px;color:var(--muted)}
 
+/* GROUP AVATARS IN LIST */
+.conv-avatar-group{position:relative;width:44px;height:44px;flex-shrink:0}
+.grav-main{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;position:absolute;bottom:0;right:0;border:2px solid var(--dark-2)}
+.grav-sec{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;position:absolute;top:0;left:0;border:2px solid var(--dark-2)}
+/* VOICE MESSAGE BUBBLE */
+.msg-bubble.voice{display:flex;align-items:center;gap:10px;padding:10px 14px;min-width:190px;cursor:default}
+.voice-play{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.15);border:none;color:inherit;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
+.msg-row.me .voice-play{background:rgba(0,0,0,0.2)}
+.voice-play:hover{background:rgba(255,255,255,0.28)}
+.voice-wave{display:flex;align-items:center;gap:2px;flex:1;height:26px}
+.voice-wave span{display:block;width:3px;border-radius:2px;background:currentColor;opacity:.55;transition:opacity .15s}
+.voice-wave.playing span{animation:waveBar .5s ease-in-out infinite alternate}
+.voice-wave.playing span:nth-child(2n){animation-delay:.1s}
+.voice-wave.playing span:nth-child(3n){animation-delay:.2s}
+@keyframes waveBar{from{opacity:.3}to{opacity:1}}
+.voice-dur{font-size:11px;opacity:.65;white-space:nowrap;min-width:28px;text-align:right}
+/* MIC BUTTON */
+.mic-btn{width:36px;height:36px;border-radius:8px;background:var(--dark-3);border:1px solid var(--border);color:var(--muted);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.mic-btn:hover{border-color:var(--gold);color:var(--gold)}
+.mic-btn.recording{background:rgba(220,60,60,0.15);border-color:#e05555;color:#e05555;animation:micPulse .8s ease-in-out infinite}
+@keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(220,60,60,0.35)}50%{box-shadow:0 0 0 7px rgba(220,60,60,0)}}
+/* GROUP SENDER NAME */
+.msg-sender-name{font-size:10px;color:var(--gold);margin-bottom:2px;padding-left:2px;font-weight:500}
+/* GROUP CREATION MODAL */
+.member-check-item{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:8px;cursor:pointer;transition:background .15s;user-select:none}
+.member-check-item:hover{background:rgba(201,168,76,0.07)}
+.member-check-item input[type=checkbox]{accent-color:var(--gold);width:15px;height:15px;cursor:pointer;flex-shrink:0}
+.group-sel-count{font-size:12px;color:var(--gold);font-weight:500;text-align:right;margin-bottom:8px;min-height:18px}
+
 footer{display:none}
 </style>
 </head>
@@ -153,6 +182,7 @@ footer{display:none}
       <h2>Messages</h2>
       <div class="conv-header-actions">
         <button class="icon-btn" onclick="openNewConvo()" title="Nouveau message">✏️</button>
+        <button class="icon-btn" onclick="openCreateGroup()" title="Créer un groupe">👥</button>
         <button class="icon-btn" onclick="markAllRead()" title="Tout marquer lu">✓</button>
       </div>
     </div>
@@ -189,6 +219,7 @@ footer{display:none}
         <textarea id="msg-input" placeholder="Écrire un message…" rows="1"
           onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"
           oninput="autoResize(this)"></textarea>
+        <button class="mic-btn" id="mic-btn" onclick="toggleRecording()" title="Message vocal">🎙️</button>
         <button class="send-btn" onclick="sendMessage()">➤</button>
       </div>
     </div>
@@ -273,28 +304,75 @@ let CONVOS = [
   },
 ];
 
+// Add group conversations
+CONVOS.push(
+  {
+    id:6, isGroup:true, groupName:'Équipe Louange — Versailles', groupEmoji:'🙏',
+    members:[1,2,5,8], unread:3,
+    messages:[
+      {from:8,  text:'Bonjour à tous ! Rappel : répétition ce samedi 10h à l\'église.', time:'09:00'},
+      {from:1,  text:'Présent samedi ! 🎹', time:'09:15'},
+      {from:2,  text:'Moi aussi, je confirme.', time:'09:22'},
+      {from:5,  text:'Je serai là avec mon violon.', time:'09:45'},
+      {from:8,  type:'voice', duration:'0:18', time:'10:02'},
+      {from:1,  text:'Message reçu pasteur, on sera tous là.', time:'10:10'},
+    ]
+  },
+  {
+    id:7, isGroup:true, groupName:'Concert Marseille — Orga', groupEmoji:'🎶',
+    members:[4,6,7], unread:0,
+    messages:[
+      {from:7,  text:'Bonjour l\'équipe ! Le Dôme confirme la date du 20 juin.', time:'Hier'},
+      {from:4,  text:'Super ! Je suis dispo. On répète quand ?', time:'Hier'},
+      {from:6,  type:'voice', duration:'0:34', time:'Hier'},
+      {from:7,  text:'Parfait Ezra. On se retrouve le 10 juin pour une générale.', time:'Hier'},
+    ]
+  }
+);
+
 let activeConvoId = null;
 let typingTimeout = null;
 const ME = {name:'Vous', avatar:'😊'};
+let selectedGroupMembers = new Set();
+let mediaRecorder = null;
+let audioChunks = [];
+let recordingInterval = null;
+let recordingSeconds = 0;
 
 // ── RENDER CONVERSATIONS ──────────────────────
 function renderConvList(convos) {
   const list = document.getElementById('conv-list');
   list.innerHTML = convos.map(c => {
-    const u = USERS.find(u => u.id === c.userId);
     const last = c.messages[c.messages.length - 1];
+    let avatarHtml, nameHtml, previewText, statusDot='';
+
+    if (c.isGroup) {
+      const m0 = USERS.find(u => u.id === c.members[0]);
+      const m1 = USERS.find(u => u.id === c.members[1]);
+      avatarHtml = `<div class="conv-avatar-group">
+        <div class="grav-sec" style="background:${m1?.color||'#333'}">${m1?.avatar||'👤'}</div>
+        <div class="grav-main" style="background:${m0?.color||'#333'}">${c.groupEmoji}</div>
+      </div>`;
+      nameHtml = `${c.groupName} <span style="font-size:10px;color:var(--muted);font-weight:400">${c.members.length} membres</span>`;
+      const sender = last.from === 'me' ? 'Vous' : (USERS.find(u=>u.id===last.from)?.name.split(' ')[0] || '');
+      previewText = last.type==='voice' ? `${sender ? sender+' : ' : ''}🎙️ Message vocal` : `${sender ? sender+' : ' : ''}${last.text||''}`;
+    } else {
+      const u = USERS.find(u => u.id === c.userId);
+      statusDot = u.online ? '<div class="conv-online"></div>' : '';
+      avatarHtml = `<div class="conv-avatar" style="background:${u.color}">${u.avatar}${statusDot}</div>`;
+      nameHtml = `${u.name} ${u.verified ? '<span class="v-badge">✓</span>' : ''}`;
+      previewText = last.type==='voice' ? (last.from==='me'?'Vous : ':'')+'🎙️ Message vocal' : (last.from==='me'?'Vous : ':'')+last.text;
+    }
+
     return `
     <div class="conv-item ${c.unread ? 'unread' : ''} ${activeConvoId === c.id ? 'active' : ''}" onclick="openConvo(${c.id})">
-      <div class="conv-avatar" style="background:${u.color}">
-        ${u.avatar}
-        ${u.online ? '<div class="conv-online"></div>' : ''}
-      </div>
+      ${avatarHtml}
       <div class="conv-body">
         <div class="conv-top">
-          <div class="conv-name">${u.name} ${u.verified ? '<span class="v-badge">✓</span>' : ''}</div>
+          <div class="conv-name">${nameHtml}</div>
           <div class="conv-time">${last.time}</div>
         </div>
-        <div class="conv-preview">${last.from === 'me' ? 'Vous : ' : ''}${last.text}</div>
+        <div class="conv-preview">${previewText}</div>
       </div>
       ${c.unread ? `<div class="conv-unread">${c.unread}</div>` : ''}
     </div>`;
@@ -313,52 +391,106 @@ function filterConvs(q) {
 function openConvo(id) {
   activeConvoId = id;
   const c = CONVOS.find(c => c.id === id);
-  const u = USERS.find(u => u.id === c.userId);
   c.unread = 0;
   renderConvList(CONVOS);
 
-  // Header
-  document.getElementById('chat-av').innerHTML = `<div style="width:38px;height:38px;border-radius:50%;background:${u.color};display:flex;align-items:center;justify-content:center;font-size:18px">${u.avatar}${u.online ? '<div class="chat-online"></div>' : ''}</div>`;
-  document.getElementById('chat-name').innerHTML = `${u.name} ${u.verified ? '<span style="font-size:10px;background:rgba(76,175,125,0.15);color:#4caf7d;border:1px solid rgba(76,175,125,0.3);padding:1px 6px;border-radius:100px">✓ Vérifié</span>' : ''}`;
-  document.getElementById('chat-status').textContent = u.online ? '🟢 En ligne maintenant' : `${u.role}`;
-  document.getElementById('chat-wa-btn').onclick = () => {
-    const msg = encodeURIComponent(`Bonjour ${u.name}, je vous contacte depuis Rabah`);
-    window.open(`https://wa.me/33651426961?text=${msg}`, '_blank');
-  };
+  if (c.isGroup) {
+    const memberAvatars = c.members.slice(0,4).map(uid => {
+      const u = USERS.find(u=>u.id===uid);
+      return `<div style="width:32px;height:32px;border-radius:50%;background:${u?.color||'#333'};display:flex;align-items:center;justify-content:center;font-size:14px;margin-left:-8px;border:2px solid var(--dark)">${u?.avatar||'👤'}</div>`;
+    }).join('');
+    document.getElementById('chat-av').innerHTML = `<div style="display:flex;margin-left:8px">${memberAvatars}${c.members.length>4?`<div style="width:32px;height:32px;border-radius:50%;background:var(--dark-3);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);margin-left:-8px;border:2px solid var(--dark)">+${c.members.length-4}</div>`:''}`;
+    document.getElementById('chat-name').innerHTML = c.groupName;
+    document.getElementById('chat-status').textContent = `👥 ${c.members.length} membres`;
+    document.getElementById('chat-wa-btn').style.display='none';
+  } else {
+    const u = USERS.find(u => u.id === c.userId);
+    document.getElementById('chat-av').innerHTML = `<div style="width:38px;height:38px;border-radius:50%;background:${u.color};display:flex;align-items:center;justify-content:center;font-size:18px">${u.avatar}${u.online ? '<div class="chat-online"></div>' : ''}</div>`;
+    document.getElementById('chat-name').innerHTML = `${u.name} ${u.verified ? '<span style="font-size:10px;background:rgba(76,175,125,0.15);color:#4caf7d;border:1px solid rgba(76,175,125,0.3);padding:1px 6px;border-radius:100px">✓ Vérifié</span>' : ''}`;
+    document.getElementById('chat-status').textContent = u.online ? '🟢 En ligne maintenant' : u.role;
+    document.getElementById('chat-wa-btn').style.display='flex';
+    document.getElementById('chat-wa-btn').onclick = () => {
+      const msg = encodeURIComponent(`Bonjour ${u.name}, je vous contacte depuis Rabah`);
+      window.open(`https://wa.me/33651426961?text=${msg}`, '_blank');
+    };
+  }
 
-  // Render messages
-  renderMessages(c.messages, u);
+  renderMessages(c.messages, c.isGroup);
 
-  // Show chat
   document.getElementById('chat-empty').style.display = 'none';
   const ac = document.getElementById('active-chat');
   ac.style.display = 'flex';
 
-  // Mobile: show chat panel
   if (window.innerWidth <= 768) {
     document.getElementById('chat-panel').classList.add('mobile-open');
   }
-
   document.getElementById('msg-input').focus();
 }
 
-function renderMessages(msgs, u) {
+function voiceWaveBars() {
+  const heights = [35,55,70,45,80,60,40,75,50,65,45,70,55,38,62,48,72,58,42,66];
+  return heights.map(h => `<span style="height:${h}%"></span>`).join('');
+}
+
+function playVoice(btn, wavEl) {
+  const isPlaying = btn.dataset.playing === '1';
+  if (isPlaying) {
+    btn.textContent = '▶';
+    btn.dataset.playing = '0';
+    wavEl.classList.remove('playing');
+  } else {
+    btn.textContent = '⏸';
+    btn.dataset.playing = '1';
+    wavEl.classList.add('playing');
+    setTimeout(() => {
+      btn.textContent = '▶';
+      btn.dataset.playing = '0';
+      wavEl.classList.remove('playing');
+    }, 3000);
+  }
+}
+
+function renderMessages(msgs, isGroup) {
   const area = document.getElementById('msgs-area');
+  const c = CONVOS.find(c => c.id === activeConvoId);
   let lastDate = '';
-  area.innerHTML = msgs.map((m, i) => {
+  let msgIndex = 0;
+  area.innerHTML = msgs.map((m) => {
     let html = '';
     if (m.time !== lastDate && ['Hier','Lun.','Mar.','Mer.','Jeu.','Ven.','Sam.'].includes(m.time)) {
       html += `<div class="date-sep">${m.time}</div>`;
       lastDate = m.time;
     }
     const isMe = m.from === 'me';
+    let senderUser = null;
+    if (!isMe && isGroup && typeof m.from === 'number') {
+      senderUser = USERS.find(u => u.id === m.from);
+    } else if (!isMe && !isGroup) {
+      senderUser = USERS.find(u => u.id === c.userId);
+    }
+
+    const idx = msgIndex++;
+    let bubbleContent;
+    if (m.type === 'voice') {
+      const dur = m.duration || '0:15';
+      bubbleContent = `<div class="msg-bubble voice" onclick="void(0)">
+        <button class="voice-play" data-playing="0" onclick="playVoice(this,this.nextElementSibling)">▶</button>
+        <div class="voice-wave">${voiceWaveBars()}</div>
+        <span class="voice-dur">${dur}</span>
+        <span class="msg-time" style="margin-left:4px">${m.time}${isMe?' <span class="msg-read">✓✓</span>':''}</span>
+      </div>`;
+    } else {
+      bubbleContent = `<div class="msg-bubble">${(m.text||'').replace(/\n/g,'<br>')}
+        <span class="msg-time">${m.time}${isMe?' <span class="msg-read">✓✓</span>':''}</span>
+      </div>`;
+    }
+
     html += `
     <div class="msg-row ${isMe ? 'me' : 'them'}">
-      ${!isMe ? `<div class="msg-av-sm" style="background:${u.color}">${u.avatar}</div>` : ''}
+      ${!isMe && senderUser ? `<div class="msg-av-sm" style="background:${senderUser.color}">${senderUser.avatar}</div>` : ''}
       <div>
-        <div class="msg-bubble">${m.text.replace(/\n/g,'<br>')}
-          <span class="msg-time">${m.time}${isMe ? ' <span class="msg-read">✓✓</span>' : ''}</span>
-        </div>
+        ${!isMe && isGroup && senderUser ? `<div class="msg-sender-name">${senderUser.name.split(' ')[0]}</div>` : ''}
+        ${bubbleContent}
       </div>
     </div>`;
     return html;
@@ -379,7 +511,7 @@ function sendMessage() {
   const time = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
 
   c.messages.push({from:'me', text, time});
-  renderMessages(c.messages, u);
+  renderMessages(c.messages, c.isGroup);
   renderConvList(CONVOS);
 
   // Simulate reply after 1.5–3s
@@ -395,8 +527,9 @@ function sendMessage() {
       'C\'est noté ! Bénédiction sur vous.',
     ];
     const reply = replies[Math.floor(Math.random() * replies.length)];
-    c.messages.push({from:'them', text:reply, time});
-    renderMessages(c.messages, u);
+    const replyFrom = c.isGroup ? (c.members[Math.floor(Math.random()*c.members.length)]) : 'them';
+    c.messages.push({from:replyFrom, text:reply, time});
+    renderMessages(c.messages, c.isGroup);
     renderConvList(CONVOS);
   }, 1500 + Math.random() * 1500);
 }
@@ -477,6 +610,118 @@ function attachFile() {
   window.open('https://wa.me/33651426961?text=' + msg, '_blank');
 }
 
+// ── VOICE RECORDING ───────────────────────────
+async function toggleRecording() {
+  const btn = document.getElementById('mic-btn');
+  if (mediaRecorder && mediaRecorder.state === 'recording') {
+    // Stop recording
+    mediaRecorder.stop();
+    clearInterval(recordingInterval);
+    btn.classList.remove('recording');
+    btn.textContent = '🎙️';
+    btn.title = 'Message vocal';
+    return;
+  }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    audioChunks = [];
+    recordingSeconds = 0;
+    mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+    mediaRecorder.onstop = () => {
+      stream.getTracks().forEach(t => t.stop());
+      const blob = new Blob(audioChunks, {type:'audio/webm'});
+      const url = URL.createObjectURL(blob);
+      const dur = recordingSeconds;
+      const mins = Math.floor(dur/60);
+      const secs = dur%60;
+      const durStr = `${mins}:${String(secs).padStart(2,'0')}`;
+      sendVoiceMessage(url, durStr);
+    };
+    mediaRecorder.start();
+    btn.classList.add('recording');
+    btn.textContent = '⏹️';
+    btn.title = `Enregistrement… (cliquer pour arrêter)`;
+    recordingInterval = setInterval(() => {
+      recordingSeconds++;
+      const m = Math.floor(recordingSeconds/60), s = recordingSeconds%60;
+      btn.title = `${m}:${String(s).padStart(2,'0')} — Cliquer pour envoyer`;
+      if (recordingSeconds >= 120) {
+        mediaRecorder.stop();
+        clearInterval(recordingInterval);
+        btn.classList.remove('recording');
+        btn.textContent = '🎙️';
+      }
+    }, 1000);
+  } catch(e) {
+    alert('Accès au microphone refusé. Vérifiez les permissions du navigateur.');
+  }
+}
+
+function sendVoiceMessage(url, duration) {
+  if (!activeConvoId) return;
+  const c = CONVOS.find(c => c.id === activeConvoId);
+  const now = new Date();
+  const time = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+  c.messages.push({from:'me', type:'voice', duration, audioUrl:url, time});
+  renderMessages(c.messages, c.isGroup);
+  renderConvList(CONVOS);
+}
+
+// ── GROUP CREATION ────────────────────────────
+function openCreateGroup() {
+  selectedGroupMembers = new Set();
+  document.getElementById('group-name-input').value = '';
+  document.getElementById('group-member-search').value = '';
+  renderGroupMemberList(USERS);
+  document.getElementById('create-group-modal').classList.add('open');
+}
+function closeCreateGroup() {
+  document.getElementById('create-group-modal').classList.remove('open');
+}
+function renderGroupMemberList(users) {
+  document.getElementById('group-member-list').innerHTML = users.map(u => `
+    <label class="member-check-item">
+      <input type="checkbox" ${selectedGroupMembers.has(u.id)?'checked':''} onchange="toggleGroupMember(${u.id},this.checked)">
+      <div class="contact-av" style="background:${u.color}">${u.avatar}</div>
+      <div>
+        <div class="contact-name">${u.name}</div>
+        <div class="contact-role">${u.role}</div>
+      </div>
+    </label>`).join('');
+  updateGroupCount();
+}
+function toggleGroupMember(id, checked) {
+  if (checked) selectedGroupMembers.add(id);
+  else selectedGroupMembers.delete(id);
+  updateGroupCount();
+}
+function updateGroupCount() {
+  const n = selectedGroupMembers.size;
+  document.getElementById('group-sel-count').textContent = n > 0 ? `${n} membre${n>1?'s':''} sélectionné${n>1?'s':''}  (max 100)` : '';
+}
+function filterGroupContacts(q) {
+  renderGroupMemberList(USERS.filter(u => u.name.toLowerCase().includes(q.toLowerCase()) || u.role.toLowerCase().includes(q.toLowerCase())));
+}
+function confirmCreateGroup() {
+  const name = document.getElementById('group-name-input').value.trim();
+  if (!name) { document.getElementById('group-name-input').focus(); return; }
+  if (selectedGroupMembers.size === 0) { alert('Sélectionnez au moins un membre.'); return; }
+  if (selectedGroupMembers.size > 99) { alert('Maximum 100 membres par groupe.'); return; }
+  const members = [...selectedGroupMembers];
+  const newId = Math.max(...CONVOS.map(c=>c.id)) + 1;
+  const now = new Date();
+  const time = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+  CONVOS.unshift({
+    id:newId, isGroup:true, groupName:name, groupEmoji:'👥',
+    members, unread:0,
+    messages:[{from:'me', text:`Groupe "${name}" créé — bienvenue à tous ! 🙏`, time}]
+  });
+  closeCreateGroup();
+  renderConvList(CONVOS);
+  openConvo(newId);
+}
+
 // ── MOBILE NAV ────────────────────────────────
 function toggleMobileMenu(){
   // simple redirect for messages page
@@ -485,6 +730,25 @@ function toggleMobileMenu(){
 // ── INIT ──────────────────────────────────────
 renderConvList(CONVOS);
 </script>
+<!-- MODAL CRÉER UN GROUPE -->
+<div class="modal-overlay" id="create-group-modal" onclick="if(event.target===this)closeCreateGroup()">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <h3>👥 Créer un groupe</h3>
+      <button class="modal-close" onclick="closeCreateGroup()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-search" style="margin-bottom:8px">
+        <input type="text" placeholder="Nom du groupe…" id="group-name-input" style="margin-bottom:10px">
+        <input type="text" placeholder="Chercher des membres…" oninput="filterGroupContacts(this.value)" id="group-member-search">
+      </div>
+      <div class="group-sel-count" id="group-sel-count"></div>
+      <div class="contact-list" id="group-member-list" style="max-height:240px"></div>
+      <button onclick="confirmCreateGroup()" style="margin-top:16px;width:100%;background:var(--gold);color:var(--dark);border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer">Créer le groupe</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // PWA install
 if ('serviceWorker' in navigator) {
