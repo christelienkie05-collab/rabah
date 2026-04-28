@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="80" viewBox="0 0 320 80">
+  <!-- Fond noir -->
+  <rect width="320" height="80" fill="#0D0D0D" rx="8"/>
+
+  <!-- Icône onde -->
+  <g transform="translate(28, 40)">
+    <!-- Point central -->
+    <ellipse cx="0" cy="0" rx="5" ry="5" fill="#C9A84C"/>
+    <!-- Arc intérieur haut -->
+    <path d="M -11 0 a11 11 0 0 1 22 0" stroke="#C9A84C" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.85"/>
+    <!-- Arc intérieur bas -->
+    <path d="M -11 0 a11 11 0 0 0 22 0" stroke="#C9A84C" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.85"/>
+    <!-- Arc extérieur haut -->
+    <path d="M -19 0 a19 19 0 0 1 38 0" stroke="#C9A84C" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <!-- Arc extérieur bas -->
+    <path d="M -19 0 a19 19 0 0 0 38 0" stroke="#C9A84C" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.5"/>
+  </g>
+
+  <!-- Texte RABAH -->
+  <text
+    x="68"
+    y="50"
+    font-family="'Cormorant Garamond', 'Georgia', serif"
+    font-size="28"
+    font-weight="600"
+    letter-spacing="6"
+    fill="#C9A84C"
+  >RABAH</text>
+</svg>
