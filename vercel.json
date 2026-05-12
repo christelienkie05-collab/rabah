@@ -1,7 +1,6 @@
 {
   "version": 2,
   "outputDirectory": "site-c",
-  "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
     {
