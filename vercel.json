@@ -45,7 +45,11 @@
       ]
     }
   ],
+  "functions": {
+    "api/thomann.js": { "memory": 512, "maxDuration": 15 }
+  },
   "rewrites": [
+    { "source": "/api/thomann", "destination": "/api/thomann.js" },
     { "source": "/prestataires", "destination": "/musiciens.html" },
     { "source": "/evenements",   "destination": "/evenements.html" },
     { "source": "/messages",     "destination": "/messages.html" },

@@ -56,8 +56,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;heigh
 .product-card{display:block;color:inherit;text-decoration:none;transition:transform .18s}
 .product-card:hover{transform:translateY(-3px)}
 .product-img{aspect-ratio:1;background:var(--bg-surf);border-radius:11px 11px 0 0;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border:1px solid rgba(92,85,72,.22);border-bottom:none}
-.product-emoji{font-size:3.2rem;opacity:.6}
-.product-badge-overlay{position:absolute;top:8px;left:8px}
+.product-emoji{font-size:3.2rem;opacity:.6;position:absolute;z-index:1}
+.prod-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;padding:8%;opacity:0;transition:opacity .35s;z-index:2;background:var(--bg-surf)}
+.prod-loading .product-emoji{animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:.65}}
+.product-badge-overlay{position:absolute;top:8px;left:8px;z-index:3}
 .via-tag{position:absolute;bottom:6px;right:8px;font-size:9px;color:var(--text-muted);letter-spacing:.05em}
 .product-body{background:var(--bg-card);border:1px solid rgba(92,85,72,.22);border-top:none;border-radius:0 0 11px 11px;padding:12px 11px}
 .product-brand{font-size:9.5px;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}
@@ -463,9 +466,11 @@ function render() {
       ? `<div class="product-badge-overlay"><span class="tag tag-gold">${badge}</span></div>`
       : '';
     return `
-      <a href="${affiliateUrl(url)}" target="_blank" rel="noopener sponsored" class="product-card">
+      <a href="${affiliateUrl(url)}" target="_blank" rel="noopener sponsored"
+         class="product-card prod-loading" data-raw-url="${url}">
         <div class="product-img">
           <div class="product-emoji">${emoji}</div>
+          <img class="prod-photo" alt="${brand} ${name}" loading="lazy"/>
           ${badgeHtml}
           <div class="via-tag">via Thomann</div>
         </div>
@@ -477,6 +482,93 @@ function render() {
         </div>
       </a>`;
   }).join('');
+  setupObserver();
+}
+
+/* ══════════════════════════════════════════════
+   IMAGES & VÉRIFICATION D'EXISTENCE
+   — API Vercel /api/thomann?url=...
+   — Cache localStorage 7 jours
+══════════════════════════════════════════════ */
+const CACHE_TTL = 7 * 24 * 3600e3;
+
+function slug(url) { return url.split('/').pop().replace('.htm',''); }
+
+function getCached(url) {
+  try {
+    const d = JSON.parse(localStorage.getItem('rt-' + slug(url)) || 'null');
+    if (!d || Date.now() - d.ts > CACHE_TTL) return null;
+    return d;
+  } catch { return null; }
+}
+
+function setCached(url, data) {
+  try { localStorage.setItem('rt-' + slug(url), JSON.stringify({ ...data, ts: Date.now() })); }
+  catch {}
+}
+
+async function loadCard(card) {
+  const url  = card.dataset.rawUrl;
+  const cached = getCached(url);
+  if (cached) { applyResult(card, cached); return; }
+
+  try {
+    const r    = await fetch('/api/thomann?url=' + encodeURIComponent(url));
+    const data = await r.json();
+    setCached(url, data);
+    applyResult(card, data);
+  } catch {
+    // erreur réseau : on garde l'emoji, on ne masque pas
+    card.classList.remove('prod-loading');
+  }
+}
+
+function applyResult(card, data) {
+  card.classList.remove('prod-loading');
+
+  if (!data.ok) {
+    // Produit introuvable sur Thomann → on le retire silencieusement
+    card.style.display = 'none';
+    card.dataset.unavailable = '1';
+    updateVisibleCount();
+    return;
+  }
+
+  if (data.imageUrl) {
+    const img      = card.querySelector('.prod-photo');
+    const fallback = card.querySelector('.product-emoji');
+    img.src = data.imageUrl;
+    img.onload  = () => {
+      img.style.opacity = '1';
+      if (fallback) fallback.style.display = 'none';
+    };
+    img.onerror = () => {
+      img.style.display = 'none';
+      if (fallback) { fallback.style.opacity = '.6'; fallback.style.display = 'block'; }
+    };
+  }
+}
+
+function updateVisibleCount() {
+  const n = document.querySelectorAll('#grid .product-card:not([data-unavailable])').length;
+  document.getElementById('count').textContent = n;
+}
+
+let _observer;
+function setupObserver() {
+  if (_observer) _observer.disconnect();
+  _observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      _observer.unobserve(e.target);
+      loadCard(e.target);
+    });
+  }, { rootMargin: '400px' });
+
+  document.querySelectorAll('#grid .product-card:not([data-observed])').forEach(c => {
+    c.dataset.observed = '1';
+    _observer.observe(c);
+  });
 }
 
 /* ── Init ── */
