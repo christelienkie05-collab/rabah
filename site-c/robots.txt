@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lyra-music-five.vercel.app/sitemap.xml

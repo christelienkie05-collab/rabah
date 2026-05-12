@@ -1,24 +1,59 @@
 {
   "version": 2,
-  "buildCommand": "cd backend && npm install",
   "outputDirectory": "site-c",
-  "functions": {
-    "api/index.js": {
-      "memory": 1024,
-      "maxDuration": 30
-    }
-  },
-  "rewrites": [
-    { "source": "/api/:path*", "destination": "/api/index.js" }
-  ],
-  "crons": [
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
     {
-      "path": "/api/cron/release-escrow",
-      "schedule": "0 6 * * *"
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options",    "value": "nosniff" },
+        { "key": "X-Frame-Options",            "value": "DENY" },
+        { "key": "X-XSS-Protection",           "value": "1; mode=block" },
+        { "key": "Referrer-Policy",            "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy",         "value": "camera=(), microphone=(self), geolocation=(self)" }
+      ]
     },
     {
-      "path": "/api/cron/expire-boosts",
-      "schedule": "0 7 * * *"
+      "source": "/sw.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
+        { "key": "Service-Worker-Allowed", "value": "/" }
+      ]
+    },
+    {
+      "source": "/manifest.json",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    },
+    {
+      "source": "/rabah.css",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/(.*)\\.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
     }
+  ],
+  "rewrites": [
+    { "source": "/prestataires", "destination": "/musiciens.html" },
+    { "source": "/evenements",   "destination": "/evenements.html" },
+    { "source": "/messages",     "destination": "/messages.html" },
+    { "source": "/boutique",     "destination": "/boutique.html" },
+    { "source": "/communaute",   "destination": "/communaute.html" }
+  ],
+  "redirects": [
+    { "source": "/musiciens", "destination": "/prestataires", "permanent": true }
   ]
 }
