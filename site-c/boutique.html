@@ -12,7 +12,7 @@
 <title>Boutique — Rabah</title>
 <meta name="description" content="Boutique Rabah — Instruments, accessoires et matériel gospel recommandés par la communauté."/>
 <meta property="og:type"        content="website"/>
-<meta property="og:url"         content="https://lyra-music-five.vercel.app/boutique"/>
+<meta property="og:url"         content="https://lyra-music-five.vercel.app/boutique.html"/>
 <meta property="og:title"       content="Boutique — Rabah"/>
 <meta property="og:description" content="Instruments et matériel gospel recommandés par la communauté."/>
 <meta property="og:image"       content="https://lyra-music-five.vercel.app/assets/rabah-logo.svg"/>
@@ -22,50 +22,152 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="rabah.css"/>
 <style>
-.shop-layout { display: flex; gap: 0; }
-.shop-sidebar { width: 240px; flex-shrink: 0; padding: 32px 24px; border-right: 1px solid var(--text-muted)15; position: sticky; top: 68px; height: calc(100vh - 68px); overflow-y: auto; }
-.shop-main { flex: 1; padding: 32px; }
+/* ── LAYOUT ── */
+.shop-layout { display: flex; gap: 0; min-height: calc(100vh - 68px); }
+.shop-sidebar {
+  width: 240px; flex-shrink: 0; padding: 28px 20px;
+  border-right: 1px solid rgba(92,85,72,.25);
+  position: sticky; top: 68px; height: calc(100vh - 68px);
+  overflow-y: auto; background: var(--bg);
+}
+.shop-main { flex: 1; padding: 28px 32px; }
 
-.sidebar-section { margin-bottom: 28px; }
-.sidebar-title { font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
-.cat-item { display: flex; align-items: center; justify-content: space-between; padding: 7px 10px; border-radius: 8px; cursor: pointer; transition: background .15s; margin-bottom: 2px; }
+/* ── SIDEBAR ── */
+.sidebar-section { margin-bottom: 26px; }
+.sidebar-title {
+  font-size: 10px; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px;
+}
+.cat-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 7px 10px; border-radius: 8px; cursor: pointer;
+  transition: background .15s; margin-bottom: 2px;
+}
 .cat-item:hover, .cat-item.active { background: var(--bg-surf); }
 .cat-item span { font-size: 13px; color: var(--text-dim); }
 .cat-item.active span { color: var(--gold); font-weight: 600; }
-.cat-count { font-size: 10px; color: var(--text-muted); background: var(--bg-surf); padding: 1px 6px; border-radius: 10px; }
+.cat-count {
+  font-size: 10px; color: var(--text-muted);
+  background: var(--bg-surf); padding: 1px 6px; border-radius: 10px;
+}
 
-.banner { background: linear-gradient(135deg, var(--accent) 0%, var(--bg-surf) 100%); border-radius: 16px; padding: 32px 36px; margin-bottom: 32px; border: 1px solid var(--gold)20; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-.banner-text h2 { font-family: var(--serif); font-size: 1.8rem; font-weight: 500; color: var(--text); margin-bottom: 6px; }
-.banner-text p { font-size: 13px; color: var(--text-dim); }
-.banner-logo { font-size: 3rem; opacity: .6; }
+/* ── PRICE SLIDER ── */
+.price-slider-wrap { padding: 4px 0 10px; }
+input[type=range] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 3px; border-radius: 2px;
+  background: linear-gradient(to right, var(--gold) 0%, var(--gold) var(--fill, 40%), rgba(92,85,72,.4) var(--fill, 40%));
+  outline: none; border: none; cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--gold); border: 2px solid var(--bg); cursor: pointer;
+  box-shadow: 0 0 0 3px rgba(201,168,76,.2);
+}
+.price-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-top: 8px; }
+.price-max { color: var(--gold); font-weight: 600; }
 
-.shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
+/* ── BRAND CHECKBOXES ── */
+.brand-label {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 0; cursor: pointer;
+}
+.brand-label input[type=checkbox] {
+  accent-color: var(--gold); width: 14px; height: 14px; flex-shrink: 0;
+}
+.brand-label span { font-size: 13px; color: var(--text-dim); }
 
-.product-card { display: block; color: inherit; }
-.product-img { aspect-ratio: 1; background: var(--bg-surf); border-radius: 12px 12px 0 0; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border: 1px solid var(--text-muted)18; border-bottom: none; }
-.product-img-inner { font-size: 4rem; opacity: .6; }
-.product-badge-overlay { position: absolute; top: 10px; left: 10px; }
-.product-body { background: var(--bg-card); border: 1px solid var(--text-muted)18; border-top: none; border-radius: 0 0 12px 12px; padding: 16px 14px; }
-.product-brand { font-size: 10px; color: var(--text-muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
-.product-name { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
-.product-price { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--gold); margin-bottom: 12px; }
-.product-price .old-price { font-size: .85rem; color: var(--text-muted); text-decoration: line-through; margin-left: 6px; font-family: var(--sans); font-weight: 400; }
-.product-stars { font-size: 11px; color: var(--text-muted); margin-bottom: 12px; }
-.product-stars span { color: var(--gold); }
-.add-btn { display: block; width: 100%; padding: 9px 0; border-radius: 9px; background: var(--gold); color: var(--bg); border: none; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-align: center; transition: opacity .2s; }
-.add-btn:hover { opacity: .85; }
+/* ── BANNER ── */
+.banner {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--bg-surf) 100%);
+  border-radius: 16px; padding: 28px 32px; margin-bottom: 24px;
+  border: 1px solid rgba(201,168,76,.15);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap;
+}
+.banner-text h2 { font-family: var(--serif); font-size: 1.6rem; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.banner-text p  { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
 
-.promo-strip { background: var(--bg-card); border: 1px solid var(--text-muted)18; border-radius: 12px; padding: 14px 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--text-dim); }
+/* ── DROP-SHIPPING BADGE ── */
+.dropship-info {
+  background: var(--bg-card); border: 1px solid rgba(201,168,76,.2);
+  border-radius: 12px; padding: 14px 18px; margin-bottom: 20px;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.dropship-info .ds-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+.dropship-info .ds-text { font-size: 12px; color: var(--text-dim); line-height: 1.7; }
+.dropship-info .ds-text strong { color: var(--gold); }
+
+/* ── PROMO ── */
+.promo-strip {
+  background: var(--bg-card); border: 1px solid rgba(92,85,72,.3);
+  border-radius: 10px; padding: 12px 18px; margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-dim);
+}
 .promo-strip strong { color: var(--gold); }
 
-@media (max-width: 900px) { .shop-sidebar { display: none; } }
+/* ── TOOLBAR ── */
+.shop-toolbar {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
+}
+.result-count { font-size: 13px; color: var(--text-dim); }
+.result-count strong { color: var(--gold); font-family: var(--serif); font-size: 1rem; }
+
+/* ── GRID ── */
+.shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
+.product-card { display: block; color: inherit; text-decoration: none; transition: transform .2s; }
+.product-card:hover { transform: translateY(-3px); }
+
+.product-img {
+  aspect-ratio: 1; background: var(--bg-surf); border-radius: 12px 12px 0 0;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  border: 1px solid rgba(92,85,72,.25); border-bottom: none;
+}
+.product-emoji { font-size: 3.5rem; opacity: .65; }
+.product-badge-overlay { position: absolute; top: 10px; left: 10px; }
+.product-via { position: absolute; bottom: 8px; right: 10px; font-size: 10px; color: var(--text-muted); }
+
+.product-body {
+  background: var(--bg-card); border: 1px solid rgba(92,85,72,.25);
+  border-top: none; border-radius: 0 0 12px 12px; padding: 14px 12px;
+}
+.product-brand { font-size: 10px; color: var(--text-muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+.product-name  { font-family: var(--serif); font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 5px; line-height: 1.3; }
+.product-stars { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+.product-stars .s { color: var(--gold); }
+.product-price { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--gold); margin-bottom: 11px; }
+.product-price .old { font-size: .8rem; color: var(--text-muted); text-decoration: line-through; margin-left: 5px; font-family: var(--sans); font-weight: 400; }
+.buy-btn {
+  display: block; width: 100%; padding: 9px 0; border-radius: 9px;
+  background: var(--gold); color: var(--bg); border: none;
+  font-size: 12px; font-weight: 600; letter-spacing: .04em;
+  text-align: center; transition: opacity .2s; text-decoration: none;
+}
+.buy-btn:hover { opacity: .82; }
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+.empty-state .e-icon { font-size: 3rem; margin-bottom: 12px; }
+.empty-state p { font-size: 14px; }
+
+/* ── MOBILE ── */
+@media (max-width: 900px) { .shop-sidebar { display: none; } .shop-main { padding: 20px 16px; } }
 </style>
 </head>
 <body>
 <nav>
   <div class="nav-inner">
     <a href="index.html" class="logo-onde">
-      <svg width="26" height="26" viewBox="0 0 56 56" fill="none"><ellipse cx="28" cy="28" rx="5" ry="5" fill="#C9A84C"/><path d="M28 28 m-11 0 a11 11 0 0 1 22 0" stroke="#C9A84C" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.85"/><path d="M28 28 m-11 0 a11 11 0 0 0 22 0" stroke="#C9A84C" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.85"/><path d="M28 28 m-19 0 a19 19 0 0 1 38 0" stroke="#C9A84C" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.5"/><path d="M28 28 m-19 0 a19 19 0 0 0 38 0" stroke="#C9A84C" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.5"/></svg>
+      <svg width="26" height="26" viewBox="0 0 56 56" fill="none">
+        <ellipse cx="28" cy="28" rx="5" ry="5" fill="#C9A84C"/>
+        <path d="M28 28 m-11 0 a11 11 0 0 1 22 0" stroke="#C9A84C" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.85"/>
+        <path d="M28 28 m-11 0 a11 11 0 0 0 22 0" stroke="#C9A84C" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.85"/>
+        <path d="M28 28 m-19 0 a19 19 0 0 1 38 0" stroke="#C9A84C" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.5"/>
+        <path d="M28 28 m-19 0 a19 19 0 0 0 38 0" stroke="#C9A84C" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.5"/>
+      </svg>
       <span>RABAH</span>
     </a>
     <ul class="nav-links">
@@ -83,179 +185,122 @@
   <div class="page-header">
     <div class="container">
       <div>
-        <div class="section-tag">Partenaire Thomann</div>
+        <div class="section-tag">Drop-shipping · Partenaire Thomann</div>
         <h1 class="section-title">Boutique <em>Instruments</em></h1>
-        <p class="section-sub">Instruments et accessoires sélectionnés pour les musiciens chrétiens. Livraison rapide depuis Thomann.</p>
+        <p class="section-sub">Sélectionnés par la communauté gospel, expédiés directement par Thomann.</p>
       </div>
     </div>
   </div>
 
-  <div class="shop-layout" style="max-width:1200px;margin:0 auto;padding-top:24px;">
-    <!-- SIDEBAR -->
+  <div class="shop-layout" style="max-width:1200px;margin:0 auto;padding-top:16px;">
+
+    <!-- ── SIDEBAR ── -->
     <div class="shop-sidebar">
+
       <div class="sidebar-section">
         <div class="sidebar-title">Catégories</div>
-        <div class="cat-item active" onclick="filterCat(this)"><span>Tous les produits</span><span class="cat-count">124</span></div>
-        <div class="cat-item" onclick="filterCat(this)"><span>Pianos & Claviers</span><span class="cat-count">38</span></div>
-        <div class="cat-item" onclick="filterCat(this)"><span>Guitares</span><span class="cat-count">22</span></div>
-        <div class="cat-item" onclick="filterCat(this)"><span>Percussions</span><span class="cat-count">18</span></div>
-        <div class="cat-item" onclick="filterCat(this)"><span>Vents & Cuivres</span><span class="cat-count">14</span></div>
-        <div class="cat-item" onclick="filterCat(this)"><span>Sonorisation</span><span class="cat-count">20</span></div>
-        <div class="cat-item" onclick="filterCat(this)"><span>Accessoires</span><span class="cat-count">12</span></div>
+        <div class="cat-item active" data-cat="tous" onclick="setCategory(this)">
+          <span>Tous les produits</span><span class="cat-count" id="cnt-tous">0</span>
+        </div>
+        <div class="cat-item" data-cat="pianos" onclick="setCategory(this)">
+          <span>🎹 Pianos & Claviers</span><span class="cat-count" id="cnt-pianos">0</span>
+        </div>
+        <div class="cat-item" data-cat="guitares" onclick="setCategory(this)">
+          <span>🎸 Guitares</span><span class="cat-count" id="cnt-guitares">0</span>
+        </div>
+        <div class="cat-item" data-cat="percussions" onclick="setCategory(this)">
+          <span>🥁 Percussions</span><span class="cat-count" id="cnt-percussions">0</span>
+        </div>
+        <div class="cat-item" data-cat="vents" onclick="setCategory(this)">
+          <span>🎺 Vents & Cuivres</span><span class="cat-count" id="cnt-vents">0</span>
+        </div>
+        <div class="cat-item" data-cat="sono" onclick="setCategory(this)">
+          <span>🔊 Sonorisation</span><span class="cat-count" id="cnt-sono">0</span>
+        </div>
+        <div class="cat-item" data-cat="micros" onclick="setCategory(this)">
+          <span>🎙 Micros & DI</span><span class="cat-count" id="cnt-micros">0</span>
+        </div>
+        <div class="cat-item" data-cat="accessoires" onclick="setCategory(this)">
+          <span>🎼 Accessoires</span><span class="cat-count" id="cnt-accessoires">0</span>
+        </div>
       </div>
+
       <div class="sidebar-section">
-        <div class="sidebar-title">Budget</div>
-        <input type="range" min="0" max="5000" value="2000" style="accent-color:var(--gold);width:100%;background:none;border:none;padding:0;margin-bottom:6px;"/>
-        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-muted);"><span>0€</span><span>≤ 2 000€</span></div>
+        <div class="sidebar-title">Budget maximum</div>
+        <div class="price-slider-wrap">
+          <input type="range" id="price-slider" min="0" max="3000" value="3000" step="50"
+            oninput="onPriceChange(this.value)"/>
+          <div class="price-labels">
+            <span>0 €</span>
+            <span class="price-max" id="price-label">3 000 €</span>
+          </div>
+        </div>
       </div>
+
       <div class="sidebar-section">
         <div class="sidebar-title">Marques</div>
-        <label style="display:flex;align-items:center;gap:8px;padding:5px 0;cursor:pointer;"><input type="checkbox" checked style="accent-color:var(--gold);width:14px;height:14px;"/><span style="font-size:13px;color:var(--text-dim);">Yamaha</span></label>
-        <label style="display:flex;align-items:center;gap:8px;padding:5px 0;cursor:pointer;"><input type="checkbox" checked style="accent-color:var(--gold);width:14px;height:14px;"/><span style="font-size:13px;color:var(--text-dim);">Roland</span></label>
-        <label style="display:flex;align-items:center;gap:8px;padding:5px 0;cursor:pointer;"><input type="checkbox" style="accent-color:var(--gold);width:14px;height:14px;"/><span style="font-size:13px;color:var(--text-dim);">Casio</span></label>
-        <label style="display:flex;align-items:center;gap:8px;padding:5px 0;cursor:pointer;"><input type="checkbox" style="accent-color:var(--gold);width:14px;height:14px;"/><span style="font-size:13px;color:var(--text-dim);">Fender</span></label>
-        <label style="display:flex;align-items:center;gap:8px;padding:5px 0;cursor:pointer;"><input type="checkbox" style="accent-color:var(--gold);width:14px;height:14px;"/><span style="font-size:13px;color:var(--text-dim);">Gibson</span></label>
+        <label class="brand-label"><input type="checkbox" value="Yamaha" checked onchange="render()"/><span>Yamaha</span></label>
+        <label class="brand-label"><input type="checkbox" value="Roland" checked onchange="render()"/><span>Roland</span></label>
+        <label class="brand-label"><input type="checkbox" value="Casio"  checked onchange="render()"/><span>Casio</span></label>
+        <label class="brand-label"><input type="checkbox" value="Fender" checked onchange="render()"/><span>Fender</span></label>
+        <label class="brand-label"><input type="checkbox" value="Gibson" checked onchange="render()"/><span>Gibson</span></label>
+        <label class="brand-label"><input type="checkbox" value="Shure"  checked onchange="render()"/><span>Shure</span></label>
+        <label class="brand-label"><input type="checkbox" value="Bose"   checked onchange="render()"/><span>Bose</span></label>
+        <label class="brand-label"><input type="checkbox" value="Pearl"  checked onchange="render()"/><span>Pearl</span></label>
+        <label class="brand-label"><input type="checkbox" value="Jupiter" checked onchange="render()"/><span>Jupiter</span></label>
+        <label class="brand-label"><input type="checkbox" value="Stentor" checked onchange="render()"/><span>Stentor</span></label>
+        <label class="brand-label"><input type="checkbox" value="Sennheiser" checked onchange="render()"/><span>Sennheiser</span></label>
+        <label class="brand-label"><input type="checkbox" value="Mackie" checked onchange="render()"/><span>Mackie</span></label>
       </div>
     </div>
 
-    <!-- MAIN -->
+    <!-- ── MAIN ── -->
     <div class="shop-main">
+
       <div class="banner">
         <div class="banner-text">
           <h2>Sélection <em>Rabah × Thomann</em></h2>
-          <p>125 000 produits · Livraison express · Prix compétitifs · Spécial musiciens d'église</p>
+          <p>Nous sélectionnons · Thomann expédie · Vous économisez<br/>Livraison express · Prix compétitifs · Retours gratuits 30 j</p>
         </div>
-        <div class="banner-logo">🎸</div>
+        <div style="font-size:2.8rem;opacity:.55;">🎵</div>
+      </div>
+
+      <div class="dropship-info">
+        <div class="ds-icon">🤝</div>
+        <div class="ds-text">
+          <strong>Comment ça fonctionne :</strong> Rabah sélectionne les meilleurs instruments pour la communauté gospel.
+          En cliquant sur un produit vous êtes redirigé vers <strong>Thomann</strong> qui gère la vente, le paiement et la livraison.
+          Chaque achat via Rabah soutient financièrement la communauté (commission affilié).
+        </div>
       </div>
 
       <div class="promo-strip">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
-        Code promo <strong>RABAH10</strong> — 10% de réduction sur votre première commande Thomann
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Code promo <strong>RABAH10</strong> — 10% sur votre première commande (à saisir sur Thomann au panier)
       </div>
 
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
-        <div style="font-size:13px;color:var(--text-dim);"><strong style="color:var(--gold);font-family:var(--serif);font-size:1rem;">124</strong> produits disponibles</div>
-        <select style="width:auto;font-size:12px;">
-          <option>Trier : Recommandés</option>
-          <option>Trier : Prix (↑)</option>
-          <option>Trier : Prix (↓)</option>
-          <option>Trier : Mieux notés</option>
+      <div class="shop-toolbar">
+        <div class="result-count"><strong id="count">0</strong> produits</div>
+        <select id="sort-select" onchange="render()" style="width:auto;font-size:12px;">
+          <option value="default">Trier : Recommandés</option>
+          <option value="asc">Prix croissant</option>
+          <option value="desc">Prix décroissant</option>
+          <option value="stars">Mieux notés</option>
         </select>
       </div>
 
-      <div class="shop-grid">
+      <div class="shop-grid" id="grid"></div>
 
-        <a href="https://www.thomann.de" target="_blank" class="product-card">
-          <div class="product-img">
-            <div class="product-img-inner">🎹</div>
-            <div class="product-badge-overlay"><span class="tag tag-gold">Bestseller</span></div>
-          </div>
-          <div class="product-body">
-            <div class="product-brand">Yamaha</div>
-            <div class="product-name">P-145 Piano numérique 88 touches</div>
-            <div class="product-stars"><span>★★★★★</span> (248)</div>
-            <div class="product-price">599€ <span class="old-price">699€</span></div>
-            <div class="add-btn">Voir sur Thomann →</div>
-          </div>
-        </a>
-
-        <a href="https://www.thomann.de" target="_blank" class="product-card">
-          <div class="product-img">
-            <div class="product-img-inner">🎹</div>
-          </div>
-          <div class="product-body">
-            <div class="product-brand">Roland</div>
-            <div class="product-name">FP-30X Piano scène portable</div>
-            <div class="product-stars"><span>★★★★★</span> (192)</div>
-            <div class="product-price">799€</div>
-            <div class="add-btn">Voir sur Thomann →</div>
-          </div>
-        </a>
-
-        <a href="https://www.thomann.de" target="_blank" class="product-card">
-          <div class="product-img">
-            <div class="product-img-inner">🎸</div>
-            <div class="product-badge-overlay"><span class="tag tag-gold">Nouveau</span></div>
-          </div>
-          <div class="product-body">
-            <div class="product-brand">Fender</div>
-            <div class="product-name">Player Stratocaster Sunburst</div>
-            <div class="product-stars"><span>★★★★</span>☆ (87)</div>
-            <div class="product-price">849€</div>
-            <div class="add-btn">Voir sur Thomann →</div>
-          </div>
-        </a>
-
-        <a href="https://www.thomann.de" target="_blank" class="product-card">
-          <div class="product-img">
-            <div class="product-img-inner">🥁</div>
-          </div>
-          <div class="product-body">
-            <div class="product-brand">Pearl</div>
-            <div class="product-name">Cajon Primero Pro African</div>
-            <div class="product-stars"><span>★★★★★</span> (64)</div>
-            <div class="product-price">189€ <span class="old-price">229€</span></div>
-            <div class="add-btn">Voir sur Thomann →</div>
-          </div>
-        </a>
-
-        <a href="https://www.thomann.de" target="_blank" class="product-card">
-          <div class="product-img">
-            <div class="product-img-inner">🎙</div>
-            <div class="product-badge-overlay"><span class="tag tag-gold">Top chant</span></div>
-          </div>
-          <div class="product-body">
-            <div class="product-brand">Shure</div>
-            <div class="product-name">SM58 Micro chant dynamique</div>
-            <div class="product-stars"><span>★★★★★</span> (1.2k)</div>
-            <div class="product-price">99€</div>
-            <div class="add-btn">Voir sur Thomann →</div>
-          </div>
-        </a>
-
-        <a href="https://www.thomann.de" target="_blank" class="product-card">
-          <div class="product-img">
-            <div class="product-img-inner">🎺</div>
-          </div>
-          <div class="product-body">
-            <div class="product-brand">Jupiter</div>
-            <div class="product-name">JTR700A Trompette Sib</div>
-            <div class="product-stars"><span>★★★★</span>☆ (43)</div>
-            <div class="product-price">499€</div>
-            <div class="add-btn">Voir sur Thomann →</div>
-          </div>
-        </a>
-
-        <a href="https://www.thomann.de" target="_blank" class="product-card">
-          <div class="product-img">
-            <div class="product-img-inner">🎻</div>
-          </div>
-          <div class="product-body">
-            <div class="product-brand">Stentor</div>
-            <div class="product-name">Student II Violon 4/4</div>
-            <div class="product-stars"><span>★★★★</span>☆ (128)</div>
-            <div class="product-price">199€</div>
-            <div class="add-btn">Voir sur Thomann →</div>
-          </div>
-        </a>
-
-        <a href="https://www.thomann.de" target="_blank" class="product-card">
-          <div class="product-img">
-            <div class="product-img-inner">🔊</div>
-          </div>
-          <div class="product-body">
-            <div class="product-brand">Bose</div>
-            <div class="product-name">S1 Pro+ Système PA compact</div>
-            <div class="product-stars"><span>★★★★★</span> (76)</div>
-            <div class="product-price">999€</div>
-            <div class="add-btn">Voir sur Thomann →</div>
-          </div>
-        </a>
-
+      <div class="empty-state" id="empty" style="display:none;">
+        <div class="e-icon">🔍</div>
+        <p>Aucun produit ne correspond à vos filtres.<br/>Essayez d'augmenter le budget ou de changer de catégorie.</p>
       </div>
 
       <div style="text-align:center;margin-top:36px;">
-        <a href="https://www.thomann.de" target="_blank" class="btn-outline" style="padding:12px 40px;">Voir tout le catalogue Thomann →</a>
+        <a href="https://www.thomann.de/fr/index.html" target="_blank" rel="noopener"
+           class="btn-outline" style="padding:12px 40px;">
+          Voir tout le catalogue Thomann →
+        </a>
       </div>
     </div>
   </div>
@@ -263,7 +308,7 @@
 
 <footer style="margin-top:48px;">
   <div class="footer-bottom">
-    <p>© 2026 Rabah — Levitique Piano School · Partenaire Thomann</p>
+    <p>© 2026 Rabah · Partenaire affilié Thomann — Chaque achat soutient la communauté gospel</p>
     <div class="footer-links">
       <a href="index.html">Accueil</a>
       <a href="musiciens.html">Prestataires</a>
@@ -271,13 +316,298 @@
     </div>
   </div>
 </footer>
+
 <script>
-function filterCat(el) {
+/* ══════════════════════════════════════════════
+   CATALOGUE — drop-shipping via Thomann
+   URL directes vers la fiche produit Thomann
+══════════════════════════════════════════════ */
+const PRODUCTS = [
+  /* ── PIANOS & CLAVIERS ── */
+  {
+    id:1, cat:'pianos', brand:'Yamaha', emoji:'🎹',
+    name:'P-145B Piano numérique 88 touches',
+    price:599, oldPrice:699, stars:5, reviews:248, badge:'Bestseller',
+    url:'https://www.thomann.de/fr/yamaha_p_145b.htm'
+  },
+  {
+    id:2, cat:'pianos', brand:'Roland', emoji:'🎹',
+    name:'FP-30X Piano de scène portable noir',
+    price:799, stars:5, reviews:192,
+    url:'https://www.thomann.de/fr/roland_fp_30x_bk.htm'
+  },
+  {
+    id:3, cat:'pianos', brand:'Casio', emoji:'🎹',
+    name:'PX-S1100 Privia Piano numérique compact',
+    price:549, oldPrice:649, stars:4, reviews:134,
+    url:'https://www.thomann.de/fr/casio_px_s1100_bk.htm'
+  },
+  {
+    id:4, cat:'pianos', brand:'Roland', emoji:'🎹',
+    name:'RD-88 Piano de scène 88 touches',
+    price:1299, stars:5, reviews:76, badge:'Pro',
+    url:'https://www.thomann.de/fr/roland_rd_88.htm'
+  },
+  {
+    id:5, cat:'pianos', brand:'Yamaha', emoji:'🎹',
+    name:'PSR-SX700 Arrangeur clavier 61 touches',
+    price:999, stars:4, reviews:88,
+    url:'https://www.thomann.de/fr/yamaha_psr_sx700.htm'
+  },
+  {
+    id:6, cat:'pianos', brand:'Casio', emoji:'🎹',
+    name:'CT-S500 Clavier 61 touches Bluetooth',
+    price:189, stars:4, reviews:210,
+    url:'https://www.thomann.de/fr/casio_ct_s500.htm'
+  },
+
+  /* ── GUITARES ── */
+  {
+    id:7, cat:'guitares', brand:'Fender', emoji:'🎸',
+    name:'Player Stratocaster MN Sunburst',
+    price:849, stars:4, reviews:87, badge:'Nouveau',
+    url:'https://www.thomann.de/fr/fender_player_stratocaster_mn_3sb.htm'
+  },
+  {
+    id:8, cat:'guitares', brand:'Gibson', emoji:'🎸',
+    name:'Les Paul Standard 50s Heritage Cherry Sunburst',
+    price:2499, stars:5, reviews:43,
+    url:'https://www.thomann.de/fr/gibson_les_paul_standard_50s_hcs.htm'
+  },
+  {
+    id:9, cat:'guitares', brand:'Fender', emoji:'🎸',
+    name:'Acoustasonic Player Telecaster Butterscotch',
+    price:1099, oldPrice:1249, stars:4, reviews:55,
+    url:'https://www.thomann.de/fr/fender_acoustasonic_player_telecaster_bsb.htm'
+  },
+
+  /* ── PERCUSSIONS ── */
+  {
+    id:10, cat:'percussions', brand:'Pearl', emoji:'🥁',
+    name:'Cajon Primero Pro African Limba',
+    price:189, oldPrice:229, stars:5, reviews:64,
+    url:'https://www.thomann.de/fr/pearl_pcx_123bbr_primero_box_cajon.htm'
+  },
+  {
+    id:11, cat:'percussions', brand:'Pearl', emoji:'🥁',
+    name:'Export EXX725SPC Standard Kit Rock',
+    price:699, stars:4, reviews:112,
+    url:'https://www.thomann.de/fr/pearl_export_exx725spc_c91.htm'
+  },
+  {
+    id:12, cat:'percussions', brand:'Roland', emoji:'🥁',
+    name:'TD-07DMK V-Drums Electronic Kit',
+    price:999, stars:5, reviews:87, badge:'Top vente',
+    url:'https://www.thomann.de/fr/roland_td_07dmk.htm'
+  },
+
+  /* ── VENTS & CUIVRES ── */
+  {
+    id:13, cat:'vents', brand:'Jupiter', emoji:'🎺',
+    name:'JTR700A Trompette Sib verni',
+    price:499, stars:4, reviews:43,
+    url:'https://www.thomann.de/fr/jupiter_jtr700a.htm'
+  },
+  {
+    id:14, cat:'vents', brand:'Stentor', emoji:'🎻',
+    name:'Student II Violon 4/4 complet',
+    price:199, stars:4, reviews:128,
+    url:'https://www.thomann.de/fr/stentor_1036_c_student_i_violingarnitur_44.htm'
+  },
+  {
+    id:15, cat:'vents', brand:'Jupiter', emoji:'🎷',
+    name:'JAS700Q Alto Saxophone verni',
+    price:699, stars:4, reviews:31,
+    url:'https://www.thomann.de/fr/jupiter_jas700q.htm'
+  },
+
+  /* ── MICROS & DI ── */
+  {
+    id:16, cat:'micros', brand:'Shure', emoji:'🎙',
+    name:'SM58-LC Micro chant dynamique',
+    price:99, stars:5, reviews:1247, badge:'Référence',
+    url:'https://www.thomann.de/fr/shure_sm_58_lce.htm'
+  },
+  {
+    id:17, cat:'micros', brand:'Sennheiser', emoji:'🎙',
+    name:'e835 Micro chant cardioïde',
+    price:89, stars:5, reviews:634,
+    url:'https://www.thomann.de/fr/sennheiser_e835.htm'
+  },
+  {
+    id:18, cat:'micros', brand:'Shure', emoji:'🎙',
+    name:'BLX14E/PG185 Micro cravate sans fil',
+    price:279, stars:4, reviews:89, badge:'Nouveau',
+    url:'https://www.thomann.de/fr/shure_blx14e_pg185_h8e.htm'
+  },
+  {
+    id:19, cat:'micros', brand:'Sennheiser', emoji:'🎙',
+    name:'XSW 2-835-A Système HF chant',
+    price:329, stars:5, reviews:152,
+    url:'https://www.thomann.de/fr/sennheiser_xsw_2_835_a.htm'
+  },
+
+  /* ── SONORISATION ── */
+  {
+    id:20, cat:'sono', brand:'Bose', emoji:'🔊',
+    name:'S1 Pro+ Système PA tout-en-un',
+    price:999, stars:5, reviews:76, badge:'Premium',
+    url:'https://www.thomann.de/fr/bose_s1_pro_plus.htm'
+  },
+  {
+    id:21, cat:'sono', brand:'Mackie', emoji:'🔊',
+    name:'Thump15A Enceinte active 15" 1300W',
+    price:449, oldPrice:549, stars:4, reviews:211,
+    url:'https://www.thomann.de/fr/mackie_thump15a_v4.htm'
+  },
+  {
+    id:22, cat:'sono', brand:'Mackie', emoji:'🎚',
+    name:'ProFX10v3 Table de mixage 10 canaux',
+    price:299, stars:4, reviews:178,
+    url:'https://www.thomann.de/fr/mackie_profx10v3.htm'
+  },
+  {
+    id:23, cat:'sono', brand:'Bose', emoji:'🔊',
+    name:'L1 Pro8 Système PA avec sub B1',
+    price:1999, stars:5, reviews:38, badge:'Pro',
+    url:'https://www.thomann.de/fr/bose_l1_pro8.htm'
+  },
+
+  /* ── ACCESSOIRES ── */
+  {
+    id:24, cat:'accessoires', brand:'Yamaha', emoji:'🎼',
+    name:'L-85A Support clavier réglable',
+    price:49, stars:5, reviews:320,
+    url:'https://www.thomann.de/fr/yamaha_l_85.htm'
+  },
+  {
+    id:25, cat:'accessoires', brand:'Roland', emoji:'🎼',
+    name:'DP-10 Pédale de sustain noire',
+    price:39, stars:5, reviews:410,
+    url:'https://www.thomann.de/fr/roland_dp_10.htm'
+  },
+  {
+    id:26, cat:'accessoires', brand:'Shure', emoji:'🎼',
+    name:'SM7dB Micro studio dynamique amplifié',
+    price:459, stars:5, reviews:98, badge:'Studio',
+    url:'https://www.thomann.de/fr/shure_sm7db.htm'
+  },
+];
+
+/* ══════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════ */
+let activeCategory = 'tous';
+let maxPrice       = 3000;
+
+function getActiveBrands() {
+  return [...document.querySelectorAll('.brand-label input[type=checkbox]:checked')]
+    .map(cb => cb.value);
+}
+
+function getSortValue() {
+  return document.getElementById('sort-select')?.value || 'default';
+}
+
+/* ══════════════════════════════════════════════
+   PRICE SLIDER
+══════════════════════════════════════════════ */
+function onPriceChange(val) {
+  maxPrice = parseInt(val);
+  const pct = (maxPrice / 3000) * 100;
+  const slider = document.getElementById('price-slider');
+  slider.style.setProperty('--fill', pct + '%');
+  document.getElementById('price-label').textContent =
+    maxPrice >= 3000 ? 'Sans limite' : maxPrice.toLocaleString('fr-FR') + ' €';
+  render();
+}
+
+/* ══════════════════════════════════════════════
+   CATEGORY
+══════════════════════════════════════════════ */
+function setCategory(el) {
   document.querySelectorAll('.cat-item').forEach(e => e.classList.remove('active'));
   el.classList.add('active');
+  activeCategory = el.dataset.cat;
+  render();
 }
+
+/* ══════════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════════ */
+function render() {
+  const brands = getActiveBrands();
+  const sort   = getSortValue();
+
+  let filtered = PRODUCTS.filter(p => {
+    const catOk   = activeCategory === 'tous' || p.cat === activeCategory;
+    const priceOk = p.price <= maxPrice;
+    const brandOk = brands.includes(p.brand);
+    return catOk && priceOk && brandOk;
+  });
+
+  if (sort === 'asc')   filtered.sort((a,b) => a.price - b.price);
+  if (sort === 'desc')  filtered.sort((a,b) => b.price - a.price);
+  if (sort === 'stars') filtered.sort((a,b) => b.stars - a.stars || b.reviews - a.reviews);
+
+  // Mise à jour compteurs sidebar
+  const cats = ['pianos','guitares','percussions','vents','micros','sono','accessoires'];
+  cats.forEach(c => {
+    const n = PRODUCTS.filter(p =>
+      p.cat === c && p.price <= maxPrice && brands.includes(p.brand)
+    ).length;
+    const el = document.getElementById('cnt-' + c);
+    if (el) el.textContent = n;
+  });
+  document.getElementById('cnt-tous').textContent =
+    PRODUCTS.filter(p => p.price <= maxPrice && brands.includes(p.brand)).length;
+
+  document.getElementById('count').textContent = filtered.length;
+
+  const grid  = document.getElementById('grid');
+  const empty = document.getElementById('empty');
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  grid.innerHTML = filtered.map(p => {
+    const stars = '★'.repeat(p.stars) + (p.stars < 5 ? '☆'.repeat(5 - p.stars) : '');
+    const badge = p.badge
+      ? `<div class="product-badge-overlay"><span class="tag tag-gold">${p.badge}</span></div>`
+      : '';
+    const oldP = p.oldPrice
+      ? `<span class="old">${p.oldPrice.toLocaleString('fr-FR')} €</span>`
+      : '';
+    return `
+      <a href="${p.url}" target="_blank" rel="noopener" class="product-card">
+        <div class="product-img">
+          <div class="product-emoji">${p.emoji}</div>
+          ${badge}
+          <div class="product-via">via Thomann</div>
+        </div>
+        <div class="product-body">
+          <div class="product-brand">${p.brand}</div>
+          <div class="product-name">${p.name}</div>
+          <div class="product-stars"><span class="s">${stars}</span> (${p.reviews.toLocaleString('fr-FR')})</div>
+          <div class="product-price">${p.price.toLocaleString('fr-FR')} € ${oldP}</div>
+          <div class="buy-btn">Acheter sur Thomann →</div>
+        </div>
+      </a>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  onPriceChange(3000);   // initialise le slider + render
+});
 </script>
 <script src="chat-widget.js"></script>
-<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(function(){});</script>
+<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(()=>{});</script>
 </body>
 </html>
