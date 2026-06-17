@@ -25,9 +25,9 @@
 .community-layout { display: grid; grid-template-columns: 280px 1fr 280px; gap: 0; max-width: 1200px; margin: 0 auto; min-height: calc(100vh - 68px); }
 
 /* LEFT SIDEBAR */
-.left-sidebar { padding: 28px 20px; border-right: 1px solid var(--text-muted)15; position: sticky; top: 68px; height: calc(100vh - 68px); overflow-y: auto; }
-.ls-profile { text-align: center; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--text-muted)15; }
-.ls-avatar { width: 64px; height: 64px; border-radius: 50%; background: var(--accent); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 1.5rem; font-weight: 600; color: var(--gold); border: 2px solid var(--gold)40; }
+.left-sidebar { padding: 28px 20px; border-right: 1px solid rgba(92, 85, 72, 0.082); position: sticky; top: 68px; height: calc(100vh - 68px); overflow-y: auto; }
+.ls-profile { text-align: center; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid rgba(92, 85, 72, 0.082); }
+.ls-avatar { width: 64px; height: 64px; border-radius: 50%; background: var(--accent); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 1.5rem; font-weight: 600; color: var(--gold); border: 2px solid rgba(201, 168, 76, 0.251); }
 .ls-name { font-family: var(--serif); font-size: 1.1rem; font-weight: 600; color: var(--text); margin-bottom: 2px; }
 .ls-role { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; }
 
@@ -40,17 +40,17 @@
 .nav-menu .pill { margin-left: auto; background: var(--gold); color: var(--bg); font-size: 9px; font-weight: 700; padding: 1px 7px; border-radius: 10px; }
 
 /* FEED */
-.feed { padding: 24px 28px; border-right: 1px solid var(--text-muted)15; }
+.feed { padding: 24px 28px; border-right: 1px solid rgba(92, 85, 72, 0.082); }
 
-.compose-box { background: var(--bg-card); border: 1px solid var(--text-muted)22; border-radius: 16px; padding: 16px 20px; margin-bottom: 20px; }
+.compose-box { background: var(--bg-card); border: 1px solid rgba(92, 85, 72, 0.133); border-radius: 16px; padding: 16px 20px; margin-bottom: 20px; }
 .compose-top { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
-.compose-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: .9rem; font-weight: 600; color: var(--gold); flex-shrink: 0; border: 1.5px solid var(--gold)30; }
-.compose-input { flex: 1; background: var(--bg-surf); border: 1px solid var(--text-muted)22; border-radius: 12px; padding: 10px 14px; font-size: 14px; color: var(--text); font-family: var(--sans); outline: none; resize: none; transition: border-color .2s; }
-.compose-input:focus { border-color: var(--gold)50; }
+.compose-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: .9rem; font-weight: 600; color: var(--gold); flex-shrink: 0; border: 1.5px solid rgba(201, 168, 76, 0.188); }
+.compose-input { flex: 1; background: var(--bg-surf); border: 1px solid rgba(92, 85, 72, 0.133); border-radius: 12px; padding: 10px 14px; font-size: 14px; color: var(--text); font-family: var(--sans); outline: none; resize: none; transition: border-color .2s; }
+.compose-input:focus { border-color: rgba(201, 168, 76, 0.314); }
 .compose-input::placeholder { color: var(--text-muted); }
 .compose-actions { display: flex; gap: 8px; align-items: center; }
-.compose-btn { display: flex; align-items: center; gap: 5px; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--text-muted)22; background: transparent; color: var(--text-dim); font-size: 11px; cursor: pointer; transition: color .15s, border-color .15s; }
-.compose-btn:hover { color: var(--gold); border-color: var(--gold)40; }
+.compose-btn { display: flex; align-items: center; gap: 5px; padding: 6px 10px; border-radius: 8px; border: 1px solid rgba(92, 85, 72, 0.133); background: transparent; color: var(--text-dim); font-size: 11px; cursor: pointer; transition: color .15s, border-color .15s; }
+.compose-btn:hover { color: var(--gold); border-color: rgba(201, 168, 76, 0.251); }
 .post-btn { margin-left: auto; background: var(--gold); color: var(--bg); border: none; padding: 8px 18px; border-radius: 9px; font-size: 12px; font-weight: 600; cursor: pointer; transition: opacity .2s; }
 .post-btn:hover { opacity: .85; }
 
@@ -58,20 +58,20 @@
 .feed-filters { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
 
 /* POST CARD */
-.post { background: var(--bg-card); border: 1px solid var(--text-muted)22; border-radius: 16px; padding: 20px; margin-bottom: 14px; }
+.post { background: var(--bg-card); border: 1px solid rgba(92, 85, 72, 0.133); border-radius: 16px; padding: 20px; margin-bottom: 14px; }
 .post-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
-.post-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: .95rem; font-weight: 600; color: var(--gold); flex-shrink: 0; border: 1.5px solid var(--gold)30; }
+.post-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: .95rem; font-weight: 600; color: var(--gold); flex-shrink: 0; border: 1.5px solid rgba(201, 168, 76, 0.188); }
 .post-meta { flex: 1; }
 .post-name { font-size: 13px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 6px; }
 .post-info { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
 .post-tag { font-size: 9px; padding: 2px 8px; border-radius: 20px; }
-.post-louange { background: var(--gold)15; color: var(--gold); border: 1px solid var(--gold)30; }
+.post-louange { background: rgba(201, 168, 76, 0.082); color: var(--gold); border: 1px solid rgba(201, 168, 76, 0.188); }
 .post-temoignage { background: #1A3020; color: #6DBA8A; border: 1px solid #6DBA8A30; }
 .post-priere { background: #1A1A30; color: #8A8AE0; border: 1px solid #8A8AE030; }
 .post-annonce { background: #301A1A; color: #E08A8A; border: 1px solid #E08A8A30; }
 .post-content { font-size: 14px; color: var(--text-dim); line-height: 1.7; margin-bottom: 16px; }
 .post-content strong { color: var(--text); }
-.post-actions { display: flex; gap: 4px; padding-top: 12px; border-top: 1px solid var(--text-muted)15; }
+.post-actions { display: flex; gap: 4px; padding-top: 12px; border-top: 1px solid rgba(92, 85, 72, 0.082); }
 .post-action { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 8px; border: none; background: transparent; color: var(--text-muted); font-size: 12px; cursor: pointer; transition: background .15s, color .15s; font-family: var(--sans); }
 .post-action:hover { background: var(--bg-surf); color: var(--text); }
 .post-action.liked { color: var(--gold); }
@@ -82,7 +82,7 @@
 .rs-section { margin-bottom: 24px; }
 .rs-title { font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
 
-.event-item { display: flex; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--text-muted)12; }
+.event-item { display: flex; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(92, 85, 72, 0.071); }
 .event-item:last-child { border-bottom: none; }
 .event-date-mini { width: 38px; height: 38px; border-radius: 8px; background: var(--accent); display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
 .event-date-num { font-family: var(--serif); font-size: 1.1rem; font-weight: 600; color: var(--gold); line-height: 1; }
@@ -91,12 +91,12 @@
 .event-loc { font-size: 10px; color: var(--text-muted); }
 
 .suggested-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
-.suggested-av { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: .85rem; font-weight: 600; color: var(--gold); flex-shrink: 0; border: 1.5px solid var(--gold)25; }
+.suggested-av { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: .85rem; font-weight: 600; color: var(--gold); flex-shrink: 0; border: 1.5px solid rgba(201, 168, 76, 0.145); }
 .suggested-info { flex: 1; min-width: 0; }
 .suggested-name { font-size: 12px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .suggested-role { font-size: 10px; color: var(--text-muted); }
-.follow-btn { font-size: 10px; font-weight: 600; color: var(--gold); background: var(--gold)12; border: 1px solid var(--gold)30; padding: 3px 10px; border-radius: 20px; cursor: pointer; flex-shrink: 0; transition: background .15s; }
-.follow-btn:hover { background: var(--gold)22; }
+.follow-btn { font-size: 10px; font-weight: 600; color: var(--gold); background: rgba(201, 168, 76, 0.071); border: 1px solid rgba(201, 168, 76, 0.188); padding: 3px 10px; border-radius: 20px; cursor: pointer; flex-shrink: 0; transition: background .15s; }
+.follow-btn:hover { background: rgba(201, 168, 76, 0.133); }
 
 @media (max-width: 1100px) { .community-layout { grid-template-columns: 1fr; } .left-sidebar, .right-sidebar { display: none; } }
 @media (max-width: 768px) { .feed { padding: 16px; } }
@@ -325,15 +325,15 @@
       <div class="rs-section">
         <div class="rs-title">Groupes actifs</div>
         <div style="display:flex;flex-direction:column;gap:8px;">
-          <div style="background:var(--bg-card);border:1px solid var(--text-muted)18;border-radius:10px;padding:10px 12px;">
+          <div style="background:var(--bg-card);border:1px solid rgba(92, 85, 72, 0.094);border-radius:10px;padding:10px 12px;">
             <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;">🎶 Louange Paris</div>
             <div style="font-size:10px;color:var(--text-muted);">48 membres · 3 publications aujourd'hui</div>
           </div>
-          <div style="background:var(--bg-card);border:1px solid var(--text-muted)18;border-radius:10px;padding:10px 12px;">
+          <div style="background:var(--bg-card);border:1px solid rgba(92, 85, 72, 0.094);border-radius:10px;padding:10px 12px;">
             <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;">🙏 Intercession musiciens</div>
             <div style="font-size:10px;color:var(--text-muted);">127 membres · Actif</div>
           </div>
-          <div style="background:var(--bg-card);border:1px solid var(--text-muted)18;border-radius:10px;padding:10px 12px;">
+          <div style="background:var(--bg-card);border:1px solid rgba(92, 85, 72, 0.094);border-radius:10px;padding:10px 12px;">
             <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;">🎸 Guitaristes gospel</div>
             <div style="font-size:10px;color:var(--text-muted);">63 membres</div>
           </div>

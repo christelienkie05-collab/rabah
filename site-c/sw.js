@@ -1,5 +1,5 @@
-// Rabah — Service Worker v3
-const CACHE = 'rabah-v3';
+// Rabah — Service Worker v4
+const CACHE = 'rabah-v4';
 const SHELL = [
   '/index.html',
   '/musiciens.html',
