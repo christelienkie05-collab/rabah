@@ -238,8 +238,8 @@
           <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;">Pianiste — Mariage Dupont</div>
           <div style="font-size:12px;color:var(--text-dim);margin-bottom:12px;">15 juin 2026 · Paris 16e · 4h · 150€</div>
           <div style="display:flex;gap:8px;">
-            <button style="flex:1;padding:8px;border-radius:9px;background:var(--gold);color:var(--bg);border:none;font-size:12px;font-weight:600;cursor:pointer;">Accepter</button>
-            <button style="flex:1;padding:8px;border-radius:9px;background:transparent;color:var(--text-dim);border:1px solid rgba(92, 85, 72, 0.188);font-size:12px;cursor:pointer;">Refuser</button>
+            <button onclick="missionResponse(this,true)" style="flex:1;padding:8px;border-radius:9px;background:var(--gold);color:var(--bg);border:none;font-size:12px;font-weight:600;cursor:pointer;">Accepter</button>
+            <button onclick="missionResponse(this,false)" style="flex:1;padding:8px;border-radius:9px;background:transparent;color:var(--text-dim);border:1px solid rgba(92, 85, 72, 0.188);font-size:12px;cursor:pointer;">Refuser</button>
           </div>
         </div>
       </div>
@@ -260,13 +260,82 @@
 </div>
 
 <script>
+// ── Sélection de conversation (+ maj de l'en-tête) ──
 function selectConv(id) {
   document.querySelectorAll('.conv-item').forEach(el => el.classList.remove('active'));
-  event.currentTarget.classList.add('active');
+  const item = event.currentTarget;
+  item.classList.add('active');
+  const unread = item.querySelector('.conv-unread'); if (unread) unread.remove();
+  const name = item.querySelector('.conv-name') ? item.querySelector('.conv-name').textContent : '';
+  const av   = item.querySelector('.conv-avatar');
+  const hName = document.querySelector('.chat-header-name');
+  const hAv   = document.querySelector('.chat-header-avatar');
+  if (hName && hName.childNodes[0]) hName.childNodes[0].nodeValue = name + ' ';
+  if (hAv && av) { hAv.textContent = av.textContent; }
 }
-// Auto-resize textarea
+
+// ── Auto-resize de la zone de saisie ──
 const ta = document.querySelector('.chat-input-box');
 if (ta) ta.addEventListener('input', function() { this.style.height = 'auto'; this.style.height = Math.min(this.scrollHeight, 120) + 'px'; });
+
+// ── Envoi de message ──
+function sendMessage() {
+  const box = document.querySelector('.chat-input-box');
+  const txt = (box.value || '').trim();
+  if (!txt) return;
+  const wrap = document.querySelector('.chat-messages');
+  const now = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  const grp = document.createElement('div');
+  grp.className = 'msg-group mine';
+  grp.innerHTML = '<div class="msg-avatar-sm" style="background:var(--gold);color:var(--bg);">Moi</div>' +
+    '<div class="msg-bubbles"><div class="bubble mine">' +
+    txt.replace(/</g, '&lt;').replace(/\n/g, '<br>') +
+    '</div><div class="bubble-time">' + now + '</div></div>';
+  wrap.appendChild(grp);
+  wrap.scrollTop = wrap.scrollHeight;
+  box.value = ''; box.style.height = 'auto';
+}
+const sendBtn = document.querySelector('.send-btn');
+if (sendBtn) sendBtn.addEventListener('click', sendMessage);
+if (ta) ta.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+});
+
+// ── Onglets DM / Groupes / Vocaux ──
+document.querySelectorAll('.msg-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.msg-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+    const mode = this.textContent.trim().toLowerCase();
+    document.querySelectorAll('.conv-item').forEach(item => {
+      const isGroup = !!item.querySelector('.conv-avatar.group');
+      const prev = item.querySelector('.conv-preview');
+      const isVoice = /vocal|🎤/i.test(prev ? prev.textContent : '');
+      let show = !isGroup;                 // DM par défaut
+      if (mode === 'groupes') show = isGroup;
+      else if (mode === 'vocaux') show = isVoice;
+      item.style.display = show ? '' : 'none';
+    });
+  });
+});
+
+// ── Recherche de conversation ──
+const convSearch = document.querySelector('.msg-search input');
+if (convSearch) convSearch.addEventListener('input', function() {
+  const q = this.value.toLowerCase();
+  document.querySelectorAll('.conv-item').forEach(item => {
+    const n = item.querySelector('.conv-name');
+    item.style.display = (n ? n.textContent.toLowerCase() : '').includes(q) ? '' : 'none';
+  });
+});
+
+// ── Accepter / Refuser une proposition de mission ──
+function missionResponse(btn, accepted) {
+  const row = btn.parentNode;
+  row.innerHTML = '<div style="flex:1;text-align:center;padding:8px;font-size:12px;font-weight:600;color:' +
+    (accepted ? 'var(--gold)' : 'var(--text-muted)') + ';">' +
+    (accepted ? '✓ Mission acceptée' : '✕ Mission refusée') + '</div>';
+}
 </script>
 <script src="chat-widget.js"></script>
 <script>if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(function(){});</script>

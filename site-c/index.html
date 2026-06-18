@@ -216,6 +216,12 @@ section { padding: 96px 32px; }
 /* ─── RESPONSIVE ───────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .nav-mobile-toggle { display: block; }
+  .nav-links.mobile-open {
+    display: flex; flex-direction: column; gap: 4px;
+    position: absolute; top: 68px; left: 0; right: 0;
+    background: var(--nav-bg); backdrop-filter: blur(14px);
+    padding: 12px 20px; border-bottom: 1px solid var(--line);
+  }
   .community-inner { grid-template-columns: 1fr; gap: 40px; }
   .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
   .mission-price { display: none; }
@@ -260,7 +266,7 @@ section { padding: 96px 32px; }
       <li><a href="communaute.html">Communauté</a></li>
     </ul>
     <button class="nav-cta" onclick="window.location.href='#conciergerie'">Conciergerie</button>
-    <button class="nav-mobile-toggle">☰</button>
+    <button class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('mobile-open')">☰</button>
   </div>
 </nav>
 
@@ -709,7 +715,7 @@ section { padding: 96px 32px; }
       <ul>
         <li><a href="#conciergerie">Conciergerie</a></li>
         <li><a href="messages.html">Messagerie</a></li>
-        <li><a href="#">Boost profil</a></li>
+        <li><a href="https://wa.me/33651426961?text=Bonjour%2C%20je%20souhaite%20booster%20mon%20profil%20Rabah" target="_blank">Boost profil</a></li>
       </ul>
     </div>
     <div class="footer-col">

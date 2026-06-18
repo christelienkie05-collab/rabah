@@ -301,6 +301,20 @@
     });
   }
 
+  // ── Vue grille / liste ──
+  const vGrid = document.getElementById('view-grid');
+  const vList = document.getElementById('view-list');
+  if (vGrid && vList) {
+    vGrid.addEventListener('click', () => {
+      vGrid.classList.add('active'); vList.classList.remove('active');
+      grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(260px, 1fr))';
+    });
+    vList.addEventListener('click', () => {
+      vList.classList.add('active'); vGrid.classList.remove('active');
+      grid.style.gridTemplateColumns = '1fr';
+    });
+  }
+
   // ── Recherche en direct (nom + rôle/ville) ──
   const search = document.getElementById('search-input');
   if (search) {
